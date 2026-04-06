@@ -1,0 +1,14 @@
+# Block common attack paths
+/wp-admin/* 404
+/wp-login.php 404
+/.env 404
+/.git/* 404
+/config/* 404
+/admin/* 404
+/phpMyAdmin/* 404
+/backup/* 404
+/.htaccess 404
+
+# Force HTTPS
+http://axonarchives.studio/* https://axonarchives.studio/:splat 301!
+http://www.axonarchives.studio/* https://axonarchives.studio/:splat 301!
