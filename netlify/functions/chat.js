@@ -1,3 +1,5 @@
+const https = require('https');
+
 exports.handler = async function(event) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -6,17 +8,7 @@ exports.handler = async function(event) {
   try {
     var body = JSON.parse(event.body);
 
-    var response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': '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',
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 600,
-        system: `You are the studio assistant for AXON ARCHIVES, a premium architecture and visualization studio based in Lagos, Nigeria. You represent the brand with professionalism, warmth, and expertise.
+    var systemPrompt = `You are the studio assistant for AXON ARCHIVES, a premium architecture and visualization studio based in Lagos, Nigeria. You represent the brand with professionalism, warmth, and expertise.
 
 ABOUT AXON ARCHIVES:
 - Based in Lagos, Nigeria — serving clients globally across Africa, Europe, the Middle East, and beyond
@@ -55,7 +47,7 @@ WHAT CLIENTS NEED TO PROVIDE:
 - Reference images or inspiration (optional but helpful)
 
 PAYMENT:
-- Payments accepted via the website Pay page (axonarchives.studio → Pay)
+- Payments accepted via the website Pay page (axonarchives.studio) under the Pay section
 - NGN accepted via Paystack
 - USD quotes converted to NGN at current market rate for payment
 
@@ -71,15 +63,41 @@ YOUR TONE:
 - Speak like a luxury studio representative — never casual, never robotic
 - Be genuinely helpful and informative about architecture and design
 - Guide clients toward making an enquiry or payment when appropriate
-- Keep responses concise but thorough — no unnecessary padding
+- Keep responses concise but thorough
 - If asked about architecture or design concepts, answer confidently and educationally
 - Never make up prices or timelines not listed above
-- For complex briefs or custom quotes, always direct the client to send an enquiry via the Contact page or email axonarchives@gmail.com`,
-        messages: body.messages
-      })
+- For complex briefs or custom quotes, direct the client to email axonarchives@gmail.com`;
+
+    var requestBody = JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 600,
+      system: systemPrompt,
+      messages: body.messages
     });
 
-    var data = await response.json();
+    var result = await new Promise(function(resolve, reject) {
+      var options = {
+        hostname: 'api.anthropic.com',
+        path: '/v1/messages',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(requestBody),
+          'x-api-key': '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',
+          'anthropic-version': '2023-06-01'
+        }
+      };
+
+      var req = https.request(options, function(res) {
+        var data = '';
+        res.on('data', function(chunk) { data += chunk; });
+        res.on('end', function() { resolve(data); });
+      });
+
+      req.on('error', function(err) { reject(err); });
+      req.write(requestBody);
+      req.end();
+    });
 
     return {
       statusCode: 200,
@@ -87,9 +105,11 @@ YOUR TONE:
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       },
-      body: JSON.stringify(data)
+      body: result
     };
+
   } catch (err) {
+    console.log('Error:', err.message);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: err.message })
