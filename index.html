@@ -2032,15 +2032,14 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages: chatHistory })
     })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
+    .then(function(r) { return r.text(); })
+    .then(function(text) { var data = JSON.parse(text);
       document.getElementById('chatTyping').style.display = 'none';
       document.getElementById('chatSendBtn').disabled = false;
       var reply = data.content && data.content[0] ? data.content[0].text : 'I apologise, something went wrong. Please email us at axonarchives@gmail.com';
       chatHistory.push({ role: 'assistant', content: reply });
       addMessage('bot', reply);
-    })
-    .catch(function() {
+    }).catch(function() {
       document.getElementById('chatTyping').style.display = 'none';
       document.getElementById('chatSendBtn').disabled = false;
       addMessage('bot', 'I apologise, I am having trouble connecting. Please reach us directly at axonarchives@gmail.com');
