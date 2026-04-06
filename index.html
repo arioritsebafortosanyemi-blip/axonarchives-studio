@@ -1556,7 +1556,10 @@
       <button class="btn-primary" onclick="generateReceipt()" style="margin-top:24px; width:100%; letter-spacing:2px;">
         Download Receipt
       </button>
-      <p style="font-size:9px; color:var(--grey); letter-spacing:1px; margin-top:12px; text-align:center;">PDF receipt — AXON ARCHIVES</p>
+      <button class="btn-outline" onclick="generateInvoice(window.lastPayment.name, window.lastPayment.email, window.lastPayment.service, window.lastPayment.amount, window.lastPayment.amount)" style="margin-top:10px; width:100%; letter-spacing:2px;">
+        Download Invoice
+      </button>
+      <p style="font-size:9px; color:var(--grey); letter-spacing:1px; margin-top:12px; text-align:center;">PDF documents — AXON ARCHIVES</p>
     </div>
   </div>
 </div>
