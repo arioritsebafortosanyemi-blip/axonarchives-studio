@@ -758,6 +758,7 @@
       <button class="filter-tab" onclick="filterPortfolio('interior',this)">Interior</button>
       <button class="filter-tab" onclick="filterPortfolio('floorplan',this)">Floor Plans</button>
       <button class="filter-tab" onclick="filterPortfolio('siteplan',this)">Site Plans</button>
+      <button class="filter-tab" onclick="filterPortfolio('animation',this)">Animation</button>
     </div>
   </div>
   <div class="portfolio-grid" id="portfolioGrid"></div>
@@ -1160,63 +1161,65 @@
 // ── PORTFOLIO DATA ────────────────────────────────────
 var portfolioItems = [
   // Exteriors
-  {src:'images/ext1.jpg',mob:'images/mobile/ext1.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext2.jpg',mob:'images/mobile/ext2.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext3.jpg',mob:'images/mobile/ext3.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext4.jpg',mob:'images/mobile/ext4.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext5.jpg',mob:'images/mobile/ext5.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext6.jpg',mob:'images/mobile/ext6.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext7.jpg',mob:'images/mobile/ext7.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext8.jpg',mob:'images/mobile/ext8.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext9.jpg',mob:'images/mobile/ext9.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext10.jpg',mob:'images/mobile/ext10.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext11.jpg',mob:'images/mobile/ext11.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext12.jpg',mob:'images/mobile/ext12.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext13.jpg',mob:'images/mobile/ext13.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext14.jpg',mob:'images/mobile/ext14.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext15.jpg',mob:'images/mobile/ext15.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext16.jpg',mob:'images/mobile/ext16.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext17.jpg',mob:'images/mobile/ext17.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext18.jpg',mob:'images/mobile/ext18.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext19.jpg',mob:'images/mobile/ext19.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext20.jpg',mob:'images/mobile/ext20.jpg',cat:'exterior',label:'Exterior'},
-  {src:'images/ext21.jpg',mob:'images/mobile/ext21.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext1.png',mob:'images/mobile/ext1.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext2.png',mob:'images/mobile/ext2.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext3.png',mob:'images/mobile/ext3.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext4.png',mob:'images/mobile/ext4.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext5.png',mob:'images/mobile/ext5.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext6.png',mob:'images/mobile/ext6.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext7.png',mob:'images/mobile/ext7.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext8.png',mob:'images/mobile/ext8.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext9.png',mob:'images/mobile/ext9.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext10.png',mob:'images/mobile/ext10.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext11.png',mob:'images/mobile/ext11.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext12.png',mob:'images/mobile/ext12.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext13.png',mob:'images/mobile/ext13.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext14.png',mob:'images/mobile/ext14.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext15.png',mob:'images/mobile/ext15.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext16.png',mob:'images/mobile/ext16.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext17.png',mob:'images/mobile/ext17.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext18.png',mob:'images/mobile/ext18.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext19.png',mob:'images/mobile/ext19.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext20.png',mob:'images/mobile/ext20.png',cat:'exterior',label:'Exterior'},
+  {src:'images/ext21.png',mob:'images/mobile/ext21.png',cat:'exterior',label:'Exterior'},
   {src:'images/ext22.jpg',mob:'images/mobile/ext22.jpg',cat:'exterior',label:'Exterior'},
   // Interiors
-  {src:'images/int1.jpg',mob:'images/mobile/int1.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int2.jpg',mob:'images/mobile/int2.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int3.jpg',mob:'images/mobile/int3.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int4.jpg',mob:'images/mobile/int4.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int5.jpg',mob:'images/mobile/int5.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int6.jpg',mob:'images/mobile/int6.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int7.jpg',mob:'images/mobile/int7.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int8.jpg',mob:'images/mobile/int8.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int9.jpg',mob:'images/mobile/int9.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int10.jpg',mob:'images/mobile/int10.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int1.png',mob:'images/mobile/int1.png',cat:'interior',label:'Interior'},
+  {src:'images/int2.png',mob:'images/mobile/int2.png',cat:'interior',label:'Interior'},
+  {src:'images/int3.png',mob:'images/mobile/int3.png',cat:'interior',label:'Interior'},
+  {src:'images/int4.png',mob:'images/mobile/int4.png',cat:'interior',label:'Interior'},
+  {src:'images/int5.png',mob:'images/mobile/int5.png',cat:'interior',label:'Interior'},
+  {src:'images/int6.png',mob:'images/mobile/int6.png',cat:'interior',label:'Interior'},
+  {src:'images/int7.png',mob:'images/mobile/int7.png',cat:'interior',label:'Interior'},
+  {src:'images/int8.png',mob:'images/mobile/int8.png',cat:'interior',label:'Interior'},
+  {src:'images/int9.png',mob:'images/mobile/int9.png',cat:'interior',label:'Interior'},
+  {src:'images/int10.png',mob:'images/mobile/int10.png',cat:'interior',label:'Interior'},
   {src:'images/int11.jpg',mob:'images/mobile/int11.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int12.jpg',mob:'images/mobile/int12.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int13.jpg',mob:'images/mobile/int13.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int14.jpg',mob:'images/mobile/int14.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int15.jpg',mob:'images/mobile/int15.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int16.jpg',mob:'images/mobile/int16.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int12.png',mob:'images/mobile/int12.png',cat:'interior',label:'Interior'},
+  {src:'images/int13.png',mob:'images/mobile/int13.png',cat:'interior',label:'Interior'},
+  {src:'images/int14.png',mob:'images/mobile/int14.png',cat:'interior',label:'Interior'},
+  {src:'images/int15.png',mob:'images/mobile/int15.png',cat:'interior',label:'Interior'},
+  {src:'images/int16.png',mob:'images/mobile/int16.png',cat:'interior',label:'Interior'},
   {src:'images/int17.jpg',mob:'images/mobile/int17.jpg',cat:'interior',label:'Interior'},
   {src:'images/int18.jpg',mob:'images/mobile/int18.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int19.jpg',mob:'images/mobile/int19.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int20.jpg',mob:'images/mobile/int20.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int19.png',mob:'images/mobile/int19.png',cat:'interior',label:'Interior'},
+  {src:'images/int20.png',mob:'images/mobile/int20.png',cat:'interior',label:'Interior'},
   {src:'images/int21.jpg',mob:'images/mobile/int21.jpg',cat:'interior',label:'Interior'},
-  {src:'images/int22.jpg',mob:'images/mobile/int22.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int22.png',mob:'images/mobile/int22.png',cat:'interior',label:'Interior'},
   // Floor Plans
-  {src:'images/fp1.jpg',mob:'images/mobile/fp1.jpg',cat:'floorplan',label:'Floor Plan'},
-  {src:'images/fp2.jpg',mob:'images/mobile/fp2.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp1.png',mob:'images/mobile/fp1.png',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp2.png',mob:'images/mobile/fp2.png',cat:'floorplan',label:'Floor Plan'},
   {src:'images/fp3.jpg',mob:'images/mobile/fp3.jpg',cat:'floorplan',label:'Floor Plan'},
-  {src:'images/fp4.jpg',mob:'images/mobile/fp4.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp4.png',mob:'images/mobile/fp4.png',cat:'floorplan',label:'Floor Plan'},
   {src:'images/fp5.jpg',mob:'images/mobile/fp5.jpg',cat:'floorplan',label:'Floor Plan'},
   {src:'images/fp6.jpg',mob:'images/mobile/fp6.jpg',cat:'floorplan',label:'Floor Plan'},
-  {src:'images/fp7.jpg',mob:'images/mobile/fp7.jpg',cat:'floorplan',label:'Floor Plan'},
-  {src:'images/fp8.jpg',mob:'images/mobile/fp8.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp7.png',mob:'images/mobile/fp7.png',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp8.png',mob:'images/mobile/fp8.png',cat:'floorplan',label:'Floor Plan'},
   // Site Plans
-  {src:'images/sp1.jpg',mob:'images/mobile/sp1.jpg',cat:'siteplan',label:'Site Plan'},
-  {src:'images/sp2.jpg',mob:'images/mobile/sp2.jpg',cat:'siteplan',label:'Site Plan'},
+  {src:'images/sp1.png',mob:'images/mobile/sp1.png',cat:'siteplan',label:'Site Plan'},
+  {src:'images/sp2.png',mob:'images/mobile/sp2.png',cat:'siteplan',label:'Site Plan'},
+  // Animations
+  {src:'images/anim1.mp4',mob:'images/anim1.mp4',cat:'animation',label:'Animation',video:true},
 ];
 
 // ── BUILD PORTFOLIO GRID ──────────────────────────────
@@ -1234,18 +1237,28 @@ function buildGrid(filter) {
     div.className = 'grid-item';
     div.setAttribute('data-idx', idx);
     div.setAttribute('data-cat', item.cat);
-    var shimmer = document.createElement('div');
-    shimmer.className = 'img-shimmer';
-    var img = document.createElement('img');
-    img.setAttribute('data-src', isMobile ? item.mob : item.src);
-    img.alt = item.label;
-    var overlay = document.createElement('div');
-    overlay.className = 'grid-overlay';
-    overlay.innerHTML = '<p class="grid-cat">' + item.label + '</p>';
-    div.appendChild(shimmer);
-    div.appendChild(img);
-    div.appendChild(overlay);
-    div.addEventListener('click', function() { openSlider(filtered, idx); });
+
+    if (item.video) {
+      // Video item
+      div.style.aspectRatio = '16/9';
+      div.innerHTML = '<video src="' + item.src + '" controls playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>';
+      div.style.background = '#000';
+    } else {
+      // Image item
+      var shimmer = document.createElement('div');
+      shimmer.className = 'img-shimmer';
+      var img = document.createElement('img');
+      img.setAttribute('data-src', isMobile ? item.mob : item.src);
+      img.alt = item.label;
+      var overlay = document.createElement('div');
+      overlay.className = 'grid-overlay';
+      overlay.innerHTML = '<p class="grid-cat">' + item.label + '</p>';
+      div.appendChild(shimmer);
+      div.appendChild(img);
+      div.appendChild(overlay);
+      div.addEventListener('click', function() { openSlider(filtered.filter(function(i){ return !i.video; }), filtered.filter(function(i){ return !i.video; }).indexOf(item)); });
+    }
+
     grid.appendChild(div);
   });
   initLazyLoad();
