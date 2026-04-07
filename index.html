@@ -2,9 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
-<meta http-equiv="X-Frame-Options" content="DENY">
-<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AXON ARCHIVES — Architecture · Visualization · Animation</title>
 <!-- Google Analytics -->
@@ -15,428 +12,594 @@
   gtag('js', new Date());
   gtag('config', 'G-ET1WW5ZB8B');
 </script>
-
-<!-- jsPDF for receipt generation -->
+<!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <!-- Paystack -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
-<style>
-  /* Payment Modal */
-  .pay-modal-overlay {
-    display: none; position: fixed; inset: 0; z-index: 2000;
-    background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-    align-items: center; justify-content: center;
-  }
-  .pay-modal-overlay.open { display: flex; }
-  .pay-modal {
-    background: var(--black2); border: 1px solid var(--border);
-    padding: 48px; width: 100%; max-width: 480px; position: relative;
-  }
-  .pay-modal-close {
-    position: absolute; top: 20px; right: 24px;
-    background: none; border: none; color: var(--grey);
-    font-size: 20px; cursor: pointer; line-height: 1;
-  }
-  .pay-modal-close:hover { color: var(--white); }
-  .pay-modal-eyebrow { font-size: 9px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
-  .pay-modal-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; margin-bottom: 32px; }
-  .pay-modal-service { font-size: 11px; letter-spacing: 2px; color: var(--grey-light); margin-bottom: 24px; padding: 16px; background: var(--black3); border: 1px solid var(--border); }
-  .pay-form { display: flex; flex-direction: column; gap: 16px; }
-  .pay-input { background: var(--black3); border: 1px solid var(--border); color: var(--white); padding: 14px 16px; font-size: 12px; font-family: 'Montserrat', sans-serif; font-weight: 300; outline: none; transition: border-color 0.3s; width: 100%; }
-  .pay-input:focus { border-color: var(--gold); }
-  .pay-currency-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .pay-currency-btn {
-    padding: 12px; background: transparent; border: 1px solid var(--border);
-    color: var(--grey); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-    font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.3s;
-  }
-  .pay-currency-btn.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
-  .pay-amount-display { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--gold); text-align: center; padding: 16px 0; }
-  .pay-note { font-size: 10px; color: var(--grey); letter-spacing: 1px; text-align: center; margin-top: 8px; }
-  .btn-pay { width: 100%; padding: 16px; background: var(--gold); color: var(--black); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; font-family: 'Montserrat', sans-serif; border: none; cursor: pointer; transition: all 0.3s; margin-top: 8px; }
-  .btn-pay:hover { background: var(--gold-light); }
-  .btn-pay:disabled { opacity: 0.5; cursor: not-allowed; }
-  .pay-success { display: none; text-align: center; padding: 24px 0; }
-  .pay-success-icon { font-size: 48px; margin-bottom: 16px; }
-  .pay-success-text { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; margin-bottom: 8px; }
-  .pay-success-sub { font-size: 11px; color: var(--grey); letter-spacing: 1px; }
-  .btn-pay-now {
-    display: inline-block; margin-top: 16px; padding: 10px 20px;
-    background: transparent; border: 1px solid var(--gold);
-    color: var(--gold); font-size: 9px; letter-spacing: 2px;
-    text-transform: uppercase; font-family: 'Montserrat', sans-serif;
-    cursor: pointer; transition: all 0.3s;
-  }
-  .btn-pay-now:hover { background: var(--gold); color: var(--black); }
-  @media (max-width: 768px) {
-    .pay-modal { padding: 32px 20px; margin: 20px; }
-  }
-</style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black: #0A0A0A;
-    --black2: #111111;
-    --black3: #1A1A1A;
-    --gold: #C8A96E;
-    --gold-light: #E2C998;
-    --gold-dark: #8B6F3E;
-    --white: #F5F2ED;
-    --grey: #888888;
-    --grey-light: #CCCCCC;
-    --border: rgba(200, 169, 110, 0.2);
+    --black: #050505;
+    --black2: #0A0A0A;
+    --black3: #111111;
+    --gold: #D4A843;
+    --gold-light: #E8C96A;
+    --gold-dim: rgba(212,168,67,0.1);
+    --white: #EEEBE4;
+    --grey: #555555;
+    --grey-light: #999999;
+    --border: rgba(212,168,67,0.08);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--black);
     color: var(--white);
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 300;
     overflow-x: hidden;
   }
 
-  /* NAV */
+  /* SCAN LINES */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 3px,
+      rgba(212,168,67,0.006) 3px, rgba(212,168,67,0.006) 4px
+    );
+    pointer-events: none; z-index: 9990;
+  }
+
+  /* ── CINEMA BARS ─────────────────────── */
+  .bar-top {
+    position: fixed; top: 0; left: 0; right: 0; height: 32px;
+    background: var(--black); border-bottom: 1px solid var(--border);
+    z-index: 2000; display: flex; align-items: center;
+    padding: 0 20px; justify-content: space-between;
+  }
+  .bar-bottom {
+    position: fixed; bottom: 0; left: 0; right: 0; height: 32px;
+    background: var(--black); border-top: 1px solid var(--border);
+    z-index: 2000; display: flex; align-items: center;
+    padding: 0 20px; justify-content: space-between;
+  }
+  .bar-info { font-size: 7px; letter-spacing: 3px; color: var(--grey); text-transform: uppercase; }
+  .bar-clock { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--grey); }
+
+  /* ── NAV ─────────────────────────────── */
   nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 1000;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 48px;
-    height: 72px;
-    background: rgba(10,10,10,0.95);
-    backdrop-filter: blur(20px);
+    position: fixed; top: 32px; left: 0; right: 0; z-index: 1000;
+    height: 56px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 20px;
+    background: rgba(5,5,5,0.97);
     border-bottom: 1px solid var(--border);
   }
+  .nav-logo { display: flex; flex-direction: column; line-height: 1; }
+  .nav-logo-main { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 5px; color: var(--white); }
+  .nav-logo-sub { font-size: 6px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-top: 2px; }
+  .nav-desktop { display: flex; align-items: center; gap: 32px; }
+  .nav-desktop a {
+    font-size: 8px; letter-spacing: 3px; color: var(--grey-light);
+    text-decoration: none; text-transform: uppercase; transition: color 0.3s;
+  }
+  .nav-desktop a:hover { color: var(--gold); }
+  .nav-cta-btn {
+    padding: 9px 20px; border: 1px solid var(--gold);
+    color: var(--gold); background: transparent;
+    font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.3s;
+  }
+  .nav-cta-btn:hover { background: var(--gold); color: var(--black); }
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--white); transition: all 0.3s; }
+  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-  .nav-logo {
-    display: flex; align-items: center; gap: 12px;
-    text-decoration: none;
+  .mobile-menu {
+    display: none; position: fixed;
+    top: 88px; left: 0; right: 0; bottom: 32px;
+    background: rgba(5,5,5,0.99); z-index: 999;
+    flex-direction: column; align-items: center; justify-content: center; gap: 36px;
   }
-  .nav-logo img { height: 40px; width: auto; object-fit: contain; }
-  .nav-logo-text {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700; font-size: 13px;
-    letter-spacing: 4px; color: var(--white);
-    line-height: 1.2;
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; letter-spacing: 6px; color: var(--grey-light);
+    text-decoration: none; text-transform: uppercase; transition: color 0.3s;
   }
-  .nav-logo-text span {
-    display: block; font-size: 8px;
-    letter-spacing: 3px; color: var(--gold); font-weight: 400;
-  }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
 
-  .nav-links { display: flex; gap: 40px; list-style: none; }
-  .nav-links a {
-    font-size: 10px; letter-spacing: 3px;
-    text-transform: uppercase; color: var(--grey);
-    text-decoration: none; transition: color 0.3s;
-    position: relative;
-  }
-  .nav-links a::after {
-    content: ''; position: absolute; bottom: -4px; left: 0;
-    width: 0; height: 1px; background: var(--gold); transition: width 0.3s;
-  }
-  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-  .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+  /* ── PAGES ───────────────────────────── */
+  .page { display: none; padding-top: 88px; padding-bottom: 32px; min-height: 100vh; }
 
-  /* PAGES */
-  .page { display: none; min-height: 100vh; }
-
-  /* HOME */
+  /* ── HERO ────────────────────────────── */
   #home {
-    position: relative; height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
+    padding-top: 88px; padding-bottom: 32px; min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
   }
   .hero-bg {
     position: absolute; inset: 0;
-    background: transparent;
+    background: radial-gradient(ellipse 80% 50% at 50% 30%, rgba(212,168,67,0.05) 0%, transparent 60%), var(--black);
   }
-  .hero-content { text-align: center; position: relative; z-index: 2; }
-  .hero-eyebrow {
-    font-size: 10px; letter-spacing: 6px; color: var(--gold);
-    text-transform: uppercase; margin-bottom: 24px;
-    opacity: 0; animation: fadeInUp 1s 0.3s ease forwards;
+  .hero-top { padding: 48px 20px 0; position: relative; z-index: 2; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+  .hero-eyebrow-line { width: 36px; height: 1px; background: var(--gold); }
+  .hero-eyebrow span { font-size: 8px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 22vw, 160px);
+    line-height: 0.88; letter-spacing: 3px; color: var(--white);
   }
-  .hero-logo {
-    opacity: 0; animation: fadeInUp 1s 0.5s ease forwards;
-    margin-bottom: 24px;
+  .hero-title .outline { color: transparent; -webkit-text-stroke: 1px rgba(238,235,228,0.15); display: block; }
+  .hero-title .gold { color: var(--gold); display: block; }
+  .hero-bottom {
+    padding: 0 20px 48px; position: relative; z-index: 2;
+    display: flex; flex-direction: column; gap: 28px;
   }
-  .hero-logo img { height: 180px; width: auto; object-fit: contain; }
-  .hero-tagline {
-    font-size: 11px; letter-spacing: 5px; color: var(--grey);
-    text-transform: uppercase;
-    opacity: 0; animation: fadeInUp 1s 0.8s ease forwards;
+  .hero-desc-block { display: flex; flex-direction: column; gap: 14px; }
+  .hero-desc-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px; font-style: italic; color: var(--gold); line-height: 1.3;
   }
-  .hero-cta {
-    margin-top: 56px;
-    opacity: 0; animation: fadeInUp 1s 1s ease forwards;
-    display: flex; gap: 20px; justify-content: center;
+  .hero-desc { font-size: 12px; line-height: 2; color: var(--grey-light); max-width: 500px; }
+  .hero-btns { display: flex; flex-direction: column; gap: 10px; }
+  .btn-gold-c {
+    padding: 16px 40px; background: var(--gold); color: var(--black);
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 600; font-family: 'DM Sans', sans-serif;
+    border: none; cursor: pointer; transition: background 0.3s; text-align: center;
   }
-  .btn-primary {
-    padding: 14px 36px; background: var(--gold); color: var(--black);
-    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-    font-weight: 600; font-family: 'Montserrat', sans-serif;
-    border: none; cursor: pointer; transition: all 0.3s;
+  .btn-gold-c:hover { background: var(--gold-light); }
+  .btn-outline-c {
+    padding: 16px 40px; background: transparent; color: var(--white);
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+    border: 1px solid rgba(238,235,228,0.15); cursor: pointer;
+    transition: all 0.3s; text-align: center;
   }
-  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
-  .btn-outline {
-    padding: 14px 36px; background: transparent; color: var(--gold);
-    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-    font-weight: 500; font-family: 'Montserrat', sans-serif;
-    border: 1px solid var(--gold); cursor: pointer; transition: all 0.3s;
+  .btn-outline-c:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    border-top: 1px solid var(--border); padding-top: 20px;
   }
-  .btn-outline:hover { background: rgba(200,169,110,0.1); transform: translateY(-2px); }
-  .hero-scroll {
-    position: absolute; bottom: 40px; left: 50%;
-    transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    opacity: 0; animation: fadeInUp 1s 1.4s ease forwards;
-  }
-  .hero-scroll span { font-size: 9px; letter-spacing: 3px; color: var(--grey); text-transform: uppercase; }
-  .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s infinite; }
-  .hero-corner { position: absolute; font-size: 9px; letter-spacing: 2px; color: var(--grey); text-transform: uppercase; }
-  .hero-corner.bl { bottom: 40px; left: 48px; }
-  .hero-corner.br { bottom: 40px; right: 48px; }
+  .hero-stat { padding: 0 12px; border-right: 1px solid var(--border); }
+  .hero-stat:first-child { padding-left: 0; }
+  .hero-stat:last-child { border-right: none; }
+  .stat-n { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); line-height: 1; }
+  .stat-l { font-size: 7px; letter-spacing: 2px; color: var(--grey-light); text-transform: uppercase; margin-top: 3px; }
 
-  /* GALLERY */
-  #gallery { padding-top: 72px; }
-  .page-header { padding: 80px 48px 48px; border-bottom: 1px solid var(--border); }
-  .page-header-inner { display: flex; align-items: flex-end; justify-content: space-between; }
-  .page-eyebrow { font-size: 10px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
-  .page-title { font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 300; letter-spacing: -1px; }
-
-  .filter-bar { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
-  .filter-btn {
-    padding: 8px 18px; font-size: 9px; letter-spacing: 2px;
-    text-transform: uppercase; background: transparent; color: var(--grey);
-    border: 1px solid rgba(136,136,136,0.3); cursor: pointer; transition: all 0.3s;
-    font-family: 'Montserrat', sans-serif;
+  /* ── REEL ────────────────────────────── */
+  .reel {
+    overflow: hidden; height: 180px;
+    position: relative; background: var(--black2);
   }
-  .filter-btn:hover, .filter-btn.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
+  .reel::before, .reel::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 60px; z-index: 2;
+  }
+  .reel::before { left: 0; background: linear-gradient(to right, var(--black2), transparent); }
+  .reel::after { right: 0; background: linear-gradient(to left, var(--black2), transparent); }
+  .reel-track {
+    display: flex; gap: 2px;
+    animation: reelMove 30s linear infinite;
+    width: max-content; height: 100%;
+  }
+  @keyframes reelMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .reel-item {
+    width: 140px; height: 180px; flex-shrink: 0;
+    position: relative; overflow: hidden;
+  }
+  .reel-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+  .reel-item-bg { width: 100%; height: 100%; }
+  .reel-label { position: absolute; bottom: 8px; left: 8px; right: 8px; }
+  .reel-cat { font-size: 6px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
 
-  .masonry-grid { padding: 40px 48px; columns: 3; column-gap: 16px; }
+  /* ── PORTFOLIO ───────────────────────── */
+  #portfolio { }
+  .portfolio-header { padding: 60px 20px 32px; }
+  .section-eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .section-eyebrow-line { width: 28px; height: 1px; background: var(--gold); }
+  .section-eyebrow span { font-size: 7px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 8vw, 48px);
+    font-weight: 400; line-height: 1.1; margin-bottom: 32px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
 
-  /* Skeleton loader */
-  .masonry-item {
-    break-inside: avoid; margin-bottom: 16px;
-    position: relative; overflow: hidden; cursor: pointer;
+  .filter-tabs {
+    display: flex; gap: 0; overflow-x: auto;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .filter-tab {
+    padding: 9px 18px; background: transparent;
+    border: 1px solid var(--border); color: var(--grey-light);
+    font-size: 7px; letter-spacing: 3px; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+    white-space: nowrap; transition: all 0.3s; margin-right: -1px;
+  }
+  .filter-tab.active, .filter-tab:hover {
+    background: var(--gold); color: var(--black); border-color: var(--gold); z-index: 1;
+  }
+
+  .portfolio-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+    padding: 2px;
+  }
+  .grid-item {
+    aspect-ratio: 4/3; position: relative; overflow: hidden; cursor: pointer;
     background: var(--black3);
   }
-  .img-wrapper {
-    position: relative;
-    overflow: hidden;
-    background: var(--black3);
+  .grid-item.hidden { display: none; }
+  .grid-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s ease; opacity: 0;
   }
-  .img-wrapper::before {
-    content: '';
+  .grid-item.loaded img { opacity: 1; }
+  .grid-item:hover img { transform: scale(1.05); }
+  .grid-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(90deg, var(--black3) 0%, rgba(200,169,110,0.08) 50%, var(--black3) 100%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    z-index: 1;
-  }
-  .img-wrapper.loaded::before { display: none; }
-  .img-wrapper img {
-    width: 100%; display: block;
-    transition: transform 0.6s ease, opacity 0.4s ease;
-    opacity: 0;
-  }
-  .img-wrapper.loaded img { opacity: 1; }
-  .masonry-item:hover .img-wrapper.loaded img { transform: scale(1.04); }
-
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
-  .masonry-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+    background: linear-gradient(to top, rgba(5,5,5,0.85) 0%, transparent 50%);
     opacity: 0; transition: opacity 0.4s;
-    display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 12px;
   }
-  .masonry-item:hover .masonry-overlay { opacity: 1; }
-  .masonry-tag { font-size: 8px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
-  .masonry-name { font-size: 13px; font-weight: 500; color: var(--white); }
+  .grid-item:hover .grid-overlay { opacity: 1; }
+  .grid-cat { font-size: 7px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 2px; }
+  .grid-label { font-size: 11px; color: var(--white); font-family: 'DM Serif Display', serif; }
 
-  /* ABOUT */
-  #about { padding-top: 72px; }
-  .about-hero { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 72px); }
-  .about-left { padding: 100px 64px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); }
-  .about-right { background: var(--black2); display: flex; align-items: center; justify-content: center; padding: 64px; position: relative; overflow: hidden; }
-  .about-right::before { content: 'AA'; font-family: 'Cormorant Garamond', serif; font-size: 400px; font-weight: 300; color: rgba(200,169,110,0.04); position: absolute; line-height: 1; letter-spacing: -20px; }
-  .about-text { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; line-height: 1.2; margin-bottom: 40px; }
-  .about-text em { color: var(--gold); font-style: italic; }
-  .about-body { font-size: 12px; line-height: 2; color: var(--grey-light); max-width: 480px; margin-bottom: 24px; }
-  .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 56px; padding-top: 48px; border-top: 1px solid var(--border); }
-  .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--gold); line-height: 1; }
-  .stat-label { font-size: 9px; letter-spacing: 3px; color: var(--grey); text-transform: uppercase; margin-top: 8px; }
-  .about-visual { position: relative; z-index: 1; width: 100%; }
-  .about-card { background: var(--black3); border: 1px solid var(--border); padding: 40px; margin-bottom: 16px; }
-  .about-card-label { font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
-  .about-card-text { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; line-height: 1.4; }
+  /* FULLSCREEN SLIDER */
+  .slider-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.98); z-index: 5000;
+    flex-direction: column;
+  }
+  .slider-overlay.open { display: flex; }
+  .slider-header {
+    padding: 44px 20px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .slider-cat { font-size: 8px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; }
+  .slider-close {
+    background: none; border: 1px solid var(--border); color: var(--white);
+    width: 36px; height: 36px; cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .slider-close:hover { border-color: var(--gold); color: var(--gold); }
+  .slider-main {
+    flex: 1; display: flex; align-items: center;
+    justify-content: center; position: relative; overflow: hidden;
+  }
+  .slider-img-container {
+    width: 100%; height: 100%; display: flex;
+    align-items: center; justify-content: center;
+  }
+  .slider-img-container img {
+    max-width: 100%; max-height: 100%; object-fit: contain;
+  }
+  .slider-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    display: flex; justify-content: space-between;
+    width: 100%; padding: 0 12px;
+  }
+  .slider-btn {
+    width: 40px; height: 40px;
+    background: rgba(212,168,67,0.12); border: 1px solid var(--gold);
+    color: var(--gold); font-size: 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.3s;
+  }
+  .slider-btn:hover { background: var(--gold); color: var(--black); }
+  .slider-footer {
+    padding: 16px 20px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .slider-counter { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--grey-light); }
+  .slider-counter span { color: var(--gold); }
+  .slider-dots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; max-width: 60%; }
+  .slider-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--grey); cursor: pointer; transition: background 0.3s; }
+  .slider-dot.active { background: var(--gold); }
 
-  /* SERVICES */
-  #services { padding-top: 72px; }
-  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--border); }
-  .service-card { padding: 56px 64px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; transition: background 0.4s; }
-  .service-card:hover { background: rgba(200,169,110,0.03); }
-  .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.4s; }
-  .service-card:hover::before { width: 100%; }
-  .service-number { font-family: 'Cormorant Garamond', serif; font-size: 64px; font-weight: 300; color: rgba(200,169,110,0.15); line-height: 1; margin-bottom: 24px; }
-  .service-name { font-size: 16px; font-weight: 500; letter-spacing: 1px; margin-bottom: 16px; }
-  .service-desc { font-size: 12px; line-height: 1.9; color: var(--grey); margin-bottom: 32px; }
-  .service-price { display: flex; align-items: baseline; gap: 8px; }
-  .price-label { font-size: 9px; letter-spacing: 2px; color: var(--grey); text-transform: uppercase; }
-  .price-value { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--gold); }
-  .price-unit { font-size: 10px; color: var(--grey); }
-  .cta-strip { background: var(--gold); padding: 80px 48px; display: flex; align-items: center; justify-content: space-between; }
-  .cta-strip-text { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--black); line-height: 1.1; }
-  .btn-dark { padding: 16px 40px; background: var(--black); color: var(--gold); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; font-family: 'Montserrat', sans-serif; border: none; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
-  .btn-dark:hover { background: var(--black3); transform: translateY(-2px); }
+  /* ── SERVICES ────────────────────────── */
+  #services { }
+  .services-inner { padding: 60px 20px; }
+  .svc-list { margin-top: 40px; }
+  .svc-row {
+    display: flex; align-items: flex-start;
+    padding: 24px 0; border-bottom: 1px solid var(--border);
+    gap: 16px; transition: all 0.4s; cursor: default;
+    position: relative; overflow: hidden;
+  }
+  .svc-row::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to right, var(--gold-dim), transparent);
+    transform: translateX(-100%); transition: transform 0.4s;
+  }
+  .svc-row:hover::before { transform: translateX(0); }
+  .svc-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; color: rgba(212,168,67,0.2);
+    line-height: 1; flex-shrink: 0; width: 44px;
+    position: relative; z-index: 1; transition: color 0.4s;
+  }
+  .svc-row:hover .svc-num { color: var(--gold); }
+  .svc-info { flex: 1; position: relative; z-index: 1; }
+  .svc-name { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 6px; }
+  .svc-desc { font-size: 11px; color: var(--grey-light); line-height: 1.8; }
+  .svc-price {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px; color: var(--gold);
+    flex-shrink: 0; text-align: right;
+    position: relative; z-index: 1;
+  }
+  .svc-price small { font-size: 10px; color: var(--grey); font-family: 'DM Sans', sans-serif; }
+  .svc-pay-btn {
+    display: block; margin-top: 10px;
+    padding: 8px 16px; background: transparent;
+    border: 1px solid var(--gold); color: var(--gold);
+    font-size: 7px; letter-spacing: 2px; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.3s;
+    white-space: nowrap;
+  }
+  .svc-pay-btn:hover { background: var(--gold); color: var(--black); }
 
-  /* CONTACT */
-  #contact { padding-top: 72px; }
-  .contact-layout { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 72px); }
-  .contact-left { padding: 100px 64px; border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; }
-  .contact-right { padding: 100px 64px; background: var(--black2); display: flex; flex-direction: column; justify-content: center; }
-  .contact-item { padding: 28px 0; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
-  .contact-label { font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
-  .contact-value { font-size: 14px; font-weight: 400; color: var(--white); }
-  .contact-form { display: flex; flex-direction: column; gap: 20px; }
-  .form-group { display: flex; flex-direction: column; gap: 8px; }
-  .form-label { font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
-  .form-input, .form-textarea { background: var(--black3); border: 1px solid var(--border); color: var(--white); padding: 14px 16px; font-size: 12px; font-family: 'Montserrat', sans-serif; font-weight: 300; outline: none; transition: border-color 0.3s; }
+  /* CTA STRIP */
+  .cta-strip {
+    background: var(--gold); padding: 48px 20px;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .cta-strip-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(24px, 6vw, 40px); color: var(--black);
+    line-height: 1.2; font-style: italic;
+  }
+  .btn-dark-c {
+    padding: 16px 32px; background: var(--black); color: var(--gold);
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 600; font-family: 'DM Sans', sans-serif;
+    border: none; cursor: pointer; transition: background 0.3s;
+    text-align: center;
+  }
+  .btn-dark-c:hover { background: var(--black3); }
+
+  /* ── PAY PAGE ────────────────────────── */
+  #pay { }
+  .pay-inner { padding: 60px 20px; }
+  .pay-grid { margin-top: 40px; display: flex; flex-direction: column; gap: 2px; }
+  .pay-card {
+    padding: 28px 20px; background: var(--black2);
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 12px;
+    transition: border-color 0.3s;
+  }
+  .pay-card:hover { border-color: rgba(212,168,67,0.3); }
+  .pay-card-name { font-family: 'DM Serif Display', serif; font-size: 20px; }
+  .pay-card-desc { font-size: 11px; color: var(--grey-light); line-height: 1.8; }
+  .pay-card-price { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--gold); }
+  .pay-card-price small { font-size: 11px; color: var(--grey); font-family: 'DM Sans', sans-serif; }
+  .pay-card-btn {
+    padding: 14px; background: var(--gold); color: var(--black);
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 600; font-family: 'DM Sans', sans-serif;
+    border: none; cursor: pointer; transition: background 0.3s; text-align: center;
+  }
+  .pay-card-btn:hover { background: var(--gold-light); }
+  .pay-custom {
+    margin-top: 2px; background: var(--black3);
+    border: 1px solid var(--border); padding: 28px 20px;
+  }
+  .pay-custom-label { font-size: 7px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+  .pay-custom-text { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 16px; font-style: italic; }
+  .pay-custom-sub { font-size: 11px; color: var(--grey-light); margin-bottom: 20px; line-height: 1.8; }
+
+  /* ── ABOUT ───────────────────────────── */
+  #about { }
+  .about-inner { padding: 60px 20px; }
+  .about-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 14vw, 100px);
+    line-height: 0.9; letter-spacing: 3px;
+    margin: 32px 0;
+  }
+  .about-headline .outline { color: transparent; -webkit-text-stroke: 1px rgba(238,235,228,0.15); display: block; }
+  .about-headline .gold { color: var(--gold); display: block; }
+  .about-body { font-size: 13px; line-height: 2.2; color: var(--grey-light); margin-bottom: 40px; }
+  .about-body p { margin-bottom: 16px; }
+  .about-body strong { color: var(--white); font-weight: 500; }
+  .about-stats {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    border-top: 1px solid var(--border); padding-top: 32px; gap: 0;
+  }
+  .about-stat { padding: 0 16px; border-right: 1px solid var(--border); }
+  .about-stat:first-child { padding-left: 0; }
+  .about-stat:last-child { border-right: none; }
+  .about-stat-n { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--gold); line-height: 1; }
+  .about-stat-l { font-size: 7px; letter-spacing: 2px; color: var(--grey-light); text-transform: uppercase; margin-top: 4px; }
+  .about-cards { margin-top: 40px; display: flex; flex-direction: column; gap: 2px; }
+  .about-card { background: var(--black2); border: 1px solid var(--border); padding: 24px 20px; }
+  .about-card-label { font-size: 7px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  .about-card-text { font-family: 'DM Serif Display', serif; font-size: 18px; font-style: italic; line-height: 1.4; }
+
+  /* ── CONTACT ─────────────────────────── */
+  #contact { }
+  .contact-inner { padding: 60px 20px; }
+  .contact-details { margin: 32px 0; display: flex; flex-direction: column; gap: 0; }
+  .contact-item { padding: 20px 0; border-bottom: 1px solid var(--border); }
+  .contact-label { font-size: 7px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .contact-value { font-size: 14px; color: var(--white); }
+  .contact-value a { color: var(--white); text-decoration: none; }
+  .contact-form { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
+  .form-label { font-size: 7px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; display: block; }
+  .form-input, .form-textarea {
+    width: 100%; background: var(--black2); border: 1px solid var(--border);
+    color: var(--white); padding: 14px 16px; font-size: 12px;
+    font-family: 'DM Sans', sans-serif; font-weight: 300;
+    outline: none; transition: border-color 0.3s;
+  }
   .form-input:focus, .form-textarea:focus { border-color: var(--gold); }
   .form-textarea { resize: vertical; min-height: 120px; }
-
-  /* FOOTER */
-  footer { background: var(--black2); border-top: 1px solid var(--border); padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; }
-  .footer-logo { font-weight: 700; font-size: 13px; letter-spacing: 4px; color: var(--white); }
-  .footer-logo span { color: var(--gold); }
-  .footer-copy { font-size: 10px; color: var(--grey); letter-spacing: 1px; }
-  .footer-socials { display: flex; gap: 24px; }
-  .footer-socials a { font-size: 9px; letter-spacing: 2px; color: var(--grey); text-transform: uppercase; text-decoration: none; transition: color 0.3s; }
-  .footer-socials a:hover { color: var(--gold); }
-
-  .footer-socials a svg { width: 16px; height: 16px; fill: currentColor; display: block; }
-  .footer-socials a { display: flex; align-items: center; gap: 6px; }
-
-
-  /* PAY PAGE */
-  #pay { padding-top: 72px; }
-  .pay-page-grid { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--border); }
-  .pay-service-card {
-    padding: 40px 48px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    display: flex; flex-direction: column; justify-content: space-between; gap: 16px;
-    transition: background 0.3s; position: relative; overflow: hidden;
+  .form-submit {
+    width: 100%; padding: 16px; background: var(--gold);
+    color: var(--black); font-size: 9px; letter-spacing: 3px;
+    text-transform: uppercase; font-weight: 600;
+    font-family: 'DM Sans', sans-serif; border: none; cursor: pointer;
+    transition: background 0.3s;
   }
-  .pay-service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.4s; }
-  .pay-service-card:hover::before { width: 100%; }
-  .pay-service-card:hover { background: rgba(200,169,110,0.03); }
-  .pay-service-card-full { grid-column: span 2; }
-  .pay-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
-  .pay-card-name { font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-bottom: 8px; }
-  .pay-card-desc { font-size: 11px; color: var(--grey); line-height: 1.8; }
-  .pay-card-price { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--gold); white-space: nowrap; }
-  .pay-card-unit { font-size: 10px; color: var(--grey); }
-  .pay-custom-section { background: var(--gold); padding: 64px 48px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
-  .pay-custom-text { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; color: var(--black); line-height: 1.2; }
-  .pay-custom-sub { font-size: 11px; color: rgba(0,0,0,0.6); letter-spacing: 1px; margin-top: 8px; }
-  @media (max-width: 768px) {
-    #pay { padding-top: 64px; }
-    .pay-page-grid { grid-template-columns: 1fr; }
-    .pay-service-card { padding: 28px 20px; border-right: none; }
-    .pay-service-card-full { grid-column: span 1; }
-    .pay-custom-section { flex-direction: column; padding: 40px 20px; text-align: center; }
-    .pay-custom-text { font-size: 28px; }
-    .btn-dark { width: 100%; text-align: center; }
+  .form-submit:hover { background: var(--gold-light); }
+  .form-msg { display: none; text-align: center; font-size: 11px; letter-spacing: 1px; margin-top: 12px; }
+
+  /* ── PAYMENT MODAL ───────────────────── */
+  .pay-modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 3000;
+    background: rgba(0,0,0,0.9); backdrop-filter: blur(8px);
+    align-items: flex-end;
+  }
+  .pay-modal-overlay.open { display: flex; }
+  .pay-modal {
+    background: var(--black2); border: 1px solid var(--border);
+    border-bottom: none; padding: 32px 20px;
+    width: 100%; max-height: 90vh; overflow-y: auto;
+    position: relative;
+  }
+  .pay-modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: 1px solid var(--border); color: var(--grey-light);
+    width: 32px; height: 32px; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pay-modal-close:hover { color: var(--white); border-color: var(--gold); }
+  .pay-modal-eyebrow { font-size: 7px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .pay-modal-title { font-family: 'DM Serif Display', serif; font-size: 24px; margin-bottom: 20px; font-style: italic; }
+  .pay-modal-service {
+    font-size: 11px; letter-spacing: 1px; color: var(--grey-light);
+    margin-bottom: 20px; padding: 12px 16px;
+    background: var(--black3); border: 1px solid var(--border);
+  }
+  .pay-form { display: flex; flex-direction: column; gap: 14px; }
+  .pay-input {
+    width: 100%; background: var(--black3); border: 1px solid var(--border);
+    color: var(--white); padding: 14px 16px; font-size: 12px;
+    font-family: 'DM Sans', sans-serif; font-weight: 300;
+    outline: none; transition: border-color 0.3s;
+  }
+  .pay-input:focus { border-color: var(--gold); }
+  .pay-currency-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .pay-currency-btn {
+    padding: 12px; background: transparent; border: 1px solid var(--border);
+    color: var(--grey-light); font-size: 9px; letter-spacing: 2px;
+    text-transform: uppercase; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.3s;
+  }
+  .pay-currency-btn.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
+  .pay-amount-display {
+    font-family: 'DM Serif Display', serif; font-size: 32px;
+    color: var(--gold); text-align: center; padding: 12px 0;
+  }
+  .conversion-box {
+    display: none; background: var(--black3); border: 1px solid var(--border); padding: 12px 16px;
+  }
+  .conversion-label { font-size: 7px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .conversion-row { display: flex; justify-content: space-between; align-items: center; }
+  .conversion-detail { font-size: 11px; color: var(--grey-light); }
+  .conversion-result { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--white); }
+  .conversion-rate { font-size: 9px; color: var(--grey); margin-top: 6px; }
+  .btn-pay-now {
+    width: 100%; padding: 16px; background: var(--gold); color: var(--black);
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 600; font-family: 'DM Sans', sans-serif;
+    border: none; cursor: pointer; transition: background 0.3s; margin-top: 4px;
+  }
+  .btn-pay-now:hover { background: var(--gold-light); }
+  .btn-pay-now:disabled { opacity: 0.5; cursor: not-allowed; }
+  .pay-note { font-size: 9px; color: var(--grey); letter-spacing: 1px; text-align: center; margin-top: 8px; }
+  .pay-success { display: none; text-align: center; padding: 20px 0; }
+  .pay-success-icon { font-size: 40px; margin-bottom: 12px; color: var(--gold); }
+  .pay-success-text { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 8px; font-style: italic; }
+  .pay-success-sub { font-size: 11px; color: var(--grey-light); letter-spacing: 1px; margin-bottom: 20px; }
+  .pay-success-btns { display: flex; flex-direction: column; gap: 10px; }
+  .btn-receipt {
+    width: 100%; padding: 14px; background: var(--gold); color: var(--black);
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 600; font-family: 'DM Sans', sans-serif; border: none; cursor: pointer;
+  }
+  .btn-invoice {
+    width: 100%; padding: 14px; background: transparent; color: var(--gold);
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; border: 1px solid var(--gold); cursor: pointer;
   }
 
-
-  /* CHATBOT */
+  /* ── CHATBOT ─────────────────────────── */
   .chat-bubble {
-    position: fixed; bottom: 32px; right: 32px; z-index: 3000;
-    width: 56px; height: 56px; border-radius: 50%;
+    position: fixed; bottom: 44px; right: 16px; z-index: 3000;
+    width: 52px; height: 52px; border-radius: 50%;
     background: var(--gold); border: none; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 24px rgba(200,169,110,0.4);
+    box-shadow: 0 4px 20px rgba(212,168,67,0.4);
     transition: transform 0.3s, box-shadow 0.3s;
   }
-  .chat-bubble:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(200,169,110,0.6); }
-  .chat-bubble svg { width: 24px; height: 24px; fill: var(--black); }
-
+  .chat-bubble:hover { transform: scale(1.08); }
+  .chat-bubble svg { width: 22px; height: 22px; fill: var(--black); }
   .chat-window {
-    position: fixed; bottom: 100px; right: 32px; z-index: 3000;
-    width: 360px; max-height: 520px;
+    position: fixed; bottom: 108px; right: 12px; left: 12px; z-index: 3000;
     background: var(--black2); border: 1px solid var(--border);
     display: none; flex-direction: column;
-    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    max-height: 70vh;
   }
   .chat-window.open { display: flex; }
-
   .chat-header {
-    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    padding: 14px 16px; border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
     background: var(--black3);
   }
-  .chat-header-left { display: flex; align-items: center; gap: 12px; }
-  .chat-header-dot {
-    width: 8px; height: 8px; border-radius: 50%; background: var(--gold);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
-  .chat-header-title { font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--white); }
-  .chat-header-sub { font-size: 9px; color: var(--grey); letter-spacing: 1px; margin-top: 2px; }
-  .chat-close { background: none; border: none; color: var(--grey); cursor: pointer; font-size: 16px; }
-  .chat-close:hover { color: var(--white); }
-
+  .chat-header-left { display: flex; align-items: center; gap: 10px; }
+  .chat-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+  .chat-title { font-size: 10px; font-weight: 600; letter-spacing: 2px; color: var(--white); }
+  .chat-sub { font-size: 8px; color: var(--grey-light); letter-spacing: 1px; }
+  .chat-close { background: none; border: none; color: var(--grey-light); cursor: pointer; font-size: 16px; }
   .chat-messages {
-    flex: 1; overflow-y: auto; padding: 20px 16px;
-    display: flex; flex-direction: column; gap: 12px;
-    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    flex: 1; overflow-y: auto; padding: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+    scrollbar-width: thin;
   }
-  .chat-msg { display: flex; flex-direction: column; max-width: 85%; }
+  .chat-msg { display: flex; flex-direction: column; max-width: 88%; }
   .chat-msg.user { align-self: flex-end; align-items: flex-end; }
-  .chat-msg.bot { align-self: flex-start; align-items: flex-start; }
-  .chat-msg-bubble {
-    padding: 10px 14px; font-size: 12px; line-height: 1.7;
-    font-family: 'Montserrat', sans-serif; font-weight: 300;
+  .chat-msg.bot { align-self: flex-start; }
+  .chat-bubble-msg {
+    padding: 10px 12px; font-size: 12px; line-height: 1.7;
+    font-family: 'DM Sans', sans-serif; font-weight: 300;
   }
-  .chat-msg.user .chat-msg-bubble {
-    background: var(--gold); color: var(--black); font-weight: 400;
-  }
-  .chat-msg.bot .chat-msg-bubble {
-    background: var(--black3); color: var(--white);
-    border: 1px solid var(--border);
-  }
-  .chat-msg-time { font-size: 9px; color: var(--grey); margin-top: 4px; letter-spacing: 1px; }
-
-  .chat-typing {
-    align-self: flex-start; background: var(--black3);
-    border: 1px solid var(--border); padding: 12px 16px;
-    display: none;
-  }
-  .chat-typing span {
-    display: inline-block; width: 6px; height: 6px;
-    border-radius: 50%; background: var(--gold); margin: 0 2px;
-    animation: typingDot 1.2s infinite;
-  }
+  .chat-msg.user .chat-bubble-msg { background: var(--gold); color: var(--black); font-weight: 400; }
+  .chat-msg.bot .chat-bubble-msg { background: var(--black3); color: var(--white); border: 1px solid var(--border); }
+  .chat-time { font-size: 8px; color: var(--grey); margin-top: 3px; }
+  .chat-typing { align-self: flex-start; background: var(--black3); border: 1px solid var(--border); padding: 10px 14px; display: none; }
+  .chat-typing span { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); margin: 0 2px; animation: typeDot 1.2s infinite; }
   .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
   .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes typingDot { 0%,80%,100%{transform:scale(0.6);opacity:0.4;} 40%{transform:scale(1);opacity:1;} }
-
+  @keyframes typeDot { 0%,80%,100%{transform:scale(0.6);opacity:0.4;} 40%{transform:scale(1);opacity:1;} }
+  .chat-suggestions { padding: 0 12px 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .chat-suggest-btn {
+    padding: 5px 10px; background: transparent; border: 1px solid var(--border);
+    color: var(--grey-light); font-size: 8px; letter-spacing: 1px; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.3s;
+  }
+  .chat-suggest-btn:hover { border-color: var(--gold); color: var(--gold); }
   .chat-input-area {
-    padding: 12px 16px; border-top: 1px solid var(--border);
-    display: flex; gap: 8px; align-items: flex-end;
-    background: var(--black3);
+    padding: 10px 12px; border-top: 1px solid var(--border);
+    display: flex; gap: 8px; align-items: flex-end; background: var(--black3);
   }
   .chat-input {
     flex: 1; background: var(--black); border: 1px solid var(--border);
     color: var(--white); padding: 10px 12px; font-size: 12px;
-    font-family: 'Montserrat', sans-serif; font-weight: 300;
+    font-family: 'DM Sans', sans-serif; font-weight: 300;
     resize: none; outline: none; max-height: 80px; min-height: 40px;
     transition: border-color 0.3s;
   }
@@ -444,1080 +607,455 @@
   .chat-send {
     width: 40px; height: 40px; background: var(--gold); border: none;
     cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: background 0.3s; flex-shrink: 0;
+    flex-shrink: 0; transition: background 0.3s;
   }
   .chat-send:hover { background: var(--gold-light); }
-  .chat-send svg { width: 16px; height: 16px; fill: var(--black); }
+  .chat-send svg { width: 14px; height: 14px; fill: var(--black); }
   .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  .chat-suggestions {
-    padding: 0 16px 12px; display: flex; flex-wrap: wrap; gap: 6px;
+  /* ── FOOTER ──────────────────────────── */
+  footer {
+    background: var(--black2); border-top: 1px solid var(--border);
+    padding: 28px 20px;
+    display: flex; flex-direction: column; gap: 12px; text-align: center;
   }
-  .chat-suggest-btn {
-    padding: 5px 10px; background: transparent;
-    border: 1px solid var(--border); color: var(--grey);
-    font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
-    font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.3s;
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 5px; color: var(--white); }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 9px; color: var(--grey); letter-spacing: 1px; }
+  .footer-socials { display: flex; gap: 24px; justify-content: center; }
+  .footer-socials a { color: var(--grey); transition: color 0.3s; }
+  .footer-socials a:hover { color: var(--gold); }
+  .footer-socials svg { width: 16px; height: 16px; fill: currentColor; }
+
+  /* ── SHIMMER ─────────────────────────── */
+  .img-shimmer {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--black3) 0%, rgba(212,168,67,0.06) 50%, var(--black3) 100%);
+    background-size: 200% 100%; animation: shimmer 1.5s infinite;
   }
-  .chat-suggest-btn:hover { border-color: var(--gold); color: var(--gold); }
+  @keyframes shimmer { 0%{background-position:-200% 0;} 100%{background-position:200% 0;} }
+  .grid-item.loaded .img-shimmer { display: none; }
+
+  /* ── DESKTOP OVERRIDES ───────────────── */
+  @media (min-width: 769px) {
+    nav { padding: 0 48px; }
+    .hamburger { display: none; }
+    .mobile-menu { display: none !important; }
+    .nav-desktop { display: flex; }
+    .hero-top { padding: 80px 48px 0; }
+    .hero-bottom { padding: 0 48px 80px; flex-direction: row; align-items: flex-end; justify-content: space-between; }
+    .hero-desc-block { max-width: 480px; }
+    .hero-btns { flex-direction: row; }
+    .portfolio-header { padding: 80px 48px 32px; }
+    .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
+    .services-inner { padding: 80px 48px; }
+    .pay-inner { padding: 80px 48px; }
+    .pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .about-inner { padding: 80px 48px; }
+    .contact-inner { padding: 80px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+    .contact-form-section { margin-top: 0; }
+    .cta-strip { flex-direction: row; align-items: center; padding: 64px 48px; }
+    .btn-dark-c { white-space: nowrap; }
+    .chat-window { left: auto; width: 360px; right: 20px; bottom: 116px; }
+    .chat-bubble { bottom: 48px; right: 24px; }
+    .pay-modal-overlay { align-items: center; justify-content: center; }
+    .pay-modal { max-width: 480px; border: 1px solid var(--border); max-height: 85vh; }
+    footer { flex-direction: row; align-items: center; justify-content: space-between; text-align: left; padding: 28px 48px; }
+    .reel-item { width: 200px; height: 200px; }
+    .reel { height: 200px; }
+  }
 
   @media (max-width: 768px) {
-    .chat-window { width: calc(100vw - 32px); right: 16px; bottom: 90px; }
-    .chat-bubble { bottom: 20px; right: 16px; }
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes scrollPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* Service card improvements */
-  .service-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-  .service-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-  .tag { padding: 4px 12px; border: 1px solid var(--border); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
-  .service-card-full { grid-column: span 2; }
-
-  /* Hamburger */
-  .hamburger {
-    display: none; flex-direction: column; gap: 5px;
-    cursor: pointer; padding: 4px; background: none; border: none;
-  }
-  .hamburger span {
-    display: block; width: 24px; height: 1.5px;
-    background: var(--white); transition: all 0.3s;
-  }
-  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-  .hamburger.open span:nth-child(2) { opacity: 0; }
-  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-  .mobile-menu {
-    display: none; position: fixed; top: 72px; left: 0; right: 0; bottom: 0;
-    background: rgba(10,10,10,0.98); backdrop-filter: blur(20px);
-    z-index: 999; flex-direction: column; align-items: center; justify-content: center;
-    gap: 48px;
-  }
-  .mobile-menu.open { display: flex; }
-  .mobile-menu a {
-    font-size: 13px; letter-spacing: 5px; text-transform: uppercase;
-    color: var(--grey); text-decoration: none; transition: color 0.3s;
-  }
-  .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
-
-  @media (max-width: 768px) {
-    /* NAV */
-    nav { padding: 0 20px; height: 64px; }
-    .nav-links { display: none; }
+    .nav-desktop { display: none; }
     .hamburger { display: flex; }
-    .nav-logo img { height: 36px; }
-    .nav-logo-text { display: none; }
-
-    /* HOME */
-    .hero-corner { display: none; }
-    .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
-    .hero-logo img { height: 120px; }
-    .hero-eyebrow { font-size: 9px; letter-spacing: 4px; }
-    .hero-tagline { font-size: 9px; letter-spacing: 3px; }
-    .btn-primary, .btn-outline { width: 220px; text-align: center; }
-
-    /* GALLERY */
-    #gallery { padding-top: 64px; }
-    .page-header { padding: 32px 20px 24px; }
-    .page-header-inner { flex-direction: column; gap: 20px; align-items: flex-start; }
-    .page-title { font-size: 36px; }
-    .filter-bar { justify-content: flex-start; gap: 6px; }
-    .filter-btn { padding: 6px 14px; font-size: 8px; }
-    .masonry-grid { columns: 1; padding: 20px 16px; column-gap: 0; }
-    .masonry-item { margin-bottom: 12px; }
-
-    /* ABOUT */
-    #about { padding-top: 64px; }
-    .about-hero { grid-template-columns: 1fr; }
-    .about-right { display: none; }
-    .about-left { padding: 40px 20px; border-right: none; }
-    .about-text { font-size: 28px; }
-    .about-body { font-size: 13px; }
-    .about-stats { grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 32px; margin-top: 32px; }
-    .stat-number { font-size: 32px; }
-    .stat-label { font-size: 8px; }
-
-    /* SERVICES */
-    #services { padding-top: 64px; }
-    .services-grid { grid-template-columns: 1fr; border-top: none; }
-    .service-card { padding: 28px 20px; border-right: none; border-bottom: 1px solid var(--border); border-left: none; }
-    .service-card-full { grid-column: span 1; }
-    .service-number { font-size: 40px; margin-bottom: 0; }
-    .service-name { font-size: 15px; margin-bottom: 10px; }
-    .service-desc { font-size: 12px; line-height: 1.8; margin-bottom: 16px; }
-    .service-price { gap: 4px; }
-    .price-value { font-size: 24px; }
-    .price-unit { font-size: 11px; }
-    .service-header { margin-bottom: 12px; }
-    .tag { font-size: 8px; padding: 3px 10px; }
-    .cta-strip { flex-direction: column; gap: 24px; padding: 48px 20px; text-align: center; }
-    .cta-strip-text { font-size: 28px; }
-    .btn-dark { width: 100%; text-align: center; padding: 16px; }
-
-    /* CONTACT */
-    #contact { padding-top: 64px; }
-    .contact-layout { grid-template-columns: 1fr; }
-    .contact-left { padding: 40px 20px; border-right: none; border-bottom: 1px solid var(--border); }
-    .contact-right { padding: 40px 20px; }
-    .contact-item { padding: 20px 0; }
-    .contact-value { font-size: 13px; }
-    .form-input, .form-textarea { font-size: 14px; padding: 14px 16px; }
-    .btn-primary[style] { font-size: 11px; }
-
-    /* FOOTER */
-    footer { flex-direction: column; gap: 12px; padding: 24px 20px; text-align: center; }
-    .footer-socials { justify-content: center; }
+    .bar-info.hide-mobile { display: none; }
   }
-
 </style>
 </head>
 <body>
 
-<nav>
-  <a class="nav-logo" href="javascript:void(0)" onclick="showPage('home')">
-    <img src="images/logo-icon.png" alt="Axon Archives Logo">
-    <div class="nav-logo-text">AXON ARCHIVES<span>Digital Architecture Archive</span></div>
-  </a>
-  <ul class="nav-links">
-    <li><a href="javascript:void(0)" onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
-    <li><a href="javascript:void(0)" onclick="showPage('gallery')" id="nav-gallery">Portfolio</a></li>
-    <li><a href="javascript:void(0)" onclick="showPage('about')" id="nav-about">Studio</a></li>
-    <li><a href="javascript:void(0)" onclick="showPage('services')" id="nav-services">Services</a></li>
-    <li><a href="javascript:void(0)" onclick="showPage('contact')" id="nav-contact">Contact</a></li>
-    <li><a href="javascript:void(0)" onclick="showPage('pay')" id="nav-pay">Pay</a></li>
-  </ul>
+<!-- Cinema bars -->
+<div class="bar-top">
+  <span class="bar-info">Axon Archives · Lagos, Nigeria</span>
+  <span class="bar-clock" id="clockEl">00:00</span>
+  <span class="bar-info hide-mobile">Est. 2024</span>
+</div>
+<div class="bar-bottom">
+  <span class="bar-info">Architecture · Visualization · Design & Build</span>
+  <span class="bar-info hide-mobile">axonarchives.studio</span>
+</div>
 
+<!-- Nav -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')" style="cursor:pointer">
+    <span class="nav-logo-main">Axon Archives</span>
+    <span class="nav-logo-sub">Digital Architecture Archive</span>
+  </div>
+  <div class="nav-desktop">
+    <a href="javascript:void(0)" onclick="showPage('portfolio')">Portfolio</a>
+    <a href="javascript:void(0)" onclick="showPage('about')">Studio</a>
+    <a href="javascript:void(0)" onclick="showPage('services')">Services</a>
+    <a href="javascript:void(0)" onclick="showPage('pay')">Pay</a>
+    <a href="javascript:void(0)" onclick="showPage('contact')">Contact</a>
+    <button class="nav-cta-btn" onclick="showPage('contact')">Start a Project</button>
+  </div>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
+<!-- Mobile menu -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="javascript:void(0)" onclick="mobileNav('home')">Home</a>
-  <a href="javascript:void(0)" onclick="mobileNav('gallery')">Portfolio</a>
+  <a href="javascript:void(0)" onclick="mobileNav('portfolio')">Portfolio</a>
   <a href="javascript:void(0)" onclick="mobileNav('about')">Studio</a>
   <a href="javascript:void(0)" onclick="mobileNav('services')">Services</a>
-  <a href="javascript:void(0)" onclick="mobileNav('contact')">Contact</a>
   <a href="javascript:void(0)" onclick="mobileNav('pay')">Pay</a>
+  <a href="javascript:void(0)" onclick="mobileNav('contact')">Contact</a>
 </div>
 
-<!-- HOME -->
-<div id="home" class="page active">
+<!-- ── HOME ─────────────────────────────────────────── -->
+<div id="home">
   <div class="hero-bg"></div>
-  <div class="hero-content">
-    <p class="hero-eyebrow">Lagos, Nigeria · Est. 2024</p>
-    <div class="hero-logo"><img src="images/logo-full.png" alt="Axon Archives"></div>
-    <p class="hero-tagline">Architecture · Visualization · Animation</p>
-    <div class="hero-cta">
-      <button class="btn-primary" onclick="showPage('gallery'); return false;">View Portfolio</button>
-      <button class="btn-outline" onclick="showPage('contact')">Start a Project</button>
+  <div class="hero-top">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span>Architecture · Visualization · Animation</span>
+    </div>
+    <h1 class="hero-title">
+      Axon
+      <span class="outline">Archives</span>
+      <span class="gold">Studio.</span>
+    </h1>
+  </div>
+  <div class="hero-bottom">
+    <div class="hero-desc-block">
+      <p class="hero-desc-headline">We design. We visualize. We deliver.</p>
+      <p class="hero-desc">From architectural concept to interior finishes — we handle every stage of the design process. Spaces planned, materials selected, and every detail considered before construction begins.</p>
+      <p class="hero-desc">Brought to life through photorealistic 3D renders, animations, and illustrated floor plans.</p>
+      <p class="hero-desc">Based in Lagos, Nigeria. Serving clients across the globe.</p>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-gold-c" onclick="showPage('portfolio')">View Portfolio</button>
+      <button class="btn-outline-c" onclick="showPage('services')">Our Services</button>
     </div>
   </div>
-  <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
-  <p class="hero-corner bl">3D Renders & Animations</p>
-  <p class="hero-corner br"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1f7e6770717e6d7c7776697a6c5f78727e7673317c7072">[email&#160;protected]</a></p>
 </div>
 
-<!-- GALLERY -->
-<div id="gallery" class="page">
-  <div class="page-header">
-    <div class="page-header-inner">
-      <div>
-        <p class="page-eyebrow">Our Work</p>
-        <h2 class="page-title">Portfolio</h2>
-      </div>
-      <div class="filter-bar">
-        <button class="filter-btn active" onclick="filterGallery('all', this)">All</button>
-        <button class="filter-btn" onclick="filterGallery('exterior', this)">Exterior</button>
-        <button class="filter-btn" onclick="filterGallery('interior', this)">Interior</button>
-        <button class="filter-btn" onclick="filterGallery('floorplan', this)">Floor Plans</button>
-        <button class="filter-btn" onclick="filterGallery('siteplan', this)">Site Plans</button>
-        <button class="filter-btn" onclick="filterGallery('animation', this)">Animation</button>
-        <button class="filter-btn" onclick="filterGallery('panoramic', this)">Panoramic</button>
-      </div>
+<!-- REEL -->
+<div class="reel">
+  <div class="reel-track" id="reelTrack"></div>
+</div>
+
+<!-- ── PORTFOLIO ────────────────────────────────────── -->
+<div id="portfolio" class="page">
+  <div class="portfolio-header">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span>Our Work</span>
+    </div>
+    <h2 class="section-title">Selected <em>Works</em></h2>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterPortfolio('all',this)">All</button>
+      <button class="filter-tab" onclick="filterPortfolio('exterior',this)">Exterior</button>
+      <button class="filter-tab" onclick="filterPortfolio('interior',this)">Interior</button>
+      <button class="filter-tab" onclick="filterPortfolio('floorplan',this)">Floor Plans</button>
+      <button class="filter-tab" onclick="filterPortfolio('siteplan',this)">Site Plans</button>
     </div>
   </div>
-
-  <div class="masonry-grid" id="masonryGrid">
-    <!-- EXTERIOR RENDERS -->
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext21.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext21.jpg">
-        <img data-src="images/ext21.jpg" alt="White Stone Residence Dusk" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">White Stone Residence — Dusk</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext22.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext22.jpg">
-        <img data-src="images/ext22.jpg" alt="White Stone Residence Day" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">White Stone Residence — Day</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext23.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext23.jpg">
-        <img data-src="images/ext23.jpg" alt="Dark Aggregate Apartment Block Day" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">Apartment Block — Day</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext24.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext24.jpg">
-        <img data-src="images/ext24.jpg" alt="Dark Aggregate Apartment Block Dusk" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">Apartment Block — Dusk</p></div></div>
-    <div class="masonry-item" data-cat="floorplan">
-      <div class="img-wrapper">
-        <picture>
-          <source media="(max-width: 768px)" data-srcset="images/mobile/fp5.jpg">
-          <source media="(min-width: 769px)" data-srcset="images/fp5.jpg">
-          <img data-src="images/fp5.jpg" alt="Ground Floor Blueprint" loading="lazy">
-        </picture>
-      </div>
-      <div class="masonry-overlay"><p class="masonry-tag">Floor Plan</p><p class="masonry-name">Ground Floor — Blueprint</p></div>
-    </div>
-    <div class="masonry-item" data-cat="floorplan">
-      <div class="img-wrapper">
-        <picture>
-          <source media="(max-width: 768px)" data-srcset="images/mobile/fp6.jpg">
-          <source media="(min-width: 769px)" data-srcset="images/fp6.jpg">
-          <img data-src="images/fp6.jpg" alt="First Floor Blueprint" loading="lazy">
-        </picture>
-      </div>
-      <div class="masonry-overlay"><p class="masonry-tag">Floor Plan</p><p class="masonry-name">First Floor — Blueprint</p></div>
-    </div>
-  
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext25.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext25.jpg">
-        <img data-src="images/ext25.jpg" alt="Townhouse Estate — Dusk" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">Townhouse Estate — Dusk</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext26.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext26.jpg">
-        <img data-src="images/ext26.jpg" alt="Stone Villa — Dusk" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">Stone Villa — Dusk</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext27.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext27.jpg">
-        <img data-src="images/ext27.jpg" alt="Stone Villa — Day" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">Stone Villa — Day</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext28.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext28.jpg">
-        <img data-src="images/ext28.jpg" alt="Glass Office Building — Dusk" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Commercial</p><p class="masonry-name">Glass Office Building — Dusk</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext29.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext29.jpg">
-        <img data-src="images/ext29.jpg" alt="Glass Office Building — Day" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Commercial</p><p class="masonry-name">Glass Office Building — Day</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext30.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext30.jpg">
-        <img data-src="images/ext30.jpg" alt="White Slab Residence — Day" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">White Slab Residence — Day</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext31.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext31.jpg">
-        <img data-src="images/ext31.jpg" alt="White Slab Residence — Dusk" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">White Slab Residence — Dusk</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext32.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext32.jpg">
-        <img data-src="images/ext32.jpg" alt="White Villa — Dusk" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">White Villa — Dusk</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext33.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext33.jpg">
-        <img data-src="images/ext33.jpg" alt="White Villa — Day" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">White Villa — Day</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext34.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext34.jpg">
-        <img data-src="images/ext34.jpg" alt="Casa Di Lusso — Front" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">Casa Di Lusso — Front</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext35.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext35.jpg">
-        <img data-src="images/ext35.jpg" alt="Brick Accent Villa — Day" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">Brick Accent Villa — Day</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext36.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext36.jpg">
-        <img data-src="images/ext36.jpg" alt="Brick Accent Villa — Night" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">Brick Accent Villa — Night</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext37.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext37.jpg">
-        <img data-src="images/ext37.jpg" alt="Mixed-Use Block — Night" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Commercial</p><p class="masonry-name">Mixed-Use Block — Night</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext38.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext38.jpg">
-        <img data-src="images/ext38.jpg" alt="Mixed-Use Block — Day" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Commercial</p><p class="masonry-name">Mixed-Use Block — Day</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext39.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext39.jpg">
-        <img data-src="images/ext39.jpg" alt="Pool Terrace — Dusk" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">Pool Terrace — Dusk</p></div></div>
-    <div class="masonry-item" data-cat="exterior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/ext40.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/ext40.jpg">
-        <img data-src="images/ext40.jpg" alt="Casa Di Lusso — Side" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Residential</p><p class="masonry-name">Casa Di Lusso — Side</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int21.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int21.jpg">
-        <img data-src="images/int21.jpg" alt="Shower Room — Grey" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Bathroom</p><p class="masonry-name">Shower Room — Grey</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int22.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int22.jpg">
-        <img data-src="images/int22.jpg" alt="Master Bedroom — Minimal" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Bedroom</p><p class="masonry-name">Master Bedroom — Minimal</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int23.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int23.jpg">
-        <img data-src="images/int23.jpg" alt="Open Plan Living & Kitchen" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Living Room</p><p class="masonry-name">Open Plan Living & Kitchen</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int24.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int24.jpg">
-        <img data-src="images/int24.jpg" alt="Maestro Restaurant — Bar View" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Hospitality</p><p class="masonry-name">Maestro Restaurant — Bar View</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int25.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int25.jpg">
-        <img data-src="images/int25.jpg" alt="Maestro Restaurant — Entrance" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Hospitality</p><p class="masonry-name">Maestro Restaurant — Entrance</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int26.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int26.jpg">
-        <img data-src="images/int26.jpg" alt="Maestro Bar — Detail" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Hospitality</p><p class="masonry-name">Maestro Bar — Detail</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int27.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int27.jpg">
-        <img data-src="images/int27.jpg" alt="Luxury Kitchen — Marble Island" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Kitchen</p><p class="masonry-name">Luxury Kitchen — Marble Island</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int28.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int28.jpg">
-        <img data-src="images/int28.jpg" alt="Sitting Room — Minimal" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Living Room</p><p class="masonry-name">Sitting Room — Minimal</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int29.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int29.jpg">
-        <img data-src="images/int29.jpg" alt="Luxury Walk-in Closet" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Bedroom</p><p class="masonry-name">Luxury Walk-in Closet</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int30.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int30.jpg">
-        <img data-src="images/int30.jpg" alt="Master Bedroom — Wave Wall" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Bedroom</p><p class="masonry-name">Master Bedroom — Wave Wall</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int31.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int31.jpg">
-        <img data-src="images/int31.jpg" alt="Master Suite — Warm Dusk" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Bedroom</p><p class="masonry-name">Master Suite — Warm Dusk</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int32.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int32.jpg">
-        <img data-src="images/int32.jpg" alt="Living & Dining — Day" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Living Room</p><p class="masonry-name">Living & Dining — Day</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int33.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int33.jpg">
-        <img data-src="images/int33.jpg" alt="Dark Kitchen & Dining — Night" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Kitchen</p><p class="masonry-name">Dark Kitchen & Dining — Night</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int34.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int34.jpg">
-        <img data-src="images/int34.jpg" alt="Master Bedroom — Ocean View" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Bedroom</p><p class="masonry-name">Master Bedroom — Ocean View</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int35.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int35.jpg">
-        <img data-src="images/int35.jpg" alt="Living & Dining — Night" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Living Room</p><p class="masonry-name">Living & Dining — Night</p></div></div>
-    <div class="masonry-item" data-cat="floorplan">
-      <div class="img-wrapper">
-        <picture>
-          <source media="(max-width: 768px)" data-srcset="images/mobile/fp7.jpg">
-          <source media="(min-width: 769px)" data-srcset="images/fp7.jpg">
-          <img data-src="images/fp7.jpg" alt="First Floor Plan" loading="lazy">
-        </picture>
-      </div>
-      <div class="masonry-overlay"><p class="masonry-tag">Floor Plan</p><p class="masonry-name">First Floor Plan</p></div>
-    </div>
-    <div class="masonry-item" data-cat="floorplan">
-      <div class="img-wrapper">
-        <picture>
-          <source media="(max-width: 768px)" data-srcset="images/mobile/fp8.jpg">
-          <source media="(min-width: 769px)" data-srcset="images/fp8.jpg">
-          <img data-src="images/fp8.jpg" alt="Ground Floor Plan" loading="lazy">
-        </picture>
-      </div>
-      <div class="masonry-overlay"><p class="masonry-tag">Floor Plan</p><p class="masonry-name">Ground Floor Plan</p></div>
-    </div>
-    <div class="masonry-item" data-cat="floorplan">
-      <div class="img-wrapper">
-        <picture>
-          <source media="(max-width: 768px)" data-srcset="images/mobile/fp9.jpg">
-          <source media="(min-width: 769px)" data-srcset="images/fp9.jpg">
-          <img data-src="images/fp9.jpg" alt="First Floor Plan" loading="lazy">
-        </picture>
-      </div>
-      <div class="masonry-overlay"><p class="masonry-tag">Floor Plan</p><p class="masonry-name">First Floor Plan</p></div>
-    </div>
-    <div class="masonry-item" data-cat="floorplan">
-      <div class="img-wrapper">
-        <picture>
-          <source media="(max-width: 768px)" data-srcset="images/mobile/fp10.jpg">
-          <source media="(min-width: 769px)" data-srcset="images/fp10.jpg">
-          <img data-src="images/fp10.jpg" alt="Ground Floor Plan" loading="lazy">
-        </picture>
-      </div>
-      <div class="masonry-overlay"><p class="masonry-tag">Floor Plan</p><p class="masonry-name">Ground Floor Plan</p></div>
-    </div>
-    <div class="masonry-item" data-cat="siteplan">
-      <div class="img-wrapper">
-        <picture>
-          <source media="(max-width: 768px)" data-srcset="images/mobile/sp2.jpg">
-          <source media="(min-width: 769px)" data-srcset="images/sp2.jpg">
-          <img data-src="images/sp2.jpg" alt="Twin Villa Site Plan" loading="lazy">
-        </picture>
-      </div>
-      <div class="masonry-overlay"><p class="masonry-tag">Site Plan</p><p class="masonry-name">Twin Villa Site Plan</p></div>
-    </div>
-  
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int36.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int36.jpg">
-        <img data-src="images/int36.jpg" alt="Master Bedroom Warm Glow" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Bedroom</p><p class="masonry-name">Master Bedroom — Warm Glow</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int37.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int37.jpg">
-        <img data-src="images/int37.jpg" alt="Master Bedroom Wave Accent" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Bedroom</p><p class="masonry-name">Master Bedroom — Wave Accent</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int38.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int38.jpg">
-        <img data-src="images/int38.jpg" alt="Master Bedroom TV Wall" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Bedroom</p><p class="masonry-name">Master Bedroom — TV Wall</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int39.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int39.jpg">
-        <img data-src="images/int39.jpg" alt="Living Room Neon Curve" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Living Room</p><p class="masonry-name">Living Room — Neon Curve</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int40.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int40.jpg">
-        <img data-src="images/int40.jpg" alt="Living Room Staircase View" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Living Room</p><p class="masonry-name">Living Room — Staircase View</p></div></div>
-    <div class="masonry-item" data-cat="interior"><div class="img-wrapper">
-      <picture>
-        <source media="(max-width: 768px)" data-srcset="images/mobile/int41.jpg">
-        <source media="(min-width: 769px)" data-srcset="images/int41.jpg">
-        <img data-src="images/int41.jpg" alt="Living Room Grand Lounge" loading="lazy">
-      </picture>
-    </div><div class="masonry-overlay"><p class="masonry-tag">Living Room</p><p class="masonry-name">Living Room — Grand Lounge</p></div></div>
-  </div>
-
+  <div class="portfolio-grid" id="portfolioGrid"></div>
   <footer>
-    <div class="footer-logo">AXON <span>ARCHIVES</span></div>
+    <div class="footer-logo">Axon <span>Archives</span></div>
     <p class="footer-copy">© 2025 Axon Archives. All rights reserved.</p>
-    <div class="footer-socials"><a href="https://www.tiktok.com/@axon.archives" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a><a href="https://twitter.com/axonarchives" target="_blank" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></div>
+    <div class="footer-socials">
+      <a href="https://www.tiktok.com/@axon.archives" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+      <a href="https://twitter.com/axonarchives" target="_blank" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    </div>
   </footer>
 </div>
 
-<!-- ABOUT -->
-<div id="about" class="page">
-  <div class="about-hero">
-    <div class="about-left">
-      <p class="page-eyebrow">The Studio</p>
-      <h2 class="about-text">We design. We visualize. <em>We deliver.</em></h2>
-      <p class="about-body">AXON ARCHIVES is a Lagos-based architecture and visualization firm. We design buildings and spaces from concept to completion — and bring them to life through photorealistic 3D renders, animations, and illustrated floor plans.</p>
-      <p class="about-body">Architecture and visualization under one roof. Every project is led by design thinking and delivered with visual precision — before a single brick is laid.</p>
-      <div class="about-stats">
-        <div><div class="stat-number">Design</div><div class="stat-label">Architecture & Interiors</div></div>
-        <div><div class="stat-number">3D</div><div class="stat-label">Renders & Animation</div></div>
-        <div><div class="stat-number">NG</div><div class="stat-label">Lagos, Nigeria</div></div>
-      </div>
-    </div>
-    <div class="about-right">
-      <div class="about-visual">
-        <div class="about-card"><p class="about-card-label">Our Approach</p><p class="about-card-text">Design is our foundation. Visualization is how we communicate it.</p></div>
-        <div class="about-card"><p class="about-card-label">Our Output</p><p class="about-card-text">From first sketch to final render — every detail considered.</p></div>
-        <div class="about-card"><p class="about-card-label">Our Focus</p><p class="about-card-text">Luxury residential. Commercial. Hospitality. Architecture and interiors — no compromise on quality.</p></div>
-      </div>
-    </div>
-  </div>
-  <footer>
-    <div class="footer-logo">AXON <span>ARCHIVES</span></div>
-    <p class="footer-copy">© 2025 Axon Archives. All rights reserved.</p>
-    <div class="footer-socials"><a href="https://www.tiktok.com/@axon.archives" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a><a href="https://twitter.com/axonarchives" target="_blank" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></div>
-  </footer>
-</div>
-
-<!-- SERVICES -->
+<!-- ── SERVICES ──────────────────────────────────────── -->
 <div id="services" class="page">
-  <div class="page-header">
-    <div class="page-header-inner">
-      <div><p class="page-eyebrow">What We Do</p><h2 class="page-title">Services</h2></div>
+  <div class="services-inner">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span>What We Do</span>
     </div>
-  </div>
-  <div class="services-grid">
-    <div class="service-card reveal">
-      <div class="service-header">
-        <div class="service-number">01</div>
-        <div class="service-price"><span class="price-value"></span><span class="price-unit">Consult</span></div>
+    <h2 class="section-title">Our <em>Services</em></h2>
+    <div class="svc-list">
+      <div class="svc-row">
+        <div class="svc-num">01</div>
+        <div class="svc-info">
+          <p class="svc-name">3D Exterior View</p>
+          <p class="svc-desc">Photorealistic exterior renders — accurate materials, natural lighting, precise environmental context.</p>
+          <button class="svc-pay-btn" onclick="openPayModal('3D Exterior View','$80/view')">Pay Now</button>
+        </div>
+        <div class="svc-price">$80<small>/view</small></div>
       </div>
-      <h3 class="service-name">Architectural Design & Concept</h3>
-      <p class="service-desc">Full architectural design from initial concept to developed scheme — space planning, massing, materiality and design development tailored to your brief and site.</p>
-      <div class="service-tags"><span class="tag">Design</span><span class="tag">Concept</span><span class="tag">Development</span></div>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-header">
-        <div class="service-number">02</div>
-        <div class="service-price"><span class="price-value"></span><span class="price-unit">Consult</span></div>
+      <div class="svc-row">
+        <div class="svc-num">02</div>
+        <div class="svc-info">
+          <p class="svc-name">3D Interior View</p>
+          <p class="svc-desc">High-end interior renders capturing material quality, spatial depth, and warm luxury lighting.</p>
+          <button class="svc-pay-btn" onclick="openPayModal('3D Interior View','$80/view')">Pay Now</button>
+        </div>
+        <div class="svc-price">$80<small>/view</small></div>
       </div>
-      <h3 class="service-name">Interior Design</h3>
-      <p class="service-desc">Luxury interior design covering spatial layout, material palette, furniture selection, lighting design and finish specification — from concept board to final design.</p>
-      <div class="service-tags"><span class="tag">Interior</span><span class="tag">Luxury</span><span class="tag">Spatial</span></div>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-header">
-        <div class="service-number">03</div>
-        <div class="service-price"><span class="price-value"></span><span class="price-unit">Consult</span></div>
+      <div class="svc-row">
+        <div class="svc-num">03</div>
+        <div class="svc-info">
+          <p class="svc-name">Presentation Plan Drawing</p>
+          <p class="svc-desc">Illustrated floor plans rendered to competition quality — warm palettes, photorealistic materials.</p>
+          <button class="svc-pay-btn" onclick="openPayModal('Presentation Plan Drawing','$150+')">Pay Now</button>
+        </div>
+        <div class="svc-price">$150<small>+</small></div>
       </div>
-      <h3 class="service-name">Design Consultancy</h3>
-      <p class="service-desc">Expert architectural and design consultancy — reviewing existing designs, advising on materials, spatial quality, and value engineering to elevate your project before it goes to construction.</p>
-      <div class="service-tags"><span class="tag">Advisory</span><span class="tag">Review</span><span class="tag">Strategy</span></div>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-header">
-        <div class="service-number">04</div>
-        <div class="service-price"><span class="price-value">$250</span><span class="price-unit">+</span></div>
+      <div class="svc-row">
+        <div class="svc-num">04</div>
+        <div class="svc-info">
+          <p class="svc-name">Architectural Construction Drawing</p>
+          <p class="svc-desc">Full technical construction documentation prepared to professional standards.</p>
+          <button class="svc-pay-btn" onclick="openPayModal('Architectural Construction Drawing','$250+')">Pay Now</button>
+        </div>
+        <div class="svc-price">$250<small>+</small></div>
       </div>
-      <h3 class="service-name">Architectural Construction Drawing</h3>
-      <p class="service-desc">Full technical construction documentation prepared to professional standards, ready for contractor use and site implementation.</p>
-      <div class="service-tags"><span class="tag">Technical</span><span class="tag">Construction Ready</span></div>
-      <button class="btn-pay-now" onclick="openPayModal('Architectural Construction Drawing', '$250+')">Pay Now</button>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-header">
-        <div class="service-number">05</div>
-        <div class="service-price"><span class="price-value">$150</span><span class="price-unit">+</span></div>
+      <div class="svc-row">
+        <div class="svc-num">05</div>
+        <div class="svc-info">
+          <p class="svc-name">Approval Drawing</p>
+          <p class="svc-desc">Planning and approval-ready drawings prepared to meet regulatory requirements.</p>
+          <button class="svc-pay-btn" onclick="openPayModal('Approval Drawing','$250+')">Pay Now</button>
+        </div>
+        <div class="svc-price">$250<small>+</small></div>
       </div>
-      <h3 class="service-name">Presentation Plan Drawing</h3>
-      <p class="service-desc">Illustrated floor plans rendered to competition quality — warm palettes, photorealistic materials, and precise spatial storytelling.</p>
-      <div class="service-tags"><span class="tag">Illustrated</span><span class="tag">Competition Grade</span></div>
-      <button class="btn-pay-now" onclick="openPayModal('Presentation Plan Drawing', '$150+')">Pay Now</button>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-header">
-        <div class="service-number">06</div>
-        <div class="service-price"><span class="price-value">$250</span><span class="price-unit">+</span></div>
+      <div class="svc-row">
+        <div class="svc-num">06</div>
+        <div class="svc-info">
+          <p class="svc-name">Animation</p>
+          <p class="svc-desc">Cinematic architectural walkthroughs and flyovers — smooth camera paths, professional post-production.</p>
+          <button class="svc-pay-btn" onclick="openPayModal('Animation','$200/min')">Pay Now</button>
+        </div>
+        <div class="svc-price">$200<small>/min</small></div>
       </div>
-      <h3 class="service-name">Approval Drawing</h3>
-      <p class="service-desc">Planning and approval-ready drawings prepared to meet regulatory requirements for submission to relevant authorities.</p>
-      <div class="service-tags"><span class="tag">Regulatory</span><span class="tag">Submission Ready</span></div>
-      <button class="btn-pay-now" onclick="openPayModal('Approval Drawing', '$250+')">Pay Now</button>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-header">
-        <div class="service-number">07</div>
-        <div class="service-price"><span class="price-value">$80</span><span class="price-unit">/ view</span></div>
+      <div class="svc-row">
+        <div class="svc-num">07</div>
+        <div class="svc-info">
+          <p class="svc-name">7D Panoramic View</p>
+          <p class="svc-desc">Immersive 360° panoramic renders — ideal for client presentations and marketing.</p>
+          <button class="svc-pay-btn" onclick="openPayModal('7D Panoramic View','$200/pano')">Pay Now</button>
+        </div>
+        <div class="svc-price">$200<small>/pano</small></div>
       </div>
-      <h3 class="service-name">3D Exterior View</h3>
-      <p class="service-desc">Photorealistic exterior renders at Corona/VRay quality — accurate materials, natural lighting, and precise environmental context.</p>
-      <div class="service-tags"><span class="tag">Photorealistic</span><span class="tag">Corona Quality</span></div>
-      <button class="btn-pay-now" onclick="openPayModal('3D Exterior View', '$80/view')">Pay Now</button>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-header">
-        <div class="service-number">05</div>
-        <div class="service-price"><span class="price-value">$80</span><span class="price-unit">/ view</span></div>
+      <div class="svc-row">
+        <div class="svc-num">08</div>
+        <div class="svc-info">
+          <p class="svc-name">Architectural Design & Concept</p>
+          <p class="svc-desc">Full architectural design from initial concept to developed scheme — space planning, massing, materiality.</p>
+        </div>
+        <div class="svc-price" style="font-size:14px;color:var(--grey-light)">Consult</div>
       </div>
-      <h3 class="service-name">3D Interior View</h3>
-      <p class="service-desc">High-end interior renders capturing material quality, spatial depth, and warm luxury lighting to showcase every design decision.</p>
-      <div class="service-tags"><span class="tag">Luxury</span><span class="tag">High-End</span></div>
-      <button class="btn-pay-now" onclick="openPayModal('3D Interior View', '$80/view')">Pay Now</button>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-header">
-        <div class="service-number">06</div>
-        <div class="service-price"><span class="price-value">$200</span><span class="price-unit">/ min</span></div>
+      <div class="svc-row">
+        <div class="svc-num">09</div>
+        <div class="svc-info">
+          <p class="svc-name">Interior Design & Finishes</p>
+          <p class="svc-desc">Luxury interior design — spatial layout, material palette, furniture selection, lighting design, and finish specification.</p>
+        </div>
+        <div class="svc-price" style="font-size:14px;color:var(--grey-light)">Consult</div>
       </div>
-      <h3 class="service-name">Animation</h3>
-      <p class="service-desc">Cinematic architectural walkthroughs and flyovers — smooth camera paths, photorealistic materials, and professional post-production.</p>
-      <div class="service-tags"><span class="tag">Cinematic</span><span class="tag">Walkthrough</span></div>
-      <button class="btn-pay-now" onclick="openPayModal('Animation', '$200/min')">Pay Now</button>
-    </div>
-    <div class="service-card reveal service-card-full">
-      <div class="service-header">
-        <div class="service-number">07</div>
-        <div class="service-price"><span class="price-value">$200</span><span class="price-unit">/ pano</span></div>
+      <div class="svc-row">
+        <div class="svc-num">10</div>
+        <div class="svc-info">
+          <p class="svc-name">Design Consultancy</p>
+          <p class="svc-desc">Expert architectural and design advisory — reviewing existing designs, advising on materials and spatial quality.</p>
+        </div>
+        <div class="svc-price" style="font-size:14px;color:var(--grey-light)">Consult</div>
       </div>
-      <h3 class="service-name">7D Panoramic View</h3>
-      <p class="service-desc">Immersive 360° panoramic renders allowing full spatial exploration of interiors and exteriors — ideal for client presentations and marketing.</p>
-      <div class="service-tags"><span class="tag">360°</span><span class="tag">Immersive</span><span class="tag">Presentation</span></div>
-      <button class="btn-pay-now" onclick="openPayModal('7D Panoramic View', '$200/pano')">Pay Now</button>
     </div>
   </div>
   <div class="cta-strip">
-    <p class="cta-strip-text">Ready to design and<br>visualize your vision?</p>
-    <button class="btn-dark" onclick="showPage('contact')">Get a Quote</button>
+    <p class="cta-strip-text">Ready to bring your vision to life?</p>
+    <button class="btn-dark-c" onclick="showPage('contact')">Get a Quote</button>
   </div>
   <footer>
-    <div class="footer-logo">AXON <span>ARCHIVES</span></div>
+    <div class="footer-logo">Axon <span>Archives</span></div>
     <p class="footer-copy">© 2025 Axon Archives. All rights reserved.</p>
-    <div class="footer-socials"><a href="https://www.tiktok.com/@axon.archives" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a><a href="https://twitter.com/axonarchives" target="_blank" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></div>
+    <div class="footer-socials">
+      <a href="https://www.tiktok.com/@axon.archives" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+      <a href="https://twitter.com/axonarchives" target="_blank" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    </div>
   </footer>
 </div>
 
-<!-- CONTACT -->
-<div id="contact" class="page">
-  <div class="contact-layout">
-    <div class="contact-left">
-      <p class="page-eyebrow">Let's Work Together</p>
-      <h2 class="page-title" style="margin-bottom:48px">Get in<br>Touch</h2>
-      <div class="contact-item"><span class="contact-label">Email</span><span class="contact-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="35544d5a5b5447565d5c435046755258545c591b565a58">[email&#160;protected]</a></span></div>
-      <div class="contact-item"><span class="contact-label">WhatsApp</span><span class="contact-value">+66 98 958 3830</span></div>
-      <div class="contact-item"><span class="contact-label">TikTok</span><span class="contact-value">axon.archives</span></div>
-      <div class="contact-item"><span class="contact-label">Twitter</span><span class="contact-value">@axonarchives</span></div>
-      <div class="contact-item" style="border-bottom:none"><span class="contact-label">Location</span><span class="contact-value">Lagos, Nigeria</span></div>
+<!-- ── PAY ───────────────────────────────────────────── -->
+<div id="pay" class="page">
+  <div class="pay-inner">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span>Secure Payment</span>
     </div>
-    <div class="contact-right">
-      <p class="page-eyebrow" style="margin-bottom:32px">Send a Message</p>
-      <form class="contact-form" id="contactForm" action="https://formspree.io/f/xojknnbq" method="POST">
-        <div class="form-group"><label class="form-label">Full Name</label><input type="text" name="name" class="form-input" placeholder="Your name" required></div>
-        <div class="form-group"><label class="form-label">Email Address</label><input type="email" name="email" class="form-input" placeholder="your@email.com" required></div>
-        <div class="form-group"><label class="form-label">Service Required</label><input type="text" name="service" class="form-input" placeholder="e.g. 3D Exterior Render" required></div>
-        <div class="form-group"><label class="form-label">Project Brief</label><textarea name="message" class="form-textarea" placeholder="Tell us about your project..." required></textarea></div>
-        <div style="display:none" aria-hidden="true">
-          <input type="text" name="_honeypot" tabindex="-1" autocomplete="off">
-        </div>
-        <button type="submit" class="btn-primary" id="submitBtn" style="width:100%; padding:16px">Send Enquiry</button>
-        
-      <div style="margin-top: 16px; text-align: center;">
-        <p style="font-size: 9px; letter-spacing: 2px; color: var(--grey); text-transform: uppercase; margin-bottom: 12px;">Or pay for a service directly</p>
-        <button class="btn-pay-now" style="width:100%; padding:14px;" onclick="openPayModal('General Service', 'Custom')">Pay for a Service</button>
+    <h2 class="section-title">Pay for a <em>Service</em></h2>
+    <div class="pay-grid">
+      <div class="pay-card">
+        <p class="pay-card-name">3D Exterior View</p>
+        <p class="pay-card-desc">Photorealistic exterior renders at Corona/VRay quality.</p>
+        <p class="pay-card-price">$80 <small>/view</small></p>
+        <button class="pay-card-btn" onclick="openPayModal('3D Exterior View','$80/view')">Pay Now</button>
       </div>
-        <p id="formMsg" style="display:none; text-align:center; font-size:12px; letter-spacing:2px; margin-top:16px;"></p>
+      <div class="pay-card">
+        <p class="pay-card-name">3D Interior View</p>
+        <p class="pay-card-desc">High-end interior renders with luxury lighting.</p>
+        <p class="pay-card-price">$80 <small>/view</small></p>
+        <button class="pay-card-btn" onclick="openPayModal('3D Interior View','$80/view')">Pay Now</button>
+      </div>
+      <div class="pay-card">
+        <p class="pay-card-name">Presentation Plan Drawing</p>
+        <p class="pay-card-desc">Illustrated floor plans — competition quality finish.</p>
+        <p class="pay-card-price">$150 <small>+</small></p>
+        <button class="pay-card-btn" onclick="openPayModal('Presentation Plan Drawing','$150+')">Pay Now</button>
+      </div>
+      <div class="pay-card">
+        <p class="pay-card-name">Architectural Construction Drawing</p>
+        <p class="pay-card-desc">Full technical documentation ready for site implementation.</p>
+        <p class="pay-card-price">$250 <small>+</small></p>
+        <button class="pay-card-btn" onclick="openPayModal('Architectural Construction Drawing','$250+')">Pay Now</button>
+      </div>
+      <div class="pay-card">
+        <p class="pay-card-name">Approval Drawing</p>
+        <p class="pay-card-desc">Planning and approval-ready drawings for regulatory submission.</p>
+        <p class="pay-card-price">$250 <small>+</small></p>
+        <button class="pay-card-btn" onclick="openPayModal('Approval Drawing','$250+')">Pay Now</button>
+      </div>
+      <div class="pay-card">
+        <p class="pay-card-name">Animation</p>
+        <p class="pay-card-desc">Cinematic architectural walkthroughs and flyovers.</p>
+        <p class="pay-card-price">$200 <small>/min</small></p>
+        <button class="pay-card-btn" onclick="openPayModal('Animation','$200/min')">Pay Now</button>
+      </div>
+      <div class="pay-card">
+        <p class="pay-card-name">7D Panoramic View</p>
+        <p class="pay-card-desc">Immersive 360° panoramic renders for presentations.</p>
+        <p class="pay-card-price">$200 <small>/pano</small></p>
+        <button class="pay-card-btn" onclick="openPayModal('7D Panoramic View','$200/pano')">Pay Now</button>
+      </div>
+    </div>
+    <div class="pay-custom">
+      <p class="pay-custom-label">Custom Invoice</p>
+      <p class="pay-custom-text">Have a quote? Pay your invoice directly.</p>
+      <p class="pay-custom-sub">Enter any amount in NGN. USD converted at live market rate.</p>
+      <button class="pay-card-btn" onclick="openPayModal('Custom Invoice Payment','Custom Amount')">Pay Custom Amount</button>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">Axon <span>Archives</span></div>
+    <p class="footer-copy">© 2025 Axon Archives. All rights reserved.</p>
+    <div class="footer-socials">
+      <a href="https://www.tiktok.com/@axon.archives" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+      <a href="https://twitter.com/axonarchives" target="_blank" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    </div>
+  </footer>
+</div>
+
+<!-- ── ABOUT ─────────────────────────────────────────── -->
+<div id="about" class="page">
+  <div class="about-inner">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span>The Studio</span>
+    </div>
+    <div class="about-headline">
+      We Design.<br>
+      <span class="outline">We Build.</span>
+      <span class="gold">We Deliver.</span>
+    </div>
+    <div class="about-body">
+      <p><strong>AXON ARCHIVES</strong> is a Lagos-based architecture, interior design, and visualization studio. We handle every stage of the design process — from concept to construction drawings, interior finishes to photorealistic renders.</p>
+      <p>Architecture and visualization under one roof. Every project is led by design thinking and delivered with visual precision — before a single brick is laid.</p>
+      <p>Based in Lagos, Nigeria. Serving clients across Africa, Europe, the Middle East, and beyond.</p>
+    </div>
+    <div class="about-stats">
+      <div class="about-stat">
+        <div class="about-stat-n">3D</div>
+        <div class="about-stat-l">Renders & Animation</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-n">NG</div>
+        <div class="about-stat-l">Lagos, Nigeria</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-n">∞</div>
+        <div class="about-stat-l">Global Clients</div>
+      </div>
+    </div>
+    <div class="about-cards">
+      <div class="about-card">
+        <p class="about-card-label">Our Approach</p>
+        <p class="about-card-text">Design is our foundation. Visualization is how we communicate it.</p>
+      </div>
+      <div class="about-card">
+        <p class="about-card-label">Our Output</p>
+        <p class="about-card-text">From first sketch to final render — every detail considered.</p>
+      </div>
+      <div class="about-card">
+        <p class="about-card-label">Our Focus</p>
+        <p class="about-card-text">Luxury residential. Commercial. Hospitality. Architecture and interiors — no compromise on quality.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">Axon <span>Archives</span></div>
+    <p class="footer-copy">© 2025 Axon Archives. All rights reserved.</p>
+    <div class="footer-socials">
+      <a href="https://www.tiktok.com/@axon.archives" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+      <a href="https://twitter.com/axonarchives" target="_blank" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    </div>
+  </footer>
+</div>
+
+<!-- ── CONTACT ────────────────────────────────────────── -->
+<div id="contact" class="page">
+  <div class="contact-inner">
+    <div>
+      <div class="section-eyebrow">
+        <div class="section-eyebrow-line"></div>
+        <span>Let's Work Together</span>
+      </div>
+      <h2 class="section-title">Get in <em>Touch</em></h2>
+      <div class="contact-details">
+        <div class="contact-item"><p class="contact-label">Email</p><p class="contact-value"><a href="mailto:axonarchives@gmail.com">axonarchives@gmail.com</a></p></div>
+        <div class="contact-item"><p class="contact-label">WhatsApp</p><p class="contact-value">+66 98 958 3830</p></div>
+        <div class="contact-item"><p class="contact-label">TikTok</p><p class="contact-value">axon.archives</p></div>
+        <div class="contact-item"><p class="contact-label">Twitter</p><p class="contact-value">@axonarchives</p></div>
+        <div class="contact-item" style="border-bottom:none"><p class="contact-label">Location</p><p class="contact-value">Lagos, Nigeria</p></div>
+      </div>
+      <div style="margin-top:24px;">
+        <p class="contact-label" style="margin-bottom:12px;">Or pay for a service directly</p>
+        <button class="btn-gold-c" style="width:100%" onclick="openPayModal('General Service','Custom')">Pay for a Service</button>
+      </div>
+    </div>
+    <div class="contact-form-section">
+      <p class="contact-label" style="margin-bottom:20px;">Send a Message</p>
+      <form class="contact-form" id="contactForm" action="https://formspree.io/f/xojknnbq" method="POST">
+        <div><label class="form-label">Full Name</label><input type="text" name="name" class="form-input" placeholder="Your name" required></div>
+        <div><label class="form-label">Email Address</label><input type="email" name="email" class="form-input" placeholder="your@email.com" required></div>
+        <div><label class="form-label">Service Required</label><input type="text" name="service" class="form-input" placeholder="e.g. 3D Exterior Render" required></div>
+        <div><label class="form-label">Project Brief</label><textarea name="message" class="form-textarea" placeholder="Tell us about your project..." required></textarea></div>
+        <div style="display:none" aria-hidden="true"><input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></div>
+        <button type="submit" class="form-submit" id="submitBtn">Send Enquiry</button>
+        <p id="formMsg" class="form-msg"></p>
       </form>
     </div>
   </div>
   <footer>
-    <div class="footer-logo">AXON <span>ARCHIVES</span></div>
+    <div class="footer-logo">Axon <span>Archives</span></div>
     <p class="footer-copy">© 2025 Axon Archives. All rights reserved.</p>
-    <div class="footer-socials"><a href="https://www.tiktok.com/@axon.archives" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a><a href="https://twitter.com/axonarchives" target="_blank" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></div>
+    <div class="footer-socials">
+      <a href="https://www.tiktok.com/@axon.archives" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+      <a href="https://twitter.com/axonarchives" target="_blank" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    </div>
   </footer>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Lazy loading with IntersectionObserver
-  function initLazyLoad() {
-    var wrappers = document.querySelectorAll('.img-wrapper');
-    
-    if ('IntersectionObserver' in window) {
-      var imgObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            var wrapper = entry.target;
-            var picture = wrapper.querySelector('picture');
-            var img = wrapper.querySelector('img');
-            
-            if (picture) {
-              var sources = picture.querySelectorAll('source');
-              sources.forEach(function(source) {
-                if (source.getAttribute('data-srcset')) {
-                  // Check if mobile
-                  if (window.innerWidth <= 768 && source.getAttribute('media') === '(max-width: 768px)') {
-                    source.srcset = source.getAttribute('data-srcset');
-                  } else if (window.innerWidth > 768 && source.getAttribute('media') === '(min-width: 769px)') {
-                    source.srcset = source.getAttribute('data-srcset');
-                  }
-                  source.removeAttribute('data-srcset');
-                }
-              });
-            }
-            
-            if (img && img.getAttribute('data-src')) {
-              img.src = img.getAttribute('data-src');
-              img.removeAttribute('data-src');
-              img.onload = function() {
-                wrapper.classList.add('loaded');
-              };
-            }
-            
-            imgObserver.unobserve(wrapper);
-          }
-        });
-      }, { 
-        rootMargin: '200px 0px',
-        threshold: 0.01 
-      });
-      
-      wrappers.forEach(function(wrapper) {
-        imgObserver.observe(wrapper);
-      });
-    } else {
-      // Fallback for older browsers
-      wrappers.forEach(function(wrapper) {
-        var img = wrapper.querySelector('img');
-        if (img && img.getAttribute('data-src')) {
-          img.src = img.getAttribute('data-src');
-          img.onload = function() { wrapper.classList.add('loaded'); };
-        }
-        wrapper.classList.add('loaded');
-      });
-    }
-  }
-
-  function showPage(id) {
-    var pages = document.getElementsByClassName('page');
-    for (var i = 0; i < pages.length; i++) {
-      pages[i].style.display = 'none';
-    }
-    var target = document.getElementById(id);
-    if (target) { target.style.display = 'block'; }
-    var navLinks = document.querySelectorAll('.nav-links a');
-    for (var j = 0; j < navLinks.length; j++) { navLinks[j].classList.remove('active'); }
-    var navEl = document.getElementById('nav-' + id);
-    if (navEl) { navEl.classList.add('active'); }
-    window.scrollTo(0, 0);
-    initReveal();
-    initLazyLoad();
-  }
-
-  function filterGallery(cat, btn) {
-    var btns = document.getElementsByClassName('filter-btn');
-    for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
-    btn.classList.add('active');
-    var items = document.getElementsByClassName('masonry-item');
-    for (var j = 0; j < items.length; j++) {
-      items[j].style.display = (cat === 'all' || items[j].getAttribute('data-cat') === cat) ? 'block' : 'none';
-    }
-  }
-
-  function toggleMenu() {
-    var menu = document.getElementById('mobileMenu');
-    var burger = document.getElementById('hamburger');
-    var isOpen = menu.classList.contains('open');
-    if (isOpen) {
-      menu.classList.remove('open');
-      burger.classList.remove('open');
-    } else {
-      menu.classList.add('open');
-      burger.classList.add('open');
-    }
-  }
-
-  function mobileNav(id) {
-    showPage(id);
-    document.getElementById('mobileMenu').classList.remove('open');
-    document.getElementById('hamburger').classList.remove('open');
-  }
-
-  function initReveal() {
-    var reveals = document.querySelectorAll('.reveal');
-    if ('IntersectionObserver' in window) {
-      var obs = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-      }, { threshold: 0.1 });
-      reveals.forEach(function(r) { obs.observe(r); });
-    } else {
-      reveals.forEach(function(r) { r.classList.add('visible'); });
-    }
-  }
-
-
-  // Contact form submission
-  var form = document.getElementById('contactForm');
-  if (form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var btn = document.getElementById('submitBtn');
-      var msg = document.getElementById('formMsg');
-      btn.textContent = 'Sending...';
-      btn.disabled = true;
-
-      fetch('https://formspree.io/f/xojknnbq', {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      }).then(function(response) {
-        if (response.ok) {
-          msg.style.display = 'block';
-          msg.style.color = '#C8A96E';
-          msg.textContent = 'Message sent. We will be in touch shortly.';
-          form.reset();
-          btn.textContent = 'Send Enquiry';
-          btn.disabled = false;
-        } else {
-          msg.style.display = 'block';
-          msg.style.color = '#ff6b6b';
-          msg.textContent = 'Something went wrong. Please try again.';
-          btn.textContent = 'Send Enquiry';
-          btn.disabled = false;
-        }
-      }).catch(function() {
-        msg.style.display = 'block';
-        msg.style.color = '#ff6b6b';
-        msg.textContent = 'Something went wrong. Please try again.';
-        btn.textContent = 'Send Enquiry';
-        btn.disabled = false;
-      });
-    });
-  }
-
-  // Init on load
-  window.addEventListener('load', function() {
-    showPage('home');
-    initReveal();
-    initLazyLoad();
-  });
-</script>
-
-<!-- PAY -->
-<div id="pay" class="page">
-  <div class="page-header">
-    <div class="page-header-inner">
-      <div>
-        <p class="page-eyebrow">Secure Payment</p>
-        <h2 class="page-title">Pay for a Service</h2>
-      </div>
-    </div>
-  </div>
-
-  <div class="pay-page-grid">
-    <div class="pay-service-card reveal">
-      <div>
-        <div class="pay-card-top">
-          <div>
-            <p class="pay-card-name">3D Exterior View</p>
-            <p class="pay-card-desc">Photorealistic exterior render — accurate materials, natural lighting, precise environmental context.</p>
-          </div>
-          <div style="text-align:right">
-            <div class="pay-card-price">$80</div>
-            <div class="pay-card-unit">/ view</div>
-          </div>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="openPayModal('3D Exterior View', '$80/view')">Pay Now</button>
-    </div>
-
-    <div class="pay-service-card reveal">
-      <div>
-        <div class="pay-card-top">
-          <div>
-            <p class="pay-card-name">3D Interior View</p>
-            <p class="pay-card-desc">High-end interior renders capturing material quality, spatial depth, and warm luxury lighting.</p>
-          </div>
-          <div style="text-align:right">
-            <div class="pay-card-price">$80</div>
-            <div class="pay-card-unit">/ view</div>
-          </div>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="openPayModal('3D Interior View', '$80/view')">Pay Now</button>
-    </div>
-
-    <div class="pay-service-card reveal">
-      <div>
-        <div class="pay-card-top">
-          <div>
-            <p class="pay-card-name">Presentation Plan Drawing</p>
-            <p class="pay-card-desc">Illustrated floor plans rendered to competition quality — warm palettes, photorealistic materials.</p>
-          </div>
-          <div style="text-align:right">
-            <div class="pay-card-price">$150</div>
-            <div class="pay-card-unit">+</div>
-          </div>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="openPayModal('Presentation Plan Drawing', '$150+')">Pay Now</button>
-    </div>
-
-    <div class="pay-service-card reveal">
-      <div>
-        <div class="pay-card-top">
-          <div>
-            <p class="pay-card-name">Architectural Construction Drawing</p>
-            <p class="pay-card-desc">Full technical construction documentation prepared to professional standards.</p>
-          </div>
-          <div style="text-align:right">
-            <div class="pay-card-price">$250</div>
-            <div class="pay-card-unit">+</div>
-          </div>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="openPayModal('Architectural Construction Drawing', '$250+')">Pay Now</button>
-    </div>
-
-    <div class="pay-service-card reveal">
-      <div>
-        <div class="pay-card-top">
-          <div>
-            <p class="pay-card-name">Approval Drawing</p>
-            <p class="pay-card-desc">Planning and approval-ready drawings prepared to meet regulatory requirements.</p>
-          </div>
-          <div style="text-align:right">
-            <div class="pay-card-price">$250</div>
-            <div class="pay-card-unit">+</div>
-          </div>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="openPayModal('Approval Drawing', '$250+')">Pay Now</button>
-    </div>
-
-    <div class="pay-service-card reveal">
-      <div>
-        <div class="pay-card-top">
-          <div>
-            <p class="pay-card-name">Animation</p>
-            <p class="pay-card-desc">Cinematic architectural walkthroughs and flyovers — smooth camera paths, photorealistic materials.</p>
-          </div>
-          <div style="text-align:right">
-            <div class="pay-card-price">$200</div>
-            <div class="pay-card-unit">/ min</div>
-          </div>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="openPayModal('Animation', '$200/min')">Pay Now</button>
-    </div>
-
-    <div class="pay-service-card reveal pay-service-card-full">
-      <div>
-        <div class="pay-card-top">
-          <div>
-            <p class="pay-card-name">7D Panoramic View</p>
-            <p class="pay-card-desc">Immersive 360° panoramic renders allowing full spatial exploration — ideal for client presentations.</p>
-          </div>
-          <div style="text-align:right">
-            <div class="pay-card-price">$200</div>
-            <div class="pay-card-unit">/ pano</div>
-          </div>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="openPayModal('7D Panoramic View', '$200/pano')" style="max-width:200px">Pay Now</button>
-    </div>
-  </div>
-
-  <div class="pay-custom-section">
-    <div>
-      <p class="pay-custom-text">Have a quote?<br>Pay your invoice directly.</p>
-      <p class="pay-custom-sub">Enter amount in NGN — Secured by Paystack</p>
-    </div>
-    <button class="btn-dark" onclick="openPayModal('Custom Invoice Payment', 'Custom Amount')">Pay Custom Amount</button>
-  </div>
-
-  <footer>
-    <div class="footer-logo">AXON <span>ARCHIVES</span></div>
-    <p class="footer-copy">© 2025 Axon Archives. All rights reserved.</p>
-    <div class="footer-socials"><a href="https://www.tiktok.com/@axon.archives" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a><a href="https://twitter.com/axonarchives" target="_blank" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></div>
-  </footer>
-</div>
-<!-- PAYMENT MODAL -->
+<!-- ── PAYMENT MODAL ─────────────────────────────────── -->
 <div class="pay-modal-overlay" id="payModalOverlay">
   <div class="pay-modal">
     <button class="pay-modal-close" onclick="closePayModal()">✕</button>
@@ -1529,23 +1067,23 @@
         <input type="email" class="pay-input" id="payEmail" placeholder="Your email address" required>
         <input type="text" class="pay-input" id="payName" placeholder="Your full name" required>
         <div>
-          <p style="font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Enter Amount</p>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+          <p style="font-size:7px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Amount Currency</p>
+          <div class="pay-currency-row">
             <button class="pay-currency-btn active" id="btnNGN" onclick="setInputCurrency('NGN')">₦ NGN</button>
             <button class="pay-currency-btn" id="btnUSD" onclick="setInputCurrency('USD')">$ USD</button>
           </div>
-          <input type="number" class="pay-input" id="payAmount" placeholder="Enter amount in NGN (₦)" oninput="updateAmountDisplay()" min="1">
         </div>
-        <div id="conversionBox" style="display:none;background:var(--black3);border:1px solid var(--border);padding:12px 16px;">
-          <p style="font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">Converted to NGN</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span id="conversionDetail" style="font-size:11px;color:var(--grey);"></span>
-            <span id="conversionResult" style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--white);"></span>
+        <input type="number" class="pay-input" id="payAmount" placeholder="Enter amount in NGN (₦)" oninput="updateAmountDisplay()" min="1">
+        <div class="conversion-box" id="conversionBox">
+          <p class="conversion-label">Converted to NGN</p>
+          <div class="conversion-row">
+            <span class="conversion-detail" id="conversionDetail"></span>
+            <span class="conversion-result" id="conversionResult"></span>
           </div>
-          <p style="font-size:9px;color:var(--grey);margin-top:6px;">Rate: $1 = ₦<span id="rateDisplay">1,580</span> · Payment processed in NGN</p>
+          <p class="conversion-rate">Rate: $1 = ₦<span id="rateDisplay">1,580</span> · Payment processed in NGN</p>
         </div>
         <div class="pay-amount-display" id="payAmountDisplay">₦ 0</div>
-        <button class="btn-pay" id="payBtn" onclick="initiatePayment()">Proceed to Payment</button>
+        <button class="btn-pay-now" id="payBtn" onclick="initiatePayment()">Proceed to Payment</button>
         <p class="pay-note">Secured by Paystack · SSL Encrypted</p>
       </div>
     </div>
@@ -1553,431 +1091,63 @@
       <div class="pay-success-icon">✓</div>
       <p class="pay-success-text">Payment Successful</p>
       <p class="pay-success-sub">Thank you. We will be in touch shortly.</p>
-      <button class="btn-primary" onclick="generateReceipt()" style="margin-top:24px; width:100%; letter-spacing:2px;">
-        Download Receipt
-      </button>
-      <button class="btn-outline" onclick="generateInvoice(window.lastPayment.name, window.lastPayment.email, window.lastPayment.service, window.lastPayment.amount, window.lastPayment.amount)" style="margin-top:10px; width:100%; letter-spacing:2px;">
-        Download Invoice
-      </button>
-      <p style="font-size:9px; color:var(--grey); letter-spacing:1px; margin-top:12px; text-align:center;">PDF documents — AXON ARCHIVES</p>
+      <div class="pay-success-btns">
+        <button class="btn-receipt" onclick="generateReceipt()">Download Receipt</button>
+        <button class="btn-invoice" onclick="generateInvoice(window.lastPayment.name,window.lastPayment.email,window.lastPayment.service,window.lastPayment.amount,window.lastPayment.amount)">Download Invoice</button>
+      </div>
     </div>
   </div>
 </div>
 
-<script>
-  var PAYSTACK_KEY = 'pk_live_2d05beb98e463c7f9bcbd7c3510c5c127f62683a';
-  var currentCurrency = 'NGN';
-  var currentService = '';
-  var inputCurrency = 'NGN';
-  var USD_TO_NGN = 1580; // fallback rate — fetch live below
+<!-- ── SLIDER ─────────────────────────────────────────── -->
+<div class="slider-overlay" id="sliderOverlay">
+  <div class="slider-header">
+    <p class="slider-cat" id="sliderCat">Exterior</p>
+    <button class="slider-close" onclick="closeSlider()">✕</button>
+  </div>
+  <div class="slider-main">
+    <div class="slider-img-container" id="sliderImgContainer">
+      <img id="sliderImg" src="" alt="">
+    </div>
+    <div class="slider-nav">
+      <button class="slider-btn" onclick="prevSlide()">‹</button>
+      <button class="slider-btn" onclick="nextSlide()">›</button>
+    </div>
+  </div>
+  <div class="slider-footer">
+    <div class="slider-counter"><span id="sliderCurrent">1</span> / <span id="sliderTotal">1</span></div>
+    <div class="slider-dots" id="sliderDots"></div>
+  </div>
+</div>
 
-  // Fetch live exchange rate
-  fetch('https://open.er-api.com/v6/latest/USD')
-    .then(function(r){ return r.json(); })
-    .then(function(d){ if(d && d.rates && d.rates.NGN){ USD_TO_NGN = d.rates.NGN; document.getElementById('rateDisplay').textContent = Math.round(USD_TO_NGN).toLocaleString(); } })
-    .catch(function(){});
-
-  function setInputCurrency(cur) {
-    inputCurrency = cur;
-    document.getElementById('btnNGN').classList.toggle('active', cur === 'NGN');
-    document.getElementById('btnUSD').classList.toggle('active', cur === 'USD');
-    document.getElementById('payAmount').value = '';
-    document.getElementById('payAmountDisplay').textContent = '₦ 0';
-    document.getElementById('conversionBox').style.display = 'none';
-    document.getElementById('payAmount').placeholder = cur === 'USD' ? 'Enter amount in USD ($)' : 'Enter amount in NGN (₦)';
-  }
-
-  function openPayModal(service, price) {
-    currentService = service;
-    document.getElementById('payServiceName').textContent = service + ' — ' + price;
-    document.getElementById('payModalOverlay').classList.add('open');
-    document.getElementById('payFormContent').style.display = 'block';
-    document.getElementById('paySuccess').style.display = 'none';
-    document.getElementById('payAmount').value = '';
-    document.getElementById('payAmountDisplay').textContent = '₦ 0';
-    document.getElementById('conversionBox').style.display = 'none';
-    inputCurrency = 'NGN';
-    document.getElementById('btnNGN').classList.add('active');
-    document.getElementById('btnUSD').classList.remove('active');
-    document.getElementById('payAmount').placeholder = 'Enter amount in NGN (₦)';
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closePayModal() {
-    document.getElementById('payModalOverlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  function setCurrency(currency) {
-    currentCurrency = 'NGN';
-    updateAmountDisplay();
-  }
-
-  function updateAmountDisplay() {
-    var raw = parseFloat(document.getElementById('payAmount').value) || 0;
-    if (inputCurrency === 'USD') {
-      var ngn = Math.round(raw * USD_TO_NGN);
-      if (raw > 0) {
-        document.getElementById('conversionBox').style.display = 'block';
-        document.getElementById('conversionDetail').textContent = '$' + raw.toLocaleString() + ' × ₦' + Math.round(USD_TO_NGN).toLocaleString();
-        document.getElementById('conversionResult').textContent = '₦' + ngn.toLocaleString();
-        document.getElementById('payAmountDisplay').textContent = '₦ ' + ngn.toLocaleString();
-      } else {
-        document.getElementById('conversionBox').style.display = 'none';
-        document.getElementById('payAmountDisplay').textContent = '₦ 0';
-      }
-    } else {
-      document.getElementById('conversionBox').style.display = 'none';
-      document.getElementById('payAmountDisplay').textContent = '₦ ' + raw.toLocaleString();
-    }
-  }
-
-  function getNGNAmount() {
-    var raw = parseFloat(document.getElementById('payAmount').value) || 0;
-    return inputCurrency === 'USD' ? Math.round(raw * USD_TO_NGN) : raw;
-  }
-
-  function initiatePayment() {
-    var email = document.getElementById('payEmail').value.trim();
-    var name = document.getElementById('payName').value.trim();
-    var raw = parseFloat(document.getElementById('payAmount').value);
-    var ngnAmount = getNGNAmount();
-
-    if (!email || !name || !raw || raw <= 0) {
-      alert('Please fill in all fields and enter a valid amount.');
-      return;
-    }
-
-    var amountInKobo = Math.round(ngnAmount * 100);
-
-    // Auto-generate invoice PDF before payment
-    generateInvoice(name, email, currentService, raw, ngnAmount);
-
-    var handler = PaystackPop.setup({
-      key: PAYSTACK_KEY,
-      email: email,
-      amount: amountInKobo,
-      currency: 'NGN',
-      ref: 'AXON-' + Date.now(),
-      metadata: {
-        custom_fields: [
-          { display_name: 'Client Name', variable_name: 'client_name', value: name },
-          { display_name: 'Service', variable_name: 'service', value: currentService },
-          { display_name: 'Input Currency', variable_name: 'input_currency', value: inputCurrency }
-        ]
-      },
-      callback: function(response) {
-        window.lastPayment = {
-          ref: response.reference,
-          email: email,
-          name: name,
-          service: currentService,
-          amount: ngnAmount,
-          currency: 'NGN',
-          date: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'})
-        };
-        document.getElementById('payFormContent').style.display = 'none';
-        document.getElementById('paySuccess').style.display = 'block';
-      },
-      onClose: function() {}
-    });
-    handler.openIframe();
-  }
-
-  function generateInvoice(name, email, service, inputAmt, ngnAmt) {
-    var { jsPDF } = window.jspdf;
-    var doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    var W = 210, H = 297;
-    var ref = 'AXN-' + new Date().getFullYear() + ('0'+(new Date().getMonth()+1)).slice(-2) + ('0'+new Date().getDate()).slice(-2) + '-' + Date.now().toString().slice(-4);
-    var today = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
-    var valid = new Date(Date.now() + 48*60*60*1000).toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
-
-    // Background
-    doc.setFillColor(13,13,13); doc.rect(0,0,W,H,'F');
-    // Gold bars
-    doc.setFillColor(200,169,110); doc.rect(0,0,W,2,'F');
-    doc.setFillColor(200,169,110); doc.rect(0,H-2,W,2,'F');
-
-    // Header
-    doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.setTextColor(245,242,237);
-    doc.text('AXON',16,22);
-    doc.setTextColor(200,169,110);
-    var axw = doc.getTextWidth('AXON ');
-    doc.text('ARCHIVES',16+axw,22);
-    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(136,136,136);
-    doc.text('DIGITAL ARCHITECTURE ARCHIVE',16,29);
-
-    // Invoice label
-    doc.setFont('helvetica','bold'); doc.setFontSize(32); doc.setTextColor(200,169,110);
-    doc.text('INVOICE',W-16,24,{align:'right'});
-    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(136,136,136);
-    doc.text(ref,W-16,31,{align:'right'});
-
-    // Divider
-    doc.setDrawColor(200,169,110); doc.setLineWidth(0.3); doc.line(16,36,W-16,36);
-
-    // Billed to
-    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(200,169,110); doc.text('BILLED TO',16,46);
-    doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(245,242,237); doc.text(name,16,55);
-    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(136,136,136); doc.text(email,16,62);
-
-    // Dates
-    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(200,169,110);
-    doc.text('DATE ISSUED',W-90,46); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(245,242,237); doc.text(today,W-16,46,{align:'right'});
-    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(200,169,110);
-    doc.text('VALID UNTIL',W-90,54); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(245,242,237); doc.text(valid,W-16,54,{align:'right'});
-
-    // Service label
-    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(200,169,110); doc.text('SERVICE',16,78);
-    doc.setDrawColor(200,169,110); doc.setLineWidth(0.3); doc.line(16,81,W-16,81);
-
-    // Service row
-    doc.setFillColor(26,26,26); doc.rect(16,83,W-32,20,'F');
-    doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(245,242,237);
-    doc.text(service,22,95);
-    doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(200,169,110);
-    doc.text('₦' + ngnAmt.toLocaleString(),W-22,95,{align:'right'});
-
-    // USD note if applicable
-    if (inputCurrency === 'USD') {
-      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(136,136,136);
-      doc.text('($' + inputAmt.toLocaleString() + ' converted at ₦' + Math.round(USD_TO_NGN).toLocaleString() + '/$)',22,103);
-    }
-
-    // Total
-    doc.setDrawColor(200,169,110); doc.line(16,112,W-16,112);
-    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(200,169,110); doc.text('TOTAL',16,122);
-    doc.setFontSize(24); doc.text('₦' + ngnAmt.toLocaleString(),W-16,122,{align:'right'});
-
-    // How to pay
-    doc.setFillColor(28,28,28); doc.rect(16,130,W-32,32,'F');
-    doc.setDrawColor(200,169,110); doc.line(16,130,W-16,130);
-    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(200,169,110); doc.text('HOW TO PAY',30,140);
-    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(170,170,170);
-    doc.text('Visit axonarchives.studio  →  Pay  →  Pay Custom Amount',30,150);
-    doc.setFontSize(8); doc.setTextColor(136,136,136); doc.text('NGN payments  ·  Secured by Paystack',30,158);
-
-    // Footer
-    doc.setDrawColor(200,169,110); doc.line(16,175,W-16,175);
-    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(136,136,136);
-    doc.text('axonarchives@gmail.com  ·  axonarchives.studio  ·  Lagos, Nigeria',W/2,183,{align:'center'});
-    doc.setFontSize(7); doc.setTextColor(68,68,68);
-    doc.text('This invoice expires 48 hours from date of issue.  AXON ARCHIVES © 2025',W/2,190,{align:'center'});
-
-    doc.save('AXON-INVOICE-' + ref + '.pdf');
-  }
-
-
-  function generateReceipt() {
-    var p = window.lastPayment;
-    if (!p) return;
-
-    var { jsPDF } = window.jspdf;
-    var doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    var W = 210, H = 297;
-
-    // Background
-    doc.setFillColor(10, 10, 10);
-    doc.rect(0, 0, W, H, 'F');
-
-    // Gold top bar
-    doc.setFillColor(200, 169, 110);
-    doc.rect(0, 0, W, 2, 'F');
-
-    // Gold bottom bar
-    doc.rect(0, H - 2, W, 2, 'F');
-
-    // Left gold accent bar
-    doc.setFillColor(200, 169, 110);
-    doc.rect(16, 20, 1.5, 50, 'F');
-
-    // Studio name
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(22);
-    doc.setTextColor(245, 242, 237);
-    doc.text('AXON', 24, 35);
-    doc.setTextColor(200, 169, 110);
-    doc.text('ARCHIVES', 24, 44);
-
-    // Subtitle
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7);
-    doc.setTextColor(136, 136, 136);
-    doc.setCharSpace(2);
-    doc.text('DIGITAL ARCHITECTURE ARCHIVE', 24, 52);
-    doc.setCharSpace(0);
-
-    // RECEIPT label top right
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(28);
-    doc.setTextColor(200, 169, 110);
-    doc.text('RECEIPT', W - 16, 38, { align: 'right' });
-
-    // Reference number
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(136, 136, 136);
-    doc.text('REF: ' + p.ref, W - 16, 46, { align: 'right' });
-    doc.text('DATE: ' + p.date, W - 16, 52, { align: 'right' });
-
-    // Divider
-    doc.setDrawColor(200, 169, 110);
-    doc.setLineWidth(0.3);
-    doc.line(16, 72, W - 16, 72);
-
-    // Bill To section
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7);
-    doc.setTextColor(200, 169, 110);
-    doc.setCharSpace(2);
-    doc.text('BILLED TO', 16, 82);
-    doc.setCharSpace(0);
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(12);
-    doc.setTextColor(245, 242, 237);
-    doc.text(p.name, 16, 91);
-    doc.setFontSize(9);
-    doc.setTextColor(136, 136, 136);
-    doc.text(p.email, 16, 98);
-
-    // Service section
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7);
-    doc.setTextColor(200, 169, 110);
-    doc.setCharSpace(2);
-    doc.text('SERVICE', 16, 115);
-    doc.setCharSpace(0);
-
-    // Service row background
-    doc.setFillColor(26, 26, 26);
-    doc.rect(16, 120, W - 32, 20, 'F');
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.setTextColor(245, 242, 237);
-    doc.text(p.service, 22, 132);
-
-    var symbol = p.currency === 'NGN' ? '₦' : '$';
-    var amountFormatted = symbol + parseFloat(p.amount).toLocaleString();
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(13);
-    doc.setTextColor(200, 169, 110);
-    doc.text(amountFormatted, W - 22, 132, { align: 'right' });
-
-    // Divider
-    doc.setDrawColor(26, 26, 26);
-    doc.setLineWidth(0.3);
-    doc.line(16, 148, W - 16, 148);
-
-    // Total
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9);
-    doc.setTextColor(136, 136, 136);
-    doc.setCharSpace(2);
-    doc.text('TOTAL PAID', 16, 160);
-    doc.setCharSpace(0);
-
-    doc.setFontSize(28);
-    doc.setTextColor(200, 169, 110);
-    doc.text(amountFormatted, 16, 175);
-
-    doc.setFontSize(9);
-    doc.setTextColor(136, 136, 136);
-    doc.text(p.currency + ' · Paid via Paystack', 16, 183);
-
-    // Status badge
-    doc.setFillColor(200, 169, 110);
-    doc.roundedRect(W - 55, 165, 39, 12, 2, 2, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.setTextColor(10, 10, 10);
-    doc.setCharSpace(1);
-    doc.text('PAID', W - 35.5, 173, { align: 'center' });
-    doc.setCharSpace(0);
-
-    // Divider
-    doc.setDrawColor(200, 169, 110);
-    doc.setLineWidth(0.3);
-    doc.line(16, 200, W - 16, 200);
-
-    // Footer note
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(136, 136, 136);
-    doc.text('Thank you for choosing AXON ARCHIVES. We will be in touch shortly to proceed with your project.', 16, 212, { maxWidth: W - 32 });
-
-    // Contact info
-    doc.setFontSize(7);
-    doc.setTextColor(200, 169, 110);
-    doc.setCharSpace(1);
-    doc.text('CONTACT', 16, 230);
-    doc.setCharSpace(0);
-    doc.setTextColor(136, 136, 136);
-    doc.setFontSize(8);
-    doc.text('axonarchives@gmail.com', 16, 237);
-    doc.text('Lagos, Nigeria', 16, 243);
-    doc.text('axonarchives.studio', 16, 249);
-
-    // Bottom gold line detail
-    doc.setFillColor(200, 169, 110);
-    doc.rect(16, H - 20, 40, 0.5, 'F');
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7);
-    doc.setTextColor(136, 136, 136);
-    doc.setCharSpace(1);
-    doc.text('AXON ARCHIVES © 2025', 16, H - 14);
-    doc.setCharSpace(0);
-
-    // Save
-    var refShort = p.ref.substring(p.ref.length - 8).toUpperCase();
-    doc.save('AXON-RECEIPT-' + refShort + '.pdf');
-  }
-
-  // Close modal on overlay click
-  document.getElementById('payModalOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closePayModal();
-  });
-</script>
-
-<!-- CHATBOT -->
-<button class="chat-bubble" onclick="toggleChat()" id="chatBubble" aria-label="Chat with us">
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 10H6V10h12v2zm0-3H6V7h12v2z"/>
-  </svg>
+<!-- ── CHATBOT ─────────────────────────────────────────── -->
+<button class="chat-bubble" onclick="toggleChat()" aria-label="Chat with us">
+  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 10H6V10h12v2zm0-3H6V7h12v2z"/></svg>
 </button>
-
 <div class="chat-window" id="chatWindow">
   <div class="chat-header">
     <div class="chat-header-left">
-      <div class="chat-header-dot"></div>
+      <div class="chat-dot"></div>
       <div>
-        <div class="chat-header-title">AXON ARCHIVES</div>
-        <div class="chat-header-sub">Studio Assistant · Online</div>
+        <div class="chat-title">AXON ARCHIVES</div>
+        <div class="chat-sub">Studio Assistant · Online</div>
       </div>
     </div>
     <button class="chat-close" onclick="toggleChat()">✕</button>
   </div>
-
   <div class="chat-messages" id="chatMessages">
     <div class="chat-msg bot">
-      <div class="chat-msg-bubble">Welcome to <strong>AXON ARCHIVES</strong>. I'm your studio assistant — here to help with enquiries about our services, pricing, process, and all things architecture and design. How can I help you today?</div>
-      <div class="chat-msg-time">Now</div>
+      <div class="chat-bubble-msg">Welcome to <strong>AXON ARCHIVES</strong>. I'm your studio assistant — here to help with enquiries about our services, pricing, process, and all things architecture and design. How can I help you today?</div>
+      <div class="chat-time">Now</div>
     </div>
   </div>
-
-  <div class="chat-typing" id="chatTyping">
-    <span></span><span></span><span></span>
-  </div>
-
+  <div class="chat-typing" id="chatTyping"><span></span><span></span><span></span></div>
   <div class="chat-suggestions" id="chatSuggestions">
     <button class="chat-suggest-btn" onclick="sendSuggestion('What services do you offer?')">Services</button>
     <button class="chat-suggest-btn" onclick="sendSuggestion('How much does a 3D render cost?')">Pricing</button>
     <button class="chat-suggest-btn" onclick="sendSuggestion('How does the process work?')">Process</button>
-    <button class="chat-suggest-btn" onclick="sendSuggestion('How do I get started?')">Get Started</button>
+    <button class="chat-suggest-btn" onclick="sendSuggestion('I want to start a project')">Get Started</button>
   </div>
-
   <div class="chat-input-area">
     <textarea class="chat-input" id="chatInput" placeholder="Type your message..." rows="1"
       onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
@@ -1988,77 +1158,534 @@
 </div>
 
 <script>
-  var chatHistory = [];
-  var chatOpen = false;
+// ── PORTFOLIO DATA ────────────────────────────────────
+var portfolioItems = [
+  // Exteriors
+  {src:'images/ext1.jpg',mob:'images/mobile/ext1.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext2.jpg',mob:'images/mobile/ext2.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext3.jpg',mob:'images/mobile/ext3.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext4.jpg',mob:'images/mobile/ext4.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext5.jpg',mob:'images/mobile/ext5.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext6.jpg',mob:'images/mobile/ext6.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext7.jpg',mob:'images/mobile/ext7.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext8.jpg',mob:'images/mobile/ext8.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext9.jpg',mob:'images/mobile/ext9.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext10.jpg',mob:'images/mobile/ext10.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext11.jpg',mob:'images/mobile/ext11.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext12.jpg',mob:'images/mobile/ext12.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext15.jpg',mob:'images/mobile/ext15.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext18.jpg',mob:'images/mobile/ext18.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext19.jpg',mob:'images/mobile/ext19.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext20.jpg',mob:'images/mobile/ext20.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext21.jpg',mob:'images/mobile/ext21.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext22.jpg',mob:'images/mobile/ext22.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext23.jpg',mob:'images/mobile/ext23.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext24.jpg',mob:'images/mobile/ext24.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext25.jpg',mob:'images/mobile/ext25.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext26.jpg',mob:'images/mobile/ext26.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext27.jpg',mob:'images/mobile/ext27.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext28.jpg',mob:'images/mobile/ext28.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext29.jpg',mob:'images/mobile/ext29.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext30.jpg',mob:'images/mobile/ext30.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext31.jpg',mob:'images/mobile/ext31.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext32.jpg',mob:'images/mobile/ext32.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext33.jpg',mob:'images/mobile/ext33.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext34.jpg',mob:'images/mobile/ext34.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext35.jpg',mob:'images/mobile/ext35.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext36.jpg',mob:'images/mobile/ext36.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext37.jpg',mob:'images/mobile/ext37.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext38.jpg',mob:'images/mobile/ext38.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext39.jpg',mob:'images/mobile/ext39.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext40.jpg',mob:'images/mobile/ext40.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext41.jpg',mob:'images/mobile/ext41.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext42.jpg',mob:'images/mobile/ext42.jpg',cat:'exterior',label:'Exterior'},
+  {src:'images/ext43.jpg',mob:'images/mobile/ext43.jpg',cat:'exterior',label:'Exterior'},
+  // Interiors
+  {src:'images/int1.jpg',mob:'images/mobile/int1.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int2.jpg',mob:'images/mobile/int2.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int3.jpg',mob:'images/mobile/int3.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int4.jpg',mob:'images/mobile/int4.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int5.jpg',mob:'images/mobile/int5.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int6.jpg',mob:'images/mobile/int6.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int7.jpg',mob:'images/mobile/int7.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int8.jpg',mob:'images/mobile/int8.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int9.jpg',mob:'images/mobile/int9.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int10.jpg',mob:'images/mobile/int10.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int11.jpg',mob:'images/mobile/int11.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int12.jpg',mob:'images/mobile/int12.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int13.jpg',mob:'images/mobile/int13.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int14.jpg',mob:'images/mobile/int14.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int15.jpg',mob:'images/mobile/int15.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int16.jpg',mob:'images/mobile/int16.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int17.jpg',mob:'images/mobile/int17.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int18.jpg',mob:'images/mobile/int18.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int19.jpg',mob:'images/mobile/int19.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int20.jpg',mob:'images/mobile/int20.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int21.jpg',mob:'images/mobile/int21.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int22.jpg',mob:'images/mobile/int22.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int23.jpg',mob:'images/mobile/int23.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int24.jpg',mob:'images/mobile/int24.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int25.jpg',mob:'images/mobile/int25.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int26.jpg',mob:'images/mobile/int26.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int27.jpg',mob:'images/mobile/int27.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int28.jpg',mob:'images/mobile/int28.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int29.jpg',mob:'images/mobile/int29.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int30.jpg',mob:'images/mobile/int30.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int31.jpg',mob:'images/mobile/int31.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int32.jpg',mob:'images/mobile/int32.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int33.jpg',mob:'images/mobile/int33.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int34.jpg',mob:'images/mobile/int34.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int35.jpg',mob:'images/mobile/int35.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int36.jpg',mob:'images/mobile/int36.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int37.jpg',mob:'images/mobile/int37.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int38.jpg',mob:'images/mobile/int38.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int39.jpg',mob:'images/mobile/int39.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int40.jpg',mob:'images/mobile/int40.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int41.jpg',mob:'images/mobile/int41.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int42.jpg',mob:'images/mobile/int42.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int43.jpg',mob:'images/mobile/int43.jpg',cat:'interior',label:'Interior'},
+  {src:'images/int44.jpg',mob:'images/mobile/int44.jpg',cat:'interior',label:'Interior'},
+  // Floor Plans
+  {src:'images/fp1.jpg',mob:'images/mobile/fp1.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp2.jpg',mob:'images/mobile/fp2.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp3.jpg',mob:'images/mobile/fp3.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp4.jpg',mob:'images/mobile/fp4.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp5.jpg',mob:'images/mobile/fp5.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp6.jpg',mob:'images/mobile/fp6.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp7.jpg',mob:'images/mobile/fp7.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp8.jpg',mob:'images/mobile/fp8.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp9.jpg',mob:'images/mobile/fp9.jpg',cat:'floorplan',label:'Floor Plan'},
+  {src:'images/fp10.jpg',mob:'images/mobile/fp10.jpg',cat:'floorplan',label:'Floor Plan'},
+  // Site Plans
+  {src:'images/sp1.jpg',mob:'images/mobile/sp1.jpg',cat:'siteplan',label:'Site Plan'},
+  {src:'images/sp2.jpg',mob:'images/mobile/sp2.jpg',cat:'siteplan',label:'Site Plan'},
+  {src:'images/sp3.jpg',mob:'images/mobile/sp3.jpg',cat:'siteplan',label:'Site Plan'},
+];
 
-  function toggleChat() {
-    chatOpen = !chatOpen;
-    document.getElementById('chatWindow').classList.toggle('open', chatOpen);
-    if (chatOpen) document.getElementById('chatInput').focus();
-  }
+// ── BUILD PORTFOLIO GRID ──────────────────────────────
+var currentFilter = 'all';
+var sliderItems = [];
+var sliderIndex = 0;
+var isMobile = window.innerWidth <= 768;
 
-  function getTime() {
-    return new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
-  }
-
-  function addMessage(role, text) {
-    var messages = document.getElementById('chatMessages');
+function buildGrid(filter) {
+  var grid = document.getElementById('portfolioGrid');
+  grid.innerHTML = '';
+  var filtered = filter === 'all' ? portfolioItems : portfolioItems.filter(function(i){ return i.cat === filter; });
+  filtered.forEach(function(item, idx) {
     var div = document.createElement('div');
-    div.className = 'chat-msg ' + role;
-    div.innerHTML = '<div class="chat-msg-bubble">' + text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') + '</div><div class="chat-msg-time">' + getTime() + '</div>';
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
-  }
+    div.className = 'grid-item';
+    div.setAttribute('data-idx', idx);
+    div.setAttribute('data-cat', item.cat);
+    var shimmer = document.createElement('div');
+    shimmer.className = 'img-shimmer';
+    var img = document.createElement('img');
+    img.setAttribute('data-src', isMobile ? item.mob : item.src);
+    img.alt = item.label;
+    var overlay = document.createElement('div');
+    overlay.className = 'grid-overlay';
+    overlay.innerHTML = '<p class="grid-cat">' + item.label + '</p>';
+    div.appendChild(shimmer);
+    div.appendChild(img);
+    div.appendChild(overlay);
+    div.addEventListener('click', function() { openSlider(filtered, idx); });
+    grid.appendChild(div);
+  });
+  initLazyLoad();
+}
 
-  function sendSuggestion(text) {
-    document.getElementById('chatSuggestions').style.display = 'none';
-    document.getElementById('chatInput').value = text;
-    sendMessage();
-  }
+function filterPortfolio(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-tab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  buildGrid(cat);
+}
 
-  function sendMessage() {
-    var input = document.getElementById('chatInput');
-    var text = input.value.trim();
-    if (!text) return;
-
-    addMessage('user', text);
-    input.value = '';
-    input.style.height = 'auto';
-    chatHistory.push({ role: 'user', content: text });
-
-    document.getElementById('chatSendBtn').disabled = true;
-    document.getElementById('chatTyping').style.display = 'block';
-    document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
-
-    fetch('/.netlify/functions/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: chatHistory })
-    })
-    .then(function(r) { return r.text(); })
-    .then(function(text) { var data = JSON.parse(text);
-      document.getElementById('chatTyping').style.display = 'none';
-      document.getElementById('chatSendBtn').disabled = false;
-      var reply = data.content && data.content[0] ? data.content[0].text : 'I apologise, something went wrong. Please email us at axonarchives@gmail.com';
-      chatHistory.push({ role: 'assistant', content: reply });
-      addMessage('bot', reply);
-    }).catch(function() {
-      document.getElementById('chatTyping').style.display = 'none';
-      document.getElementById('chatSendBtn').disabled = false;
-      addMessage('bot', 'I apologise, I am having trouble connecting. Please reach us directly at axonarchives@gmail.com');
+// ── LAZY LOAD ─────────────────────────────────────────
+function initLazyLoad() {
+  var items = document.querySelectorAll('.grid-item img[data-src]');
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var img = entry.target;
+          img.src = img.getAttribute('data-src');
+          img.removeAttribute('data-src');
+          img.onload = function() { img.parentElement.classList.add('loaded'); };
+          obs.unobserve(img);
+        }
+      });
+    }, { rootMargin: '200px' });
+    items.forEach(function(img){ obs.observe(img); });
+  } else {
+    items.forEach(function(img){
+      img.src = img.getAttribute('data-src');
+      img.onload = function(){ img.parentElement.classList.add('loaded'); };
     });
   }
+}
 
-  // Auto-resize textarea
-  document.addEventListener('DOMContentLoaded', function() {
-    var inp = document.getElementById('chatInput');
-    if (inp) {
-      inp.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = Math.min(this.scrollHeight, 80) + 'px';
-      });
-    }
+// ── REEL ──────────────────────────────────────────────
+function buildReel() {
+  var track = document.getElementById('reelTrack');
+  var reelImgs = portfolioItems.slice(0, 12);
+  var doubled = reelImgs.concat(reelImgs);
+  doubled.forEach(function(item) {
+    var div = document.createElement('div');
+    div.className = 'reel-item';
+    var img = document.createElement('img');
+    img.src = item.mob;
+    img.alt = item.label;
+    img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover'; img.style.opacity = '0.6';
+    var lbl = document.createElement('div');
+    lbl.className = 'reel-label';
+    lbl.innerHTML = '<p class="reel-cat">' + item.label + '</p>';
+    div.appendChild(img); div.appendChild(lbl);
+    track.appendChild(div);
   });
+}
+
+// ── SLIDER ────────────────────────────────────────────
+function openSlider(items, idx) {
+  sliderItems = items;
+  sliderIndex = idx;
+  renderSlider();
+  document.getElementById('sliderOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSlider() {
+  document.getElementById('sliderOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function renderSlider() {
+  var item = sliderItems[sliderIndex];
+  document.getElementById('sliderImg').src = item.src;
+  document.getElementById('sliderCat').textContent = item.label;
+  document.getElementById('sliderCurrent').textContent = sliderIndex + 1;
+  document.getElementById('sliderTotal').textContent = sliderItems.length;
+  var dots = document.getElementById('sliderDots');
+  dots.innerHTML = '';
+  var max = Math.min(sliderItems.length, 10);
+  for (var i = 0; i < max; i++) {
+    var d = document.createElement('div');
+    d.className = 'slider-dot' + (i === sliderIndex ? ' active' : '');
+    (function(ii){ d.addEventListener('click', function(){ sliderIndex = ii; renderSlider(); }); })(i);
+    dots.appendChild(d);
+  }
+}
+function nextSlide() { sliderIndex = (sliderIndex + 1) % sliderItems.length; renderSlider(); }
+function prevSlide() { sliderIndex = (sliderIndex - 1 + sliderItems.length) % sliderItems.length; renderSlider(); }
+// Swipe support
+var touchStartX = 0;
+document.getElementById('sliderOverlay').addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; });
+document.getElementById('sliderOverlay').addEventListener('touchend', function(e){
+  var diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+});
+
+// ── NAV ───────────────────────────────────────────────
+function showPage(id) {
+  var home = document.getElementById('home');
+  var reel = document.querySelector('.reel');
+  var pages = document.querySelectorAll('.page');
+  if (id === 'home') {
+    home.style.display = 'flex';
+    reel.style.display = 'block';
+    pages.forEach(function(p){ p.style.display = 'none'; });
+  } else {
+    home.style.display = 'none';
+    reel.style.display = 'none';
+    pages.forEach(function(p){ p.style.display = p.id === id ? 'block' : 'none'; });
+    if (id === 'portfolio') buildGrid(currentFilter);
+  }
+  window.scrollTo(0,0);
+}
+function toggleMenu() {
+  var menu = document.getElementById('mobileMenu');
+  var burger = document.getElementById('hamburger');
+  var open = menu.classList.contains('open');
+  menu.classList.toggle('open', !open);
+  burger.classList.toggle('open', !open);
+}
+function mobileNav(id) {
+  showPage(id);
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+
+// ── CLOCK ─────────────────────────────────────────────
+function updateClock() {
+  var now = new Date();
+  var h = String(now.getHours()).padStart(2,'0');
+  var m = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('clockEl').textContent = h + ':' + m;
+}
+setInterval(updateClock, 1000); updateClock();
+
+// ── PAYMENT ───────────────────────────────────────────
+var PAYSTACK_KEY = 'pk_live_2d05beb98e463c7f9bcbd7c3510c5c127f62683a';
+var currentService = '';
+var inputCurrency = 'NGN';
+var USD_TO_NGN = 1580;
+
+fetch('https://open.er-api.com/v6/latest/USD')
+  .then(function(r){ return r.json(); })
+  .then(function(d){ if(d&&d.rates&&d.rates.NGN){ USD_TO_NGN=d.rates.NGN; document.getElementById('rateDisplay').textContent=Math.round(USD_TO_NGN).toLocaleString(); } })
+  .catch(function(){});
+
+function openPayModal(service, price) {
+  currentService = service;
+  document.getElementById('payServiceName').textContent = service + ' — ' + price;
+  document.getElementById('payModalOverlay').classList.add('open');
+  document.getElementById('payFormContent').style.display = 'block';
+  document.getElementById('paySuccess').style.display = 'none';
+  document.getElementById('payAmount').value = '';
+  document.getElementById('payAmountDisplay').textContent = '₦ 0';
+  document.getElementById('conversionBox').style.display = 'none';
+  inputCurrency = 'NGN';
+  document.getElementById('btnNGN').classList.add('active');
+  document.getElementById('btnUSD').classList.remove('active');
+  document.getElementById('payAmount').placeholder = 'Enter amount in NGN (₦)';
+  document.body.style.overflow = 'hidden';
+}
+function closePayModal() {
+  document.getElementById('payModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function setInputCurrency(cur) {
+  inputCurrency = cur;
+  document.getElementById('btnNGN').classList.toggle('active', cur==='NGN');
+  document.getElementById('btnUSD').classList.toggle('active', cur==='USD');
+  document.getElementById('payAmount').value = '';
+  document.getElementById('payAmountDisplay').textContent = '₦ 0';
+  document.getElementById('conversionBox').style.display = 'none';
+  document.getElementById('payAmount').placeholder = cur==='USD' ? 'Enter amount in USD ($)' : 'Enter amount in NGN (₦)';
+}
+function updateAmountDisplay() {
+  var raw = parseFloat(document.getElementById('payAmount').value) || 0;
+  if (inputCurrency === 'USD') {
+    var ngn = Math.round(raw * USD_TO_NGN);
+    if (raw > 0) {
+      document.getElementById('conversionBox').style.display = 'block';
+      document.getElementById('conversionDetail').textContent = '$' + raw.toLocaleString() + ' × ₦' + Math.round(USD_TO_NGN).toLocaleString();
+      document.getElementById('conversionResult').textContent = '₦' + ngn.toLocaleString();
+      document.getElementById('payAmountDisplay').textContent = '₦ ' + ngn.toLocaleString();
+    } else {
+      document.getElementById('conversionBox').style.display = 'none';
+      document.getElementById('payAmountDisplay').textContent = '₦ 0';
+    }
+  } else {
+    document.getElementById('conversionBox').style.display = 'none';
+    document.getElementById('payAmountDisplay').textContent = '₦ ' + raw.toLocaleString();
+  }
+}
+function getNGNAmount() {
+  var raw = parseFloat(document.getElementById('payAmount').value) || 0;
+  return inputCurrency === 'USD' ? Math.round(raw * USD_TO_NGN) : raw;
+}
+function initiatePayment() {
+  var email = document.getElementById('payEmail').value.trim();
+  var name = document.getElementById('payName').value.trim();
+  var raw = parseFloat(document.getElementById('payAmount').value);
+  var ngnAmount = getNGNAmount();
+  if (!email || !name || !raw || raw <= 0) { alert('Please fill in all fields and enter a valid amount.'); return; }
+  var amountInKobo = Math.round(ngnAmount * 100);
+  var handler = PaystackPop.setup({
+    key: PAYSTACK_KEY, email: email, amount: amountInKobo, currency: 'NGN',
+    ref: 'AXON-' + Date.now(),
+    metadata: { custom_fields: [
+      { display_name:'Client Name', variable_name:'client_name', value:name },
+      { display_name:'Service', variable_name:'service', value:currentService }
+    ]},
+    callback: function(response) {
+      window.lastPayment = {
+        ref: response.reference, email:email, name:name,
+        service:currentService, amount:ngnAmount, currency:'NGN',
+        date: new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})
+      };
+      document.getElementById('payFormContent').style.display = 'none';
+      document.getElementById('paySuccess').style.display = 'block';
+    },
+    onClose: function() {}
+  });
+  handler.openIframe();
+}
+document.getElementById('payModalOverlay').addEventListener('click', function(e){ if(e.target===this) closePayModal(); });
+
+// ── RECEIPT ───────────────────────────────────────────
+function generateReceipt() {
+  var p = window.lastPayment; if (!p) return;
+  var {jsPDF} = window.jspdf;
+  var doc = new jsPDF({unit:'mm',format:'a4'});
+  var W=210,H=297;
+  doc.setFillColor(13,13,13); doc.rect(0,0,W,H,'F');
+  doc.setFillColor(212,168,67); doc.rect(0,0,W,2,'F'); doc.rect(0,H-2,W,2,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.setTextColor(238,235,228);
+  doc.text('AXON',16,22);
+  var aw=doc.getTextWidth('AXON '); doc.setTextColor(212,168,67); doc.text('ARCHIVES',16+aw,22);
+  doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(136,136,136);
+  doc.text('DIGITAL ARCHITECTURE ARCHIVE',16,29);
+  doc.setFont('helvetica','bold'); doc.setFontSize(32); doc.setTextColor(212,168,67);
+  doc.text('RECEIPT',W-16,24,{align:'right'});
+  doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(136,136,136);
+  doc.text(p.ref,W-16,31,{align:'right'});
+  doc.setDrawColor(212,168,67); doc.setLineWidth(0.3); doc.line(16,36,W-16,36);
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(212,168,67); doc.text('BILLED TO',16,46);
+  doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(238,235,228); doc.text(p.name,16,55);
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(136,136,136); doc.text(p.email,16,62);
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(212,168,67); doc.text('SERVICE',16,78);
+  doc.line(16,81,W-16,81);
+  doc.setFillColor(26,26,26); doc.rect(16,83,W-32,20,'F');
+  doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(238,235,228); doc.text(p.service,22,95);
+  doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(212,168,67);
+  doc.text('₦'+p.amount.toLocaleString(),W-22,95,{align:'right'});
+  doc.line(16,112,W-16,112);
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(212,168,67); doc.text('TOTAL PAID',16,122);
+  doc.setFontSize(24); doc.text('₦'+p.amount.toLocaleString(),W-16,122,{align:'right'});
+  doc.setFillColor(28,28,28); doc.rect(16,130,W-32,32,'F');
+  doc.setDrawColor(212,168,67); doc.line(16,130,W-16,130);
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(170,170,170);
+  doc.text('Date: '+p.date,22,142);
+  doc.text('Ref: '+p.ref,22,152);
+  doc.line(16,175,W-16,175);
+  doc.setFontSize(8); doc.setTextColor(136,136,136);
+  doc.text('axonarchives@gmail.com · axonarchives.studio · Lagos, Nigeria',W/2,183,{align:'center'});
+  doc.setFontSize(7); doc.setTextColor(68,68,68);
+  doc.text('AXON ARCHIVES © 2025',W/2,190,{align:'center'});
+  doc.save('AXON-RECEIPT-'+p.ref.slice(-8)+'.pdf');
+}
+
+function generateInvoice(name, email, service, inputAmt, ngnAmt) {
+  var {jsPDF}=window.jspdf;
+  var doc=new jsPDF({unit:'mm',format:'a4'});
+  var W=210,H=297;
+  var ref='AXN-'+new Date().getFullYear()+('0'+(new Date().getMonth()+1)).slice(-2)+('0'+new Date().getDate()).slice(-2)+'-'+Date.now().toString().slice(-4);
+  var today=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  var valid=new Date(Date.now()+48*60*60*1000).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  doc.setFillColor(13,13,13); doc.rect(0,0,W,H,'F');
+  doc.setFillColor(212,168,67); doc.rect(0,0,W,2,'F'); doc.rect(0,H-2,W,2,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.setTextColor(238,235,228);
+  doc.text('AXON',16,22);
+  var aw=doc.getTextWidth('AXON '); doc.setTextColor(212,168,67); doc.text('ARCHIVES',16+aw,22);
+  doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(136,136,136);
+  doc.text('DIGITAL ARCHITECTURE ARCHIVE',16,29);
+  doc.setFont('helvetica','bold'); doc.setFontSize(32); doc.setTextColor(212,168,67);
+  doc.text('INVOICE',W-16,24,{align:'right'});
+  doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(136,136,136);
+  doc.text(ref,W-16,31,{align:'right'});
+  doc.setDrawColor(212,168,67); doc.setLineWidth(0.3); doc.line(16,36,W-16,36);
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(212,168,67); doc.text('BILLED TO',16,46);
+  doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(238,235,228); doc.text(name,16,55);
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(136,136,136); doc.text(email,16,62);
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(212,168,67);
+  doc.text('DATE ISSUED',W-90,46); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(238,235,228); doc.text(today,W-16,46,{align:'right'});
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(212,168,67);
+  doc.text('VALID UNTIL',W-90,54); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(238,235,228); doc.text(valid,W-16,54,{align:'right'});
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(212,168,67); doc.text('SERVICE',16,78);
+  doc.line(16,81,W-16,81);
+  doc.setFillColor(26,26,26); doc.rect(16,83,W-32,20,'F');
+  doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(238,235,228); doc.text(service,22,95);
+  doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(212,168,67);
+  doc.text('₦'+ngnAmt.toLocaleString(),W-22,95,{align:'right'});
+  doc.line(16,112,W-16,112);
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(212,168,67); doc.text('TOTAL',16,122);
+  doc.setFontSize(24); doc.text('₦'+ngnAmt.toLocaleString(),W-16,122,{align:'right'});
+  doc.setFillColor(28,28,28); doc.rect(16,130,W-32,32,'F');
+  doc.setDrawColor(212,168,67); doc.line(16,130,W-16,130);
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(170,170,170);
+  doc.text('Visit axonarchives.studio → Pay → Pay Custom Amount',22,142);
+  doc.text('NGN payments · Secured by Paystack',22,152);
+  doc.line(16,175,W-16,175);
+  doc.setFontSize(8); doc.setTextColor(136,136,136);
+  doc.text('axonarchives@gmail.com · axonarchives.studio · Lagos, Nigeria',W/2,183,{align:'center'});
+  doc.setFontSize(7); doc.setTextColor(68,68,68);
+  doc.text('This invoice expires 48 hours from date of issue. AXON ARCHIVES © 2025',W/2,190,{align:'center'});
+  doc.save('AXON-INVOICE-'+ref+'.pdf');
+}
+
+// ── CONTACT FORM ──────────────────────────────────────
+var form = document.getElementById('contactForm');
+if (form) {
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = document.getElementById('submitBtn');
+    var msg = document.getElementById('formMsg');
+    btn.textContent = 'Sending...'; btn.disabled = true;
+    fetch('https://formspree.io/f/xojknnbq', {
+      method:'POST', body:new FormData(form), headers:{Accept:'application/json'}
+    }).then(function(r) {
+      msg.style.display='block';
+      if (r.ok) { msg.style.color='#D4A843'; msg.textContent='Message sent. We will be in touch shortly.'; form.reset(); }
+      else { msg.style.color='#ff6b6b'; msg.textContent='Something went wrong. Please try again.'; }
+      btn.textContent='Send Enquiry'; btn.disabled=false;
+    }).catch(function() {
+      msg.style.display='block'; msg.style.color='#ff6b6b';
+      msg.textContent='Something went wrong. Please try again.';
+      btn.textContent='Send Enquiry'; btn.disabled=false;
+    });
+  });
+}
+
+// ── CHATBOT ───────────────────────────────────────────
+var chatHistory = [];
+var chatOpen = false;
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chatWindow').classList.toggle('open', chatOpen);
+  if (chatOpen) document.getElementById('chatInput').focus();
+}
+function getTime() { return new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
+function addMessage(role, text) {
+  var msgs = document.getElementById('chatMessages');
+  var div = document.createElement('div');
+  div.className = 'chat-msg ' + role;
+  div.innerHTML = '<div class="chat-bubble-msg">' + text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>') + '</div><div class="chat-time">' + getTime() + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function sendSuggestion(text) {
+  document.getElementById('chatSuggestions').style.display = 'none';
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+function sendMessage() {
+  var input = document.getElementById('chatInput');
+  var text = input.value.trim();
+  if (!text) return;
+  addMessage('user', text);
+  input.value = ''; input.style.height = 'auto';
+  chatHistory.push({role:'user',content:text});
+  document.getElementById('chatSendBtn').disabled = true;
+  document.getElementById('chatTyping').style.display = 'block';
+  document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+  fetch('/.netlify/functions/chat', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({messages:chatHistory})
+  })
+  .then(function(r){ return r.text(); })
+  .then(function(text){ var data=JSON.parse(text);
+    document.getElementById('chatTyping').style.display='none';
+    document.getElementById('chatSendBtn').disabled=false;
+    var reply=data.content&&data.content[0]?data.content[0].text:'I apologise, something went wrong. Please email us at axonarchives@gmail.com';
+    chatHistory.push({role:'assistant',content:reply});
+    addMessage('bot',reply);
+  }).catch(function(){
+    document.getElementById('chatTyping').style.display='none';
+    document.getElementById('chatSendBtn').disabled=false;
+    addMessage('bot','I apologise, I am having trouble connecting. Please reach us directly at axonarchives@gmail.com');
+  });
+}
+document.addEventListener('DOMContentLoaded', function() {
+  var inp = document.getElementById('chatInput');
+  if (inp) { inp.addEventListener('input', function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,80)+'px'; }); }
+});
+
+// ── INIT ──────────────────────────────────────────────
+window.addEventListener('load', function() {
+  buildReel();
+  document.getElementById('home').style.display = 'flex';
+  document.querySelector('.reel').style.display = 'block';
+});
 </script>
 </body>
 </html>
