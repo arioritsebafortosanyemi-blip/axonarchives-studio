@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /.netlify/
+Disallow: /admin/
+Disallow: /config/
+
+Sitemap: https://axonarchives.studio/sitemap.xml
