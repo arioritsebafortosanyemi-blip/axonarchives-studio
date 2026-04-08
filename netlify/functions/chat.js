@@ -41,7 +41,7 @@ exports.handler = async function(event) {
         headers: {
           'Content-Type': 'application/json',
           'Content-Length': Buffer.byteLength(requestBody),
-          'x-api-key': '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',
+          'x-api-key': process.env.ANTHROPIC_API_KEY,
           'anthropic-version': '2023-06-01'
         }
       };
