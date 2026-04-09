@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,16 +6,6 @@
 <title>AXON ARCHIVES — Architecture · Visualization · Animation</title>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ET1WW5ZB8B"></script>
-
-<!-- ── COOKIE BANNER ─────────────────────────────────── -->
-<div class="cookie-banner" id="cookieBanner">
-  <p class="cookie-text">We use cookies and Google Analytics to improve your experience. By clicking "Accept", you consent to our use of cookies. See our <a href="javascript:void(0)" onclick="showPage('legal')">Privacy Policy</a> for details.</p>
-  <div class="cookie-btns">
-    <button class="cookie-accept" onclick="acceptCookies()">Accept</button>
-    <button class="cookie-decline" onclick="declineCookies()">Decline</button>
-  </div>
-</div>
-
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -710,7 +699,6 @@
     .cookie-banner { flex-direction: row; align-items: center; justify-content: space-between; padding: 16px 48px; }
     .cookie-btns { flex-shrink: 0; }
   }
-
   /* ── LEGAL PAGE ──────────────────────────── */
   #legal { }
   .legal-inner { padding: 60px 20px; max-width: 720px; }
@@ -1116,26 +1104,19 @@
 <!-- ── LEGAL ─────────────────────────────────────────── -->
 <div id="legal" class="page">
   <div class="legal-inner">
-    <div class="section-eyebrow">
-      <div class="section-eyebrow-line"></div>
-      <span>Legal</span>
-    </div>
+    <div class="section-eyebrow"><div class="section-eyebrow-line"></div><span>Legal</span></div>
     <h2 class="section-title">Privacy <em>&amp; Terms</em></h2>
-
     <h3>Privacy Policy</h3>
     <p>AXON ARCHIVES ("we", "us", "our") is committed to protecting your privacy. This policy explains how we collect and use your information when you visit axonarchives.studio.</p>
-    <p><strong>Information We Collect:</strong> We collect information you provide directly (name, email, project brief via contact form or payment). We also use Google Analytics to understand how visitors use our site — this collects anonymised data such as pages visited, time on site, and device type.</p>
+    <p><strong>Information We Collect:</strong> We collect information you provide directly (name, email, project brief via contact form or payment). We also use Google Analytics to understand how visitors use our site.</p>
     <p><strong>How We Use Your Information:</strong> To respond to enquiries, process payments via Paystack, and improve our website. We do not sell your data to third parties.</p>
     <p><strong>Cookies:</strong> We use essential cookies for site functionality and Google Analytics cookies for usage analytics. You can decline non-essential cookies via the banner on our site.</p>
-    <p><strong>Third Parties:</strong> We use Paystack for payment processing, Formspree for contact forms, and Google Analytics for site analytics. Each has their own privacy policy.</p>
     <p><strong>Contact:</strong> For privacy concerns email <a href="mailto:axonarchives@gmail.com">axonarchives@gmail.com</a></p>
-
     <h3>Terms of Service</h3>
-    <p>By using axonarchives.studio you agree to these terms. All content on this site — including renders, drawings, and animations — is the intellectual property of AXON ARCHIVES and may not be reproduced without written permission.</p>
-    <p><strong>Services:</strong> All projects are subject to a written brief and agreed fee. An 80% deposit is required before work commences. The balance is due upon delivery. Revisions beyond the agreed scope may be charged separately.</p>
-    <p><strong>Payments:</strong> Payments are processed in Nigerian Naira (NGN) via Paystack. USD amounts shown are indicative and converted at the prevailing market rate at time of payment.</p>
+    <p>By using axonarchives.studio you agree to these terms. All content on this site is the intellectual property of AXON ARCHIVES and may not be reproduced without written permission.</p>
+    <p><strong>Services:</strong> All projects require a written brief and agreed fee. An 80% deposit is required before work commences. The balance is due upon delivery.</p>
+    <p><strong>Payments:</strong> Payments are processed in Nigerian Naira (NGN) via Paystack. USD amounts shown are indicative and converted at the prevailing market rate.</p>
     <p><strong>Refunds:</strong> Deposits are non-refundable once work has commenced. Disputes should be raised within 7 days of delivery.</p>
-    <p><strong>Limitation of Liability:</strong> AXON ARCHIVES is not liable for any indirect or consequential losses arising from the use of our services.</p>
     <p><strong>Governing Law:</strong> These terms are governed by the laws of the Federal Republic of Nigeria.</p>
     <p>Last updated: April 2025</p>
   </div>
@@ -1251,6 +1232,16 @@
   </div>
 </div>
 
+
+<!-- ── COOKIE BANNER ─────────────────────────────────── -->
+<div class="cookie-banner" id="cookieBanner">
+  <p class="cookie-text">We use cookies and Google Analytics to improve your experience. By clicking "Accept", you consent to our use of cookies. See our <a href="javascript:void(0)" onclick="showPage('legal')">Privacy Policy</a> for details.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" onclick="acceptCookies()">Accept</button>
+    <button class="cookie-decline" onclick="declineCookies()">Decline</button>
+  </div>
+</div>
+
 <script>
 // ── PORTFOLIO DATA ────────────────────────────────────
 var portfolioItems = [
@@ -1331,7 +1322,6 @@ function buildGrid(filter) {
     div.className = 'grid-item';
     div.setAttribute('data-idx', idx);
     div.setAttribute('data-cat', item.cat);
-
     if (item.video) {
       div.style.aspectRatio = '16/9';
       div.innerHTML = '<video src="' + item.src + '" controls playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>';
@@ -1341,8 +1331,8 @@ function buildGrid(filter) {
       img.src = (isMobile ? item.mob : item.src);
       img.alt = item.label;
       img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity 0.5s ease;';
-      img.onload = function(){ this.style.opacity = '1'; };
-      img.onerror = function(){ this.style.background = '#111'; this.style.opacity = '1'; };
+      img.onload = function(){ this.style.opacity='1'; };
+      img.onerror = function(){ this.style.background='#111'; this.style.opacity='1'; };
       var overlay = document.createElement('div');
       overlay.className = 'grid-overlay';
       overlay.innerHTML = '<p class="grid-cat">' + item.label + '</p>';
@@ -1352,12 +1342,11 @@ function buildGrid(filter) {
       (function(ci, cf){
         div.addEventListener('click', function(){
           var imgs = cf.filter(function(i){ return !i.video; });
-          var idx = imgs.indexOf(ci);
-          if (idx >= 0) openSlider(imgs, idx);
+          var idx2 = imgs.indexOf(ci);
+          if(idx2 >= 0) openSlider(imgs, idx2);
         });
       })(item, filtered);
     }
-
     grid.appendChild(div);
   });
 }
@@ -1729,11 +1718,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ── COOKIE CONSENT ────────────────────────────────────
 function acceptCookies() {
-  localStorage.setItem('cookieConsent', 'accepted');
+  localStorage.setItem('cookieConsent','accepted');
   document.getElementById('cookieBanner').classList.add('hidden');
 }
 function declineCookies() {
-  localStorage.setItem('cookieConsent', 'declined');
+  localStorage.setItem('cookieConsent','declined');
   document.getElementById('cookieBanner').classList.add('hidden');
 }
 window.addEventListener('load', function() {
