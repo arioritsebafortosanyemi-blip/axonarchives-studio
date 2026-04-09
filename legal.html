@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal — Privacy Policy & Terms of Service | AXON ARCHIVES</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050505;
+    --black2: #0A0A0A;
+    --black3: #111111;
+    --gold: #D4A843;
+    --gold-light: #E8C96A;
+    --gold-dim: rgba(212,168,67,0.1);
+    --white: #EEEBE4;
+    --grey: #555555;
+    --grey-light: #999999;
+    --border: rgba(212,168,67,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 3px,
+      rgba(212,168,67,0.006) 3px, rgba(212,168,67,0.006) 4px
+    );
+    pointer-events: none; z-index: 9990;
+  }
+
+  /* BARS */
+  .bar-top {
+    position: fixed; top: 0; left: 0; right: 0; height: 32px;
+    background: var(--black); border-bottom: 1px solid var(--border);
+    z-index: 2000; display: flex; align-items: center;
+    padding: 0 20px; justify-content: space-between;
+  }
+  .bar-bottom {
+    position: fixed; bottom: 0; left: 0; right: 0; height: 32px;
+    background: var(--black); border-top: 1px solid var(--border);
+    z-index: 2000; display: flex; align-items: center;
+    padding: 0 20px; justify-content: space-between;
+  }
+  .bar-info { font-size: 7px; letter-spacing: 3px; color: var(--grey); text-transform: uppercase; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 32px; left: 0; right: 0; z-index: 1000;
+    height: 56px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 20px;
+    background: rgba(5,5,5,0.97);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { display: flex; flex-direction: column; line-height: 1; text-decoration: none; }
+  .nav-logo-main { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 5px; color: var(--white); }
+  .nav-logo-sub { font-size: 6px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-top: 2px; }
+  .nav-back {
+    font-size: 8px; letter-spacing: 3px; color: var(--grey-light);
+    text-decoration: none; text-transform: uppercase; transition: color 0.3s;
+  }
+  .nav-back:hover { color: var(--gold); }
+
+  /* CONTENT */
+  .legal-wrap {
+    padding: 120px 20px 80px;
+    max-width: 800px; margin: 0 auto;
+  }
+  .legal-eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .legal-eyebrow-line { width: 28px; height: 1px; background: var(--gold); }
+  .legal-eyebrow span { font-size: 7px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; }
+  .legal-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 8vw, 56px);
+    font-weight: 400; line-height: 1.1; margin-bottom: 8px;
+  }
+  .legal-title em { font-style: italic; color: var(--gold); }
+  .legal-date { font-size: 10px; letter-spacing: 2px; color: var(--grey-light); margin-bottom: 60px; }
+
+  .legal-section { margin-bottom: 56px; }
+  .legal-section-label {
+    font-size: 7px; letter-spacing: 5px; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 20px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--border);
+  }
+  .legal-section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px; font-weight: 400; margin-bottom: 16px; color: var(--white);
+  }
+  .legal-section h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 500; letter-spacing: 2px;
+    color: var(--gold); text-transform: uppercase;
+    margin: 24px 0 10px;
+  }
+  .legal-section p {
+    font-size: 13px; line-height: 2.2; color: var(--grey-light);
+    margin-bottom: 14px;
+  }
+  .legal-section p strong { color: var(--white); font-weight: 500; }
+  .legal-section a { color: var(--gold); text-decoration: none; }
+  .legal-section a:hover { text-decoration: underline; }
+
+  .legal-divider {
+    height: 1px; background: var(--border);
+    margin: 60px 0;
+  }
+
+  .legal-contact-box {
+    background: var(--black2); border: 1px solid var(--border);
+    padding: 28px 24px; margin-top: 40px;
+  }
+  .legal-contact-box p { font-size: 12px; color: var(--grey-light); line-height: 2; }
+  .legal-contact-box strong { color: var(--white); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black2); border-top: 1px solid var(--border);
+    padding: 28px 20px; margin-bottom: 32px;
+    display: flex; flex-direction: column; gap: 12px; text-align: center;
+  }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 5px; color: var(--white); }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 9px; color: var(--grey); letter-spacing: 1px; }
+
+  @media (min-width: 769px) {
+    nav { padding: 0 48px; }
+    .legal-wrap { padding: 120px 48px 80px; }
+    footer { flex-direction: row; align-items: center; justify-content: space-between; text-align: left; padding: 28px 48px; }
+    .bar-info.hide-mobile { display: block; }
+  }
+  @media (max-width: 768px) {
+    .bar-info.hide-mobile { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bar-top">
+  <span class="bar-info">Axon Archives · Lagos, Nigeria</span>
+  <span class="bar-info hide-mobile">Legal Documentation</span>
+</div>
+<div class="bar-bottom">
+  <span class="bar-info">Architecture · Visualization · Design & Build</span>
+  <span class="bar-info hide-mobile">axonarchives.studio</span>
+</div>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <span class="nav-logo-main">Axon Archives</span>
+    <span class="nav-logo-sub">Digital Architecture Archive</span>
+  </a>
+  <a class="nav-back" href="/">← Back to Site</a>
+</nav>
+
+<div class="legal-wrap">
+
+  <div class="legal-eyebrow">
+    <div class="legal-eyebrow-line"></div>
+    <span>Legal</span>
+  </div>
+  <h1 class="legal-title">Privacy Policy &amp; <em>Terms of Service</em></h1>
+  <p class="legal-date">Last updated: April 2025 &nbsp;·&nbsp; Axon Archives, Lagos, Nigeria</p>
+
+  <!-- ── PRIVACY POLICY ── -->
+  <div class="legal-section">
+    <p class="legal-section-label">Part One</p>
+    <h2>Privacy Policy</h2>
+
+    <p>AXON ARCHIVES ("we", "our", "us") is committed to protecting your personal information. This Privacy Policy explains what data we collect, how we use it, and your rights in relation to it.</p>
+
+    <h3>1. Information We Collect</h3>
+    <p>When you use our website or contact us, we may collect the following information:</p>
+    <p><strong>Contact form:</strong> Full name, email address, service required, and project brief submitted via our contact form (processed by Formspree).</p>
+    <p><strong>Payment information:</strong> Name and email address submitted during payment processing. Payment card details are handled entirely by Paystack and are never stored by us.</p>
+    <p><strong>Chat assistant:</strong> Messages you send to our studio assistant chatbot during your session.</p>
+    <p><strong>Analytics:</strong> We use Google Analytics to collect anonymised data about site usage including pages visited, time spent, and general location. No personally identifiable information is collected via analytics.</p>
+
+    <h3>2. How We Use Your Information</h3>
+    <p>We use your information solely to respond to your enquiries, process your payments, deliver the services you have requested, and improve our website and services. We do not sell, rent, or trade your personal data to third parties.</p>
+
+    <h3>3. Third-Party Services</h3>
+    <p>We use the following third-party services which have their own privacy policies:</p>
+    <p><strong>Paystack</strong> — payment processing (paystack.com/privacy)</p>
+    <p><strong>Formspree</strong> — contact form processing (formspree.io/legal/privacy-policy)</p>
+    <p><strong>Google Analytics</strong> — anonymised site analytics (policies.google.com/privacy)</p>
+    <p><strong>Anthropic Claude</strong> — AI-powered chat assistant (anthropic.com/privacy)</p>
+
+    <h3>4. Data Retention</h3>
+    <p>We retain your contact enquiry data for up to 12 months for the purpose of project correspondence. Payment records are retained as required by applicable financial regulations. You may request deletion of your data at any time by contacting us.</p>
+
+    <h3>5. Cookies</h3>
+    <p>Our site uses essential cookies for functionality and Google Analytics cookies for anonymised usage tracking. You may disable cookies in your browser settings, though some site features may be affected.</p>
+
+    <h3>6. Your Rights</h3>
+    <p>You have the right to request access to, correction of, or deletion of your personal data held by us. To exercise these rights, contact us at <a href="mailto:axonarchives@gmail.com">axonarchives@gmail.com</a>.</p>
+
+    <h3>7. Security</h3>
+    <p>We implement appropriate technical and organisational measures to protect your personal data, including HTTPS encryption, secure headers, and access controls on all third-party integrations.</p>
+
+    <h3>8. Contact</h3>
+    <p>For any privacy-related queries, please contact us at <a href="mailto:axonarchives@gmail.com">axonarchives@gmail.com</a>.</p>
+  </div>
+
+  <div class="legal-divider"></div>
+
+  <!-- ── TERMS OF SERVICE ── -->
+  <div class="legal-section">
+    <p class="legal-section-label">Part Two</p>
+    <h2>Terms of Service</h2>
+
+    <p>These Terms of Service govern your use of axonarchives.studio and the services provided by AXON ARCHIVES. By using our site or engaging our services, you agree to these terms.</p>
+
+    <h3>1. Services</h3>
+    <p>AXON ARCHIVES provides architectural visualization, 3D rendering, floor plan drawing, animation, and related design services. The scope, deliverables, and timeline for each project are agreed upon individually between the studio and the client prior to commencement.</p>
+
+    <h3>2. Payment Terms</h3>
+    <p>All service fees are quoted in USD and processed in Nigerian Naira (NGN) at the prevailing exchange rate. A non-refundable deposit of <strong>80% of the agreed fee</strong> is required before work commences. The remaining 20% balance is due upon delivery of final files. Payments are processed securely via Paystack.</p>
+
+    <h3>3. Refund Policy</h3>
+    <p>The 80% deposit is non-refundable once work has commenced. If a project is cancelled by the client before work begins, a full refund will be issued. If deliverables do not meet the agreed brief, we will revise the work at no additional cost. The number of included revisions is agreed upon at the start of each project.</p>
+
+    <h3>4. Intellectual Property</h3>
+    <p>Upon receipt of full payment, the client is granted full rights to use the delivered visual assets for their intended purpose. AXON ARCHIVES retains the right to display completed work in our portfolio unless otherwise agreed in writing. All source files, 3D models, and working files remain the property of AXON ARCHIVES unless explicitly purchased.</p>
+
+    <h3>5. Client Responsibilities</h3>
+    <p>The client is responsible for providing accurate briefs, reference materials, survey plans, and CAD files as required. Delays caused by incomplete or inaccurate client-supplied information are not the responsibility of AXON ARCHIVES and may affect agreed timelines.</p>
+
+    <h3>6. Delivery & Timelines</h3>
+    <p>Estimated delivery timelines are provided at the start of each project and are subject to the timely receipt of all required client materials. AXON ARCHIVES will communicate any changes to agreed timelines promptly.</p>
+
+    <h3>7. Limitation of Liability</h3>
+    <p>AXON ARCHIVES shall not be liable for any indirect, incidental, or consequential damages arising from the use of our services or website. Our total liability in any matter is limited to the amount paid by the client for the specific service in question.</p>
+
+    <h3>8. Governing Law</h3>
+    <p>These terms are governed by the laws of the Federal Republic of Nigeria. Any disputes shall be resolved through good-faith negotiation, and if unresolved, through the appropriate courts in Lagos, Nigeria.</p>
+
+    <h3>9. Changes to These Terms</h3>
+    <p>We reserve the right to update these terms at any time. Changes will be posted on this page with an updated date. Continued use of our services constitutes acceptance of the revised terms.</p>
+
+    <h3>10. Contact</h3>
+    <p>For any questions regarding these terms, contact us at <a href="mailto:axonarchives@gmail.com">axonarchives@gmail.com</a>.</p>
+  </div>
+
+  <div class="legal-contact-box">
+    <p><strong>AXON ARCHIVES</strong><br>
+    Lagos, Nigeria<br>
+    <a href="mailto:axonarchives@gmail.com">axonarchives@gmail.com</a><br>
+    axonarchives.studio</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Axon <span>Archives</span></div>
+  <p class="footer-copy">© 2025 Axon Archives. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
