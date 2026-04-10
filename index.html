@@ -329,7 +329,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
     <a onclick="showPage('services')">Services</a>
     <a onclick="showPage('pay')">Pay</a>
     <a onclick="showPage('contact')">Contact</a>
-    <button class="nav-cta-btn" onclick="showPage('contact')">Start a Project</button>
+    <button class="nav-cta-btn" onclick="openInquiryForm('New Project')">Start a Project</button>
   </div>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -470,33 +470,21 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
 
 <!-- CONTACT -->
 <div id="contact" class="page">
-  <div class="contact-inner">
-    <div>
-      <div class="sec-eyebrow" style="margin-bottom:12px"><div class="sec-eyebrow-line"></div><span>Let's Work Together</span></div>
-      <h2 class="sec-title" style="margin-bottom:32px">Get in <em>Touch</em></h2>
-      <div>
-        <div class="contact-item"><p class="contact-label">Email</p><p class="contact-value"><a href="mailto:axonarchives@gmail.com">axonarchives@gmail.com</a></p></div>
-        <div class="contact-item"><p class="contact-label">WhatsApp</p><p class="contact-value">+66 98 958 3830</p></div>
-        <div class="contact-item"><p class="contact-label">TikTok</p><p class="contact-value">axon.archives</p></div>
-        <div class="contact-item"><p class="contact-label">Twitter</p><p class="contact-value">@axonarchives</p></div>
-        <div class="contact-item" style="border-bottom:none"><p class="contact-label">Location</p><p class="contact-value">Lagos, Nigeria</p></div>
+  <div class="sec-header">
+    <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span>Let's Work Together</span></div>
+    <h2 class="sec-title">Get in <em>Touch</em></h2>
+  </div>
+  <div style="padding:0 48px 72px;">
+    <div style="max-width:600px;">
+      <div class="contact-item"><p class="contact-label">Email</p><p class="contact-value"><a href="mailto:axonarchives@gmail.com">axonarchives@gmail.com</a></p></div>
+      <div class="contact-item"><p class="contact-label">WhatsApp</p><p class="contact-value">+66 98 958 3830</p></div>
+      <div class="contact-item"><p class="contact-label">TikTok</p><p class="contact-value">axon.archives</p></div>
+      <div class="contact-item"><p class="contact-label">Twitter</p><p class="contact-value">@axonarchives</p></div>
+      <div class="contact-item" style="border-bottom:none"><p class="contact-label">Location</p><p class="contact-value">Lagos, Nigeria</p></div>
+      <div style="margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <button class="btn-gold-c" onclick="openInquiryForm('General Enquiry')">Send Enquiry</button>
+        <button class="btn-outline-c" onclick="openPayModal('General Service','Custom')">Pay for a Service</button>
       </div>
-
-    </div>
-    <div>
-      <h2 class="sec-title" style="margin-bottom:32px">Send a <em>Message</em></h2>
-      <form class="contact-form" id="contactForm" action="https://formspree.io/f/xojknnbq" method="POST">
-        <div><label class="form-label">Full Name</label><input type="text" name="name" class="form-input" placeholder="Your name" required></div>
-        <div><label class="form-label">Email Address</label><input type="email" name="email" class="form-input" placeholder="your@email.com" required></div>
-        <div><label class="form-label">Service Required</label><input type="text" name="service" class="form-input" placeholder="e.g. 3D Exterior Render" required></div>
-        <div><label class="form-label">Project Brief</label><textarea name="message" class="form-textarea" placeholder="Tell us about your project..." required></textarea></div>
-        <div style="display:none" aria-hidden="true"><input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;">
-          <button type="submit" class="form-submit" id="submitBtn">Send Enquiry</button>
-          <button type="button" class="form-submit" style="background:transparent;border:1px solid var(--gold);color:var(--gold);" onclick="openPayModal('General Service','Custom')">Pay for a Service</button>
-        </div>
-        <p id="formMsg" class="form-msg"></p>
-      </form>
     </div>
   </div>
   <footer>
@@ -506,7 +494,6 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
   </footer>
 </div>
 
-<!-- LEGAL -->
 <div id="legal" class="page">
   <div class="legal-inner">
     <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span>Legal</span></div>
@@ -627,7 +614,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
     <button class="inq-close" onclick="closeInquiryForm()">&#x2715;</button>
     <div id="inqFormContent">
       <p class="inq-eyebrow">Service Enquiry</p>
-      <h2 class="inq-title">Let&#39;s Talk About Your Project</h2>
+      <h2 class="inq-title">Send a <em style="color:var(--gold)">Message</em></h2>
       <span class="inq-tag" id="inqServiceTag">Service</span>
       <div class="inq-grid">
         <div class="inq-group"><label class="inq-label">Full Name</label><input type="text" class="inq-input" id="inqName" placeholder="Your name"></div>
