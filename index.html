@@ -68,7 +68,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;display:flex;al
 @keyframes reelMove{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 .reel-item{width:140px;height:180px;flex-shrink:0;position:relative;overflow:hidden;}
 .reel-item img{width:100%;height:100%;object-fit:cover;opacity:0.6;}
-.reel-cat{position:absolute;bottom:8px;left:8px;font-size:6px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.reel-cat{display:none;}
 .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);}
 .stat-item{padding:40px 32px;border-right:1px solid var(--border);background:var(--black2);transition:background 0.4s;}
 .stat-item:hover{background:rgba(212,168,67,0.04);}
@@ -755,17 +755,26 @@ function filterPortfolio(cat, btn) {
 function buildReel() {
   var track = document.getElementById('reelTrack');
   if (!track) return;
-  var imgs = portfolioItems.slice(0,12).concat(portfolioItems.slice(0,12));
-  imgs.forEach(function(item) {
+  var ext = portfolioItems.filter(function(i){ return i.cat==='exterior'; }).slice(0,5);
+  var int = portfolioItems.filter(function(i){ return i.cat==='interior'; }).slice(0,5);
+  var fp  = portfolioItems.filter(function(i){ return i.cat==='floorplan'; }).slice(0,3);
+  var sp  = portfolioItems.filter(function(i){ return i.cat==='siteplan'; }).slice(0,2);
+  var mixed = [];
+  var maxLen = Math.max(ext.length, int.length, fp.length, sp.length);
+  for (var i = 0; i < maxLen; i++) {
+    if (ext[i]) mixed.push(ext[i]);
+    if (int[i]) mixed.push(int[i]);
+    if (fp[i])  mixed.push(fp[i]);
+    if (sp[i])  mixed.push(sp[i]);
+  }
+  var doubled = mixed.concat(mixed);
+  doubled.forEach(function(item) {
     var div = document.createElement('div');
     div.className = 'reel-item';
     var img = document.createElement('img');
     img.src = item.mob;
-    img.alt = item.label;
-    var lbl = document.createElement('div');
-    lbl.className = 'reel-cat';
-    lbl.textContent = item.label;
-    div.appendChild(img); div.appendChild(lbl);
+    img.alt = '';
+    div.appendChild(img);
     track.appendChild(div);
   });
 }
