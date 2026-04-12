@@ -86,8 +86,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;display:flex;al
 .filter-tab{padding:10px 22px;background:transparent;border:1px solid var(--border);color:var(--grey-light);font-size:7px;letter-spacing:3px;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.3s;margin-right:-1px;white-space:nowrap;}
 .filter-tab.active,.filter-tab:hover{background:var(--gold);color:var(--black);border-color:var(--gold);z-index:1;}
 .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:0 2px 2px;}
-.grid-item{position:relative;overflow:hidden;cursor:pointer;background:var(--black3);}
-.grid-item img{width:100%;height:auto;object-fit:contain;display:block;opacity:0;transition:opacity 0.5s ease,transform 0.7s cubic-bezier(0.16,1,0.3,1);}
+.grid-item{position:relative;overflow:hidden;cursor:pointer;background:var(--black3);aspect-ratio:3/2;}
+.grid-item img{width:100%;height:100%;object-fit:contain;display:block;opacity:0;transition:opacity 0.5s ease,transform 0.7s cubic-bezier(0.16,1,0.3,1);background:var(--black3);}
 .grid-item.loaded img{opacity:1;}
 .grid-item:hover img{transform:scale(1.02);}
 .grid-overlay{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(to top,rgba(5,5,5,0.92) 0%,transparent 80%);opacity:0;transition:opacity 0.4s;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;}
@@ -720,26 +720,44 @@ function buildGrid(filter) {
   filtered.forEach(function(item, idx) {
     var div = document.createElement('div');
     div.className = 'grid-item';
-    var shimmer = document.createElement('div');
-    shimmer.className = 'img-shimmer';
-    var img = document.createElement('img');
-    img.src = isMobile ? item.mob : item.src;
-    img.alt = item.label;
-    img.onload = function(){ this.style.opacity='1'; div.classList.add('loaded'); };
-    img.onerror = function(){ this.style.background='#111'; this.style.opacity='1'; };
     var numEl = document.createElement('div');
     numEl.className = 'grid-num';
     numEl.textContent = String(idx+1).padStart(2,'0');
     var overlay = document.createElement('div');
     overlay.className = 'grid-overlay';
     overlay.innerHTML = '<p class="grid-cat">' + item.label + '</p>';
-    div.appendChild(shimmer);
-    div.appendChild(img);
-    div.appendChild(numEl);
-    div.appendChild(overlay);
-    (function(fi, fidx){
-      div.addEventListener('click', function(){ openSlider(filtered, fidx); });
-    })(item, idx);
+    if (item.video) {
+      div.style.cssText += 'aspect-ratio:16/9;';
+      var vid = document.createElement('video');
+      vid.src = item.src;
+      vid.autoplay = true;
+      vid.muted = true;
+      vid.loop = true;
+      vid.playsInline = true;
+      vid.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+      div.appendChild(vid);
+      div.appendChild(numEl);
+      div.appendChild(overlay);
+    } else {
+      var shimmer = document.createElement('div');
+      shimmer.className = 'img-shimmer';
+      var img = document.createElement('img');
+      img.src = isMobile ? item.mob : item.src;
+      img.alt = item.label;
+      img.onload = function(){ this.style.opacity='1'; div.classList.add('loaded'); };
+      img.onerror = function(){ this.style.background='#111'; this.style.opacity='1'; };
+      div.appendChild(shimmer);
+      div.appendChild(img);
+      div.appendChild(numEl);
+      div.appendChild(overlay);
+      (function(fi, fidx){
+        div.addEventListener('click', function(){
+          var imgItems = filtered.filter(function(i){ return !i.video; });
+          var imgIdx = imgItems.indexOf(fi);
+          if (imgIdx >= 0) openSlider(imgItems, imgIdx);
+        });
+      })(item, idx);
+    }
     grid.appendChild(div);
   });
 }
