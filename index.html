@@ -840,6 +840,13 @@ function showPage(id) {
   });
   if(id==='portfolio') buildGrid(currentFilter);
   window.scrollTo(0,0);
+  if (typeof gtag === 'function') {
+    gtag('event', 'page_view', {
+      page_title: id,
+      page_location: window.location.origin + '/#' + id,
+      page_path: '/#' + id
+    });
+  }
 }
 function toggleMenu() {
   var menu=document.getElementById('mobileMenu'); var burger=document.getElementById('hamburger');
@@ -884,7 +891,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeInquir
 var PAYSTACK_KEY = 'pk_live_2d05beb98e463c7f9bcbd7c3510c5c127f62683a';
 var currentService = '';
 var inputCurrency = 'NGN';
-var USD_TO_NGN = 1580;
+var USD_TO_NGN = 1400;
 
 fetch('https://open.er-api.com/v6/latest/USD')
   .then(function(r){ return r.json(); })
@@ -1093,7 +1100,10 @@ var chatOpen = false;
 function toggleChat() {
   chatOpen = !chatOpen;
   document.getElementById('chatWindow').classList.toggle('open', chatOpen);
-  if (chatOpen) document.getElementById('chatInput').focus();
+  if (chatOpen) {
+    document.getElementById('chatInput').focus();
+    if (typeof gtag === 'function') gtag('event', 'chatbot_open');
+  }
 }
 function getTime() { return new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
 function addMessage(role, text) {
