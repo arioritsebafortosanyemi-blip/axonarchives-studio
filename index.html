@@ -899,6 +899,7 @@ fetch('https://open.er-api.com/v6/latest/USD')
   .catch(function(){});
 
 function openPayModal(service, price) {
+  if (typeof gtag === 'function') gtag('event', 'pay_modal_open', { service: service });
   currentService = service;
   document.getElementById('payServiceName').textContent = service + ' — ' + price;
   document.getElementById('payModalOverlay').classList.add('open');
@@ -968,6 +969,7 @@ function initiatePayment() {
         service:currentService, amount:ngnAmount, currency:'NGN',
         date: new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})
       };
+      if (typeof gtag === 'function') gtag('event', 'payment_success', { service: currentService, amount: ngnAmount });
       document.getElementById('payFormContent').style.display = 'none';
       document.getElementById('paySuccess').style.display = 'block';
     },
@@ -1082,7 +1084,7 @@ if (form) {
       method:'POST', body:new FormData(form), headers:{Accept:'application/json'}
     }).then(function(r) {
       msg.style.display='block';
-      if (r.ok) { msg.style.color='#D4A843'; msg.textContent='Message sent. We will be in touch shortly.'; form.reset(); }
+      if (r.ok) { msg.style.color='#D4A843'; msg.textContent='Message sent. We will be in touch shortly.'; form.reset(); if (typeof gtag === 'function') gtag('event', 'contact_form_submit'); }
       else { msg.style.color='#ff6b6b'; msg.textContent='Something went wrong. Please try again.'; }
       btn.textContent='Send Enquiry'; btn.disabled=false;
     }).catch(function() {
