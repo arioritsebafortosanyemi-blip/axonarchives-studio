@@ -4,7 +4,7 @@
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://checkout.flutterwave.com https://www.googletagmanager.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.flutterwave.com https://checkout.flutterwave.com https://formspree.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; frame-src https://checkout.flutterwave.com; object-src 'none';
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://checkout.flutterwave.com https://www.googletagmanager.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.flutterwave.com https://checkout.flutterwave.com https://formspree.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; frame-src https://checkout.flutterwave.com https://ravemodal-dev.herokuapp.com; object-src 'none';
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
 /images/*
