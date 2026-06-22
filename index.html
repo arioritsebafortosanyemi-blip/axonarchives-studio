@@ -7,7 +7,7 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ET1WW5ZB8B"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-ET1WW5ZB8B');</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://js.paystack.co/v1/inline.js"></script>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--black:#050505;--black2:#0A0A0A;--black3:#111111;--gold:#D4A843;--gold2:#E8C96A;--gold-dim:rgba(212,168,67,0.08);--white:#EEEBE4;--grey:#444444;--grey-light:#888888;--border:rgba(212,168,67,0.1);}
@@ -540,7 +540,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
         </div>
         <div class="pay-amount-display" id="payAmountDisplay">₦ 0</div>
         <button class="btn-pay-now" id="payBtn" onclick="initiatePayment()">Proceed to Payment</button>
-        <p class="pay-note">Secured by Paystack · SSL Encrypted</p>
+        <p class="pay-note">Secured by Flutterwave · SSL Encrypted</p>
       </div>
     </div>
     <div class="pay-success" id="paySuccess">
@@ -888,7 +888,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeInquir
 
 // ── PAYMENT
 // ── PAYMENT ───────────────────────────────────────────
-var PAYSTACK_KEY = 'pk_live_2d05beb98e463c7f9bcbd7c3510c5c127f62683a';
+var FLW_PUBLIC_KEY = 'FLWPUBK-63f74ea3ba62e621fd5e3f14830b27f7-X';
 var currentService = '';
 var inputCurrency = 'NGN';
 var USD_TO_NGN = 1400;
@@ -955,17 +955,16 @@ function initiatePayment() {
   var raw = parseFloat(document.getElementById('payAmount').value);
   var ngnAmount = getNGNAmount();
   if (!email || !name || !raw || raw <= 0) { alert('Please fill in all fields and enter a valid amount.'); return; }
-  var amountInKobo = Math.round(ngnAmount * 100);
-  var handler = PaystackPop.setup({
-    key: PAYSTACK_KEY, email: email, amount: amountInKobo, currency: 'NGN',
-    ref: 'AXON-' + Date.now(),
-    metadata: { custom_fields: [
-      { display_name:'Client Name', variable_name:'client_name', value:name },
-      { display_name:'Service', variable_name:'service', value:currentService }
-    ]},
+  var txRef = 'AXON-' + Date.now();
+  FlutterwaveCheckout({
+    public_key: FLW_PUBLIC_KEY, tx_ref: txRef, amount: ngnAmount, currency: 'NGN',
+    payment_options: 'card,mobilemoney,ussd,banktransfer',
+    customer: { email: email, name: name },
+    meta: { service: currentService },
+    customizations: { title: 'AXON ARCHIVES', description: currentService, logo: '' },
     callback: function(response) {
       window.lastPayment = {
-        ref: response.reference, email:email, name:name,
+        ref: response.transaction_id || txRef, email:email, name:name,
         service:currentService, amount:ngnAmount, currency:'NGN',
         date: new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})
       };
@@ -973,9 +972,8 @@ function initiatePayment() {
       document.getElementById('payFormContent').style.display = 'none';
       document.getElementById('paySuccess').style.display = 'block';
     },
-    onClose: function() {}
+    onclose: function() {}
   });
-  handler.openIframe();
 }
 document.getElementById('payModalOverlay').addEventListener('click', function(e){ if(e.target===this) closePayModal(); });
 
@@ -1062,7 +1060,7 @@ function generateInvoice(name, email, service, inputAmt, ngnAmt) {
   doc.setDrawColor(212,168,67); doc.line(16,130,W-16,130);
   doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(170,170,170);
   doc.text('Visit axonarchives.studio → Pay → Pay Custom Amount',22,142);
-  doc.text('NGN payments · Secured by Paystack',22,152);
+  doc.text('NGN payments · Secured by Flutterwave',22,152);
   doc.line(16,175,W-16,175);
   doc.setFontSize(8); doc.setTextColor(136,136,136);
   doc.text('axonarchives@gmail.com · axonarchives.studio · Lagos, Nigeria',W/2,183,{align:'center'});
