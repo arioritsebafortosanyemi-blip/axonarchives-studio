@@ -1231,6 +1231,13 @@ function showPage(id) {
   });
   if(id==='portfolio') buildGrid(currentFilter);
   window.scrollTo(0,0);
+  if(typeof gsap !== 'undefined'){
+    if(id === 'home'){
+      gsap.set('nav', { yPercent: -100 });
+    } else {
+      gsap.set('nav', { yPercent: 0 });
+    }
+  }
   if (typeof gtag === 'function') {
     gtag('event', 'page_view', {
       page_title: id,
