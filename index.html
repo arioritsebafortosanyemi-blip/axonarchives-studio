@@ -25,7 +25,7 @@ body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif
 @keyframes barShrink{from{height:var(--h,60%);}to{height:0;}}
 .preloader-logo{position:relative;z-index:2;font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,5vw,52px);letter-spacing:8px;color:var(--white);opacity:0;transform:translateY(10px);transition:opacity 0.5s ease,transform 0.5s ease;}
 .preloader-logo.visible{opacity:1;transform:translateY(0);}
-.preloader-sub{position:relative;z-index:2;font-size:7px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-top:10px;opacity:0;transition:opacity 0.5s ease 0.2s;}
+.preloader-sub{position:relative;z-index:2;font-size:clamp(10px,1.4vw,14px);letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-top:14px;opacity:0;transition:opacity 0.5s ease 0.2s;}
 .preloader-sub.visible{opacity:1;}
 
 /* ── HERO REVEAL */
