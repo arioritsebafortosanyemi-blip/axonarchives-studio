@@ -7,10 +7,13 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ET1WW5ZB8B"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-ET1WW5ZB8B');</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--black:#FAF8F4;--black2:#F0EDE5;--black3:#E8E3D8;--gold:#B8943A;--gold2:#D4A843;--gold-dim:rgba(184,148,58,0.1);--white:#1C1814;--grey:#6B5E4E;--grey-light:#9A8E80;--border:rgba(184,148,58,0.2);--dark:#1C1814;}
+:root{--black:#FAF8F4;--black2:#F0EDE5;--black3:#E8E3D8;--gold:#7A5E18;--gold2:#9A7820;--gold-dim:rgba(122,94,24,0.1);--white:#1C1814;--grey:#5A4E3E;--grey-light:#7A6E5E;--border:rgba(122,94,24,0.22);--dark:#1C1814;}
 *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
 body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;}
 
@@ -327,7 +330,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;display:flex;al
 .img-marquee-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
 .img-marquee-overlay{position:absolute;inset:0;background:rgba(28,24,20,0.38);}
 .img-marquee-band{position:absolute;bottom:0;left:0;right:0;overflow:hidden;border-top:1px solid rgba(250,248,244,0.15);padding:18px 0;}
-.img-marquee-track2{display:flex;width:max-content;animation:marquee 22s linear infinite;}
+.img-marquee-track2{display:flex;width:max-content;}
 .img-marquee-item{font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,3vw,34px);letter-spacing:7px;color:#FAF8F4;padding:0 56px;white-space:nowrap;opacity:0.92;}
 .img-marquee-dot{color:var(--gold);padding:0 8px;}
 @media(max-width:768px){
@@ -387,9 +390,33 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
   .inq-panel{max-height:90vh;overflow-y:auto;border:1px solid var(--border);}
   .pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
 }
+
+/* ── GSAP ANIMATION SCENES */
+.clip-reveal-section{position:relative;width:100%;height:88vh;overflow:hidden;}
+.clip-reveal-section img{width:100%;height:115%;object-fit:cover;display:block;object-position:center;will-change:clip-path,transform;}
+.clip-reveal-caption{position:absolute;bottom:0;left:0;right:0;padding:40px 48px;background:linear-gradient(to top,rgba(28,24,20,0.8),transparent);}
+.split-scene{display:grid;grid-template-columns:1fr 1fr;height:80vh;overflow:hidden;gap:2px;}
+.split-col{overflow:hidden;position:relative;}
+.split-col img{width:100%;height:120%;object-fit:cover;display:block;will-change:transform;}
+.split-scene-caption{position:absolute;bottom:0;left:0;right:0;padding:32px 36px;background:linear-gradient(to top,rgba(28,24,20,0.75),transparent);}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border-radius:50%;border:1px solid rgba(122,94,24,0.7);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);opacity:0;transition:opacity 0.4s;}
+.cursor-ring.visible{opacity:1;}
+@media(max-width:768px){
+  .clip-reveal-section{height:60vw;}
+  .split-scene{grid-template-columns:1fr;height:auto;}
+  .split-col{height:60vw;}
+  .clip-reveal-caption{padding:20px 20px;}
+  .split-scene-caption{padding:20px 20px;}
+}
 </style>
 </head>
 <body>
+<!-- custom cursor -->
+<div class="cursor-ring" id="cursorRing"></div>
+<!-- SVG clip defs -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <defs id="axon-clip-defs"></defs>
+</svg>
 <div id="axon-preloader">
   <div class="preloader-grid" id="preloaderGrid"></div>
   <div style="position:relative;z-index:2;text-align:center;">
@@ -436,7 +463,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
     </div>
     <div class="hero-lines"><div class="hero-line"></div><div class="hero-line"></div><div class="hero-line"></div></div>
     <div class="hero-content">
-      <div class="hero-eyebrow"><div class="hero-eyebrow-line"></div><span>Architecture &nbsp;&nbsp; Visualization &nbsp;&nbsp; Animation</span></div>
+      <div class="hero-eyebrow"><span>Architecture &nbsp;&nbsp; Visualization &nbsp;&nbsp; Animation</span></div>
       <h1><span class="hero-l1">AXON</span><span class="hero-l2">ARCHIVES</span><span class="hero-l3">We design. We build. We deliver.</span></h1>
       <div class="hero-bottom">
         <div class="hero-btns">
@@ -478,15 +505,42 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
     </div>
   </div>
 
-  <!-- SCROLL STORY: Scene 3 — exterior + interior collage -->
-  <div class="story-collage reveal">
-    <div class="story-collage-tall"><img src="images/ext30.jpg" alt="Exterior render"></div>
-    <div class="story-collage-short"><img src="images/int1.jpg" alt="Interior visualization"></div>
+  <!-- SCROLL STORY: Scene 3 — clip-path reveal -->
+  <div class="clip-reveal-section" id="clipScene1">
+    <img src="images/ext34.jpg" alt="Exterior architectural render" id="clipImg1">
+    <div class="clip-reveal-caption">
+      <div class="story-caption-eyebrow">Architectural Precision</div>
+      <div class="story-caption-text">Built to full detail, rendered before a single brick is laid.</div>
+    </div>
   </div>
 
-  <!-- SCROLL STORY: Scene 4 — interior with scrolling marquee -->
-  <div class="img-marquee-wrap reveal">
-    <img src="images/int23.jpg" alt="Interior visualization">
+  <!-- SCROLL STORY: Scene 4 — split-apart columns -->
+  <div class="split-scene" id="splitScene1">
+    <div class="split-col" id="splitLeft">
+      <img src="images/int26.jpg" alt="Interior visualization">
+      <div class="split-scene-caption">
+        <div class="story-caption-eyebrow">Interior</div>
+        <div class="story-caption-text">Every room, every material, every light source.</div>
+      </div>
+    </div>
+    <div class="split-col" id="splitRight">
+      <img src="images/ext31.jpg" alt="Exterior render">
+      <div class="split-scene-caption">
+        <div class="story-caption-eyebrow">Exterior</div>
+        <div class="story-caption-text">Facades that command the skyline.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCROLL STORY: Scene 5 — exterior + floor plan collage -->
+  <div class="story-collage reveal">
+    <div class="story-collage-tall"><img src="images/int29.jpg" alt="Interior visualization"></div>
+    <div class="story-collage-short"><img src="images/ext33.jpg" alt="Exterior render"></div>
+  </div>
+
+  <!-- SCROLL STORY: Scene 6 — interior with scrolling marquee -->
+  <div class="img-marquee-wrap reveal" id="marqueeScene">
+    <img src="images/int25.jpg" alt="Interior visualization">
     <div class="img-marquee-overlay"></div>
     <div class="img-marquee-band">
       <div class="img-marquee-track2">
@@ -512,7 +566,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
 <!-- PORTFOLIO -->
 <div id="portfolio" class="page">
   <div class="sec-header">
-    <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span>Our Work</span></div>
+    <div class="sec-eyebrow"><span>Our Work</span></div>
     <h2 class="sec-title">Selected <em>Works</em></h2>
     <div class="filter-tabs" style="margin-top:24px;">
       <button class="filter-tab active" onclick="filterPortfolio('all',this)">All</button>
@@ -534,7 +588,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
 <!-- SERVICES -->
 <div id="services" class="page">
   <div class="sec-header">
-    <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span>What We Do</span></div>
+    <div class="sec-eyebrow"><span>What We Do</span></div>
     <h2 class="sec-title">Our <em>Services</em></h2>
   </div>
   <div class="svc-row reveal"><div class="svc-num">01</div><div class="svc-body"><p class="svc-name">3D Exterior View</p><p class="svc-desc">Photorealistic exterior renders with accurate materials, natural lighting, and precise environmental context.</p></div><button class="svc-btn" onclick="openInquiryForm('3D Exterior View')">Make Enquiry</button></div>
@@ -559,7 +613,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
 </div><!-- ── PAY ───────────────────────────────────────────── -->
 <div id="pay" class="page">
   <div class="pay-inner">
-    <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span>Secure Payment</span></div>
+    <div class="sec-eyebrow"><span>Secure Payment</span></div>
     <h2 class="sec-title" style="margin-bottom:40px">Pay for a <em>Service</em></h2>
     <div class="pay-custom">
       <p class="pay-custom-label">Custom Invoice</p>
@@ -578,7 +632,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
 <div id="about" class="page">
   <div class="about-grid">
     <div class="about-left">
-      <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span>The Studio</span></div>
+      <div class="sec-eyebrow"><span>The Studio</span></div>
       <div class="about-headline">We Design.<br><span class="outline">We Build.</span><span class="gold">We Deliver.</span></div>
       <div class="about-body">
         <p><strong>AXON ARCHIVES</strong> is a Lagos-based architecture, interior design, and visualization studio. We handle every stage of the design process, from concept to construction drawings, interior finishes to photorealistic renders.</p>
@@ -602,7 +656,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
 <!-- CONTACT -->
 <div id="contact" class="page">
   <div class="sec-header">
-    <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span>Let's Work Together</span></div>
+    <div class="sec-eyebrow"><span>Let's Work Together</span></div>
     <h2 class="sec-title">Get in <em>Touch</em></h2>
   </div>
   <div style="padding:0 48px 72px;">
@@ -627,7 +681,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
 
 <div id="legal" class="page">
   <div class="legal-inner">
-    <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span>Legal</span></div>
+    <div class="sec-eyebrow"><span>Legal</span></div>
     <h2 class="sec-title">Privacy <em>&amp; Terms</em></h2>
     <h3>Privacy Policy</h3>
     <p>AXON ARCHIVES is committed to protecting your privacy. We collect information you provide directly and use Google Analytics for anonymous site usage data. We do not sell your data.</p>
@@ -842,6 +896,123 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
   window.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('load', function(){ buildParallaxList(); onScroll(); });
   document.addEventListener('DOMContentLoaded', buildParallaxList);
+})();
+
+// ── GSAP ANIMATIONS
+(function(){
+  if(typeof gsap === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // 1. Sticky nav slide-in
+  gsap.set('nav', { y: 0 });
+  ScrollTrigger.create({
+    trigger: '.stats-strip',
+    start: 'top 30%',
+    onEnter: function(){
+      gsap.to('nav', { y: 0, duration: 0.01 });
+    }
+  });
+
+  // 2. CSS clip-path reveal (small rect → fullscreen)
+  var clipImg = document.getElementById('clipImg1');
+  if(clipImg){
+    gsap.fromTo(clipImg,
+      { clipPath: 'inset(12% 22%)', scale: 1.08 },
+      {
+        clipPath: 'inset(0% 0%)',
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#clipScene1',
+          start: 'top 85%',
+          end: 'bottom 20%',
+          scrub: 1.2
+        }
+      }
+    );
+  }
+
+  // 3. Split-apart columns
+  var splitLeft = document.querySelector('#splitLeft img');
+  var splitRight = document.querySelector('#splitRight img');
+  if(splitLeft && splitRight){
+    var splitTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#splitScene1',
+        start: 'top 90%',
+        end: 'bottom 10%',
+        scrub: 1.1
+      }
+    });
+    splitTl.to(splitLeft, { y: '-10%', ease: 'none' }, 0);
+    splitTl.to(splitRight, { y: '10%', ease: 'none' }, 0);
+  }
+
+  // 4. Per-character text rise on hero headline
+  if(typeof SplitType !== 'undefined'){
+    var heroTargets = document.querySelectorAll('.hero-l1, .hero-l2');
+    heroTargets.forEach(function(el){
+      var split = new SplitType(el, { types: 'chars' });
+      gsap.set(split.chars, { y: '110%', opacity: 1 });
+      gsap.to(split.chars, {
+        y: '0%',
+        opacity: 1,
+        stagger: { each: 0.04, from: 'random' },
+        ease: 'power3.out',
+        duration: 1.1,
+        delay: 2.6
+      });
+    });
+
+    // Per-char rise on section titles when they scroll into view
+    var secTitles = document.querySelectorAll('.sec-title');
+    secTitles.forEach(function(el){
+      var split = new SplitType(el, { types: 'chars, lines' });
+      el.querySelectorAll('.line').forEach(function(l){ l.style.overflow = 'hidden'; });
+      gsap.set(split.chars, { y: '120%' });
+      gsap.to(split.chars, {
+        y: '0%',
+        stagger: { each: 0.03, from: 'random' },
+        ease: 'power3.out',
+        duration: 0.9,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 82%',
+          end: 'bottom 40%',
+          scrub: true
+        }
+      });
+    });
+  }
+
+  // 5. Scroll-direction-aware marquee
+  var marqueeTrack2 = document.querySelector('.img-marquee-track2');
+  if(marqueeTrack2){
+    marqueeTrack2.style.animation = 'none';
+    var marqueeTween = gsap.to(marqueeTrack2, {
+      xPercent: -50,
+      repeat: -1,
+      duration: 22,
+      ease: 'linear'
+    });
+    var lastScroll = 0;
+    window.addEventListener('scroll', function(){
+      var cur = window.scrollY;
+      gsap.to(marqueeTween, { timeScale: cur > lastScroll ? 1 : -1 });
+      lastScroll = cur;
+    }, { passive: true });
+  }
+
+  // 6. Custom cursor
+  var ring = document.getElementById('cursorRing');
+  if(ring && window.innerWidth > 1024){
+    ring.classList.add('visible');
+    document.addEventListener('mousemove', function(e){
+      gsap.to(ring, { left: e.clientX, top: e.clientY, duration: 0.45, ease: 'power2.out' });
+    });
+  }
+
+  ScrollTrigger.refresh();
 })();
 
 function initReveal(){
