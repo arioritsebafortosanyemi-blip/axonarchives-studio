@@ -936,9 +936,9 @@ window.addEventListener('load', function(){
     splitTl.to(splitRight, { y: 220, ease: 'none' }, 0);
   }
 
-  // 3. Per-character text rise on section titles
+  // 3. Per-character text rise on section titles (home page only — others are hidden at load)
   if(typeof SplitType !== 'undefined'){
-    document.querySelectorAll('.sec-title').forEach(function(el){
+    document.querySelectorAll('#home .sec-title').forEach(function(el){
       var split = new SplitType(el, { types: 'lines, chars' });
       el.querySelectorAll('.line').forEach(function(l){ l.style.overflow = 'hidden'; });
       gsap.set(split.chars, { y: '115%' });
@@ -1198,6 +1198,8 @@ document.getElementById('sliderOverlay').addEventListener('touchend',function(e)
 
 // ── NAV
 function showPage(id) {
+  // Revert any SplitType chars that got stuck in off-screen pages
+  document.querySelectorAll('.page .sec-title .char').forEach(function(c){ c.style.transform = ''; });
   document.getElementById('home').style.display = id==='home'?'flex':'none';
   ['portfolio','services','pay','about','contact','legal'].forEach(function(p){
     var el=document.getElementById(p);
