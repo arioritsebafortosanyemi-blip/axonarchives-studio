@@ -993,18 +993,6 @@ window.addEventListener('load', function(){
     }, { passive: true });
   }
 
-  // 6. Sticky nav — hidden at top, slides in after hero
-  gsap.set('nav', { yPercent: -100 });
-  ScrollTrigger.create({
-    trigger: '.marquee-wrap',
-    start: 'top top',
-    onEnter: function(){
-      gsap.to('nav', { yPercent: 0, duration: 0.5, ease: 'power3.out' });
-    },
-    onLeaveBack: function(){
-      gsap.to('nav', { yPercent: -100, duration: 0.35, ease: 'power2.in' });
-    }
-  });
 
   ScrollTrigger.refresh();
 });
@@ -1231,13 +1219,6 @@ function showPage(id) {
   });
   if(id==='portfolio') buildGrid(currentFilter);
   window.scrollTo(0,0);
-  if(typeof gsap !== 'undefined'){
-    if(id === 'home'){
-      gsap.set('nav', { yPercent: -100 });
-    } else {
-      gsap.set('nav', { yPercent: 0 });
-    }
-  }
   if (typeof gtag === 'function') {
     gtag('event', 'page_view', {
       page_title: id,
